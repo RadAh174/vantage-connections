@@ -1,0 +1,503 @@
+@import "tailwindcss";
+
+/* ---- Theme tokens (Forest + Gold) ----
+   2-color accent palette, replacing the prior 5-color Aurora.
+   - Forest: supporting accent (links, secondary buttons, dots, dividers)
+   - Gold: primary accent — almost always rendered as the gradient
+     defined by --gold-grad below. Solid --color-gold is used only for
+     1px elements (small dots, hairlines) where a gradient is invisible.
+
+   Per user direction, --color-forest holds the same hex in light and
+   dark modes (visual consistency over dark-mode contrast). See
+   AuroraHairline + ConnectionLine notes if contrast becomes a problem.
+
+   Surfaces (bg, ink, ink-muted, surface, surface-calm, line) are
+   unchanged from the original Aurora setup.
+
+   --color-headline: NEW token used only on the giant Fraunces page
+   headlines. In light mode it equals ink (#1A1A1A). In dark mode it
+   shifts to a warm pale champagne (#F0E4C4) so the headline reads as
+   gold-tinted cream rather than pure white — sets the luxury tone the
+   site reaches for. Body copy stays on --color-ink. */
+
+:root {
+  --color-forest: #1A4D33;
+  --color-gold: #D49E0F;
+  /* Gold gradient: the signature treatment for headlines, CTAs, stats. */
+  --gold-grad: linear-gradient(135deg, #E0B442 0%, #FADC85 100%);
+
+  --color-bg: #F8F5EE;
+  --color-surface: #FFFFFF;
+  --color-surface-calm: #FBF9F4;
+  --color-ink: #1A1A1A;
+  --color-ink-muted: #6B6B68;
+  --color-line: rgba(26, 26, 26, 0.08);
+  --color-headline: #1A1A1A;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Forest lifts in dark mode for text legibility — preserves forest identity vs going mint-light */
+    --color-forest: #3D7755;
+    --color-gold: #E0B442;
+    --gold-grad: linear-gradient(135deg, #E0B458 0%, #FADE90 100%);
+
+    --color-bg: #0E0E10;
+    --color-surface: #1A1A1C;
+    --color-surface-calm: #17171A;
+    --color-ink: #F2F2EE;
+    --color-ink-muted: #9C9C97;
+    --color-line: rgba(245, 245, 242, 0.10);
+    --color-headline: #F0E4C4;
+  }
+}
+
+/* Manual override (theme toggle). Wins over system preference. */
+html.light {
+  --color-forest: #1A4D33;
+  --color-gold: #D49E0F;
+  --gold-grad: linear-gradient(135deg, #E0B442 0%, #FADC85 100%);
+
+  --color-bg: #F8F5EE;
+  --color-surface: #FFFFFF;
+  --color-surface-calm: #FBF9F4;
+  --color-ink: #1A1A1A;
+  --color-ink-muted: #6B6B68;
+  --color-line: rgba(26, 26, 26, 0.08);
+  --color-headline: #1A1A1A;
+}
+
+html.dark {
+  /* Forest lifts in dark mode for text legibility — preserves forest identity vs going mint-light */
+  --color-forest: #3D7755;
+  --color-gold: #E0B442;
+  --gold-grad: linear-gradient(135deg, #E0B458 0%, #FADE90 100%);
+
+  --color-bg: #0E0E10;
+  --color-surface: #1A1A1C;
+  --color-surface-calm: #17171A;
+  --color-ink: #F2F2EE;
+  --color-ink-muted: #9C9C97;
+  --color-line: rgba(245, 245, 242, 0.10);
+  --color-headline: #F0E4C4;
+}
+
+/* ---- Tailwind v4 @theme: generates utility classes ---- */
+/* `inline` here so Tailwind reads the *current* :root value at the
+   time the class applies (so dark mode flips correctly). */
+
+@theme inline {
+  --color-forest: var(--color-forest);
+  --color-gold: var(--color-gold);
+
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-calm: var(--color-surface-calm);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-line: var(--color-line);
+  --color-headline: var(--color-headline);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
+}
+
+/* ---- Base ---- */
+
+html {
+  /* Solid base color paints to the canvas as a fallback for any area not
+     covered by the AtmosphericBackground wrapper (e.g. overscroll). */
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  /* Clip horizontal overflow so off-screen carousel cards (R=1200 puts
+     side items past the viewport edge) don't introduce a horizontal
+     scrollbar. `clip` is preferable to `hidden` because it doesn't
+     create a containing block for fixed/sticky descendants. */
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  /* Body must be transparent so the absolutely-positioned
+     AtmosphericBackground (a body-sized layer that scrolls with content)
+     shows through. `position: relative` makes body the containing block
+     so the bg wrapper's inset:0 stretches to body height (= document
+     height). */
+  position: relative;
+  background-color: transparent;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-bg);
+}
+
+/* ---- Aurora hairline (now a 2-color forest+gold gradient) ----
+   Name preserved to avoid renaming imports across the codebase. */
+@keyframes aurora-drift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.aurora-hairline {
+  background: linear-gradient(
+    90deg,
+    var(--color-forest),
+    #E0B442,
+    #FADC85,
+    #E0B442,
+    var(--color-forest)
+  );
+  background-size: 200% 100%;
+}
+
+.aurora-hairline-animate {
+  animation: aurora-drift 10s linear infinite;
+}
+
+/* "BUILD NOW" pill — shimmering gold border + matching shimmering "NOW"
+   text. Both use the same `shimmer-sweep` keyframe at the same 7s cycle
+   so the bright highlight passes through the border ring AND the NOW
+   glyphs in sync. Slowed from 3.5s → 7s per request — once every few
+   seconds, not constantly. */
+@keyframes shimmer-sweep {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 220% 50%; }
+}
+.shimmer-border {
+  animation: shimmer-sweep 7s linear infinite;
+}
+.shimmer-text {
+  /* Same gradient stops + same 220% size + same animation as the border
+     so the bright sweep traverses the text in lockstep with the ring. */
+  background-image: linear-gradient(
+    115deg,
+    #8B6914 0%,
+    #D4A12A 30%,
+    #FFE49A 50%,
+    #D4A12A 70%,
+    #8B6914 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-sweep 7s linear infinite;
+}
+
+/* "BUILD NOW" pill inner — default surface + hover treatment.
+   Hover replaces the flat surface with a dramatic light-gold → near-
+   black gradient and lifts the pill slightly for a stronger CTA pull. */
+.build-now-pill {
+  transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.build-now-pill:hover {
+  transform: scale(1.04);
+}
+.build-now-inner {
+  background-color: var(--color-bg);
+  transition:
+    background-color 280ms ease,
+    background-image 280ms ease,
+    color 280ms ease;
+}
+.build-now-pill:hover .build-now-inner {
+  /* Heavy multi-stop blend — gold → dark-gold → brown → near-black.
+     Five stops with carefully spaced positions create a long, soft
+     transition through the warm tones rather than a sharp gold/black
+     handoff. White text reads cleanly because most of the pill sits in
+     the dark/midtone range; only the upper-left corner is bright gold
+     and white-on-gold is still legible at this contrast. */
+  /* Five-stop saturated gold → near-black ramp, compressed so the
+     bright `#FFE49A` gold stays concentrated in the upper-left corner.
+     By 70% of the diagonal we're already fully near-black; the right
+     ~30% of the pill is solid dark. */
+  /* Brighter / fuller gold — held longer at the bright stop and the
+     first transition is a touch brighter too, so the gold corner reads
+     as more present before the pill fades to near-black. */
+  background-image: linear-gradient(
+    135deg,
+    #FFEBB0 0%,
+    #FFEBB0 6%,
+    #D8A035 18%,
+    #6B5018 32%,
+    #2C1F0A 50%,
+    #0E0E10 70%
+  );
+  background-color: transparent;
+  color: #FFFFFF;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-border,
+  .shimmer-text { animation: none; }
+  .build-now-pill { transition: none; }
+  .build-now-pill:hover { transform: none; }
+}
+
+/* RotatingWord vertical slide */
+@keyframes word-slide-in {
+  from { transform: translateY(0.6em); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+@keyframes word-slide-out {
+  from { transform: translateY(0);      opacity: 1; }
+  to   { transform: translateY(-0.6em); opacity: 0; }
+}
+
+/* Reveal-on-scroll utility */
+@keyframes reveal-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+}
+
+.reveal-on-scroll.is-visible {
+  animation: reveal-up 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* ---- Hero word-by-word reveal ----
+   Each word in the hero headline gets `.hero-word` with an inline
+   animation-delay so they cascade in. Soft blur fade-up — feels closer
+   to typewriter staggering than a hard cut. */
+@keyframes hero-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-word {
+  display: inline-block;
+  /* `inline-block` collapses trailing whitespace inside the element, so
+     `{word}{" "}` renders without a gap between words. `white-space: pre`
+     preserves the trailing space verbatim. */
+  white-space: pre;
+  /* `both` fill mode: holds the `from` state during the animation-delay
+     window AND the `to` state after end. Without `backwards` (which is
+     half of `both`), the element can flash at its computed opacity for
+     a frame before the animation kicks in — the "min alpha" pop the
+     user noticed. With `both`, opacity is locked at 0 for the entire
+     delay, then smoothly tweens.
+
+     Removed `filter: blur()` from the keyframe — animating blur is
+     GPU-expensive and was the main source of the choppy feel
+     (especially with multiple words running concurrently). The
+     translateY + opacity combo alone reads as a clean, soft fade-up. */
+  animation: hero-word-in 950ms ease-in-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-word {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ---- Shine sweep on hero text ----
+   A bright band sweeps across the text every ~7s via background-clip + a
+   moving linear-gradient. The sweep band color flips per mode through
+   --shine-band: in dark mode it's bright white (visible sweep against
+   cream text); in light mode it falls back to var(--color-headline) (a
+   no-op gradient so the dark text doesn't briefly turn white-on-cream
+   and become invisible). The animation runs in both modes — only the
+   visible delta differs. */
+
+:root { --shine-band: var(--color-headline); }
+@media (prefers-color-scheme: dark) {
+  :root { --shine-band: rgba(255, 255, 255, 0.92); }
+}
+html.dark  { --shine-band: rgba(255, 255, 255, 0.92); }
+html.light { --shine-band: var(--color-headline); }
+
+.shine {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-headline) 0%,
+    var(--color-headline) 42%,
+    var(--shine-band) 50%,
+    var(--color-headline) 58%,
+    var(--color-headline) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shine-sweep 7s linear infinite;
+}
+
+@keyframes shine-sweep {
+  /* One left→right sweep over the first 22% of the cycle, then hold the
+     band off-screen-right for the remaining 78% (the pause). The jump
+     back to the starting offset on loop happens off-screen on both sides
+     so there's no visible reset flash. */
+  0%   { background-position: -120% 0; }
+  22%  { background-position: 220% 0; }
+  100% { background-position: 220% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shine { animation: none; }
+}
+
+/* Marginalia hover-near base state */
+.marginalia {
+  opacity: 0.6;
+  transition: opacity 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.marginalia:hover,
+.marginalia.is-near {
+  opacity: 1;
+}
+
+/* Color-word gradient text helper.
+   Default = gold gradient. Override via inline style for any one-off.
+
+   Italic Fraunces glyphs (especially at large sizes) have overhanging
+   strokes that get clipped at the start/end where they meet the
+   surrounding non-italic text. Fix:
+     display: inline-block        (so padding actually applies)
+     padding-inline: 0.08em       (room for italic overhang)
+     margin-inline: -0.04em       (compensate so siblings barely shift —
+                                   the padding eats into adjacent
+                                   whitespace rather than pushing words
+                                   apart). */
+.color-word {
+  background-image: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-inline: 0.08em;
+  margin-inline: -0.04em;
+}
+
+/* fallback so border-bottom: 1px solid currentColor still renders
+   on parent <a> when child is gradient-clipped */
+.color-word--has-fallback {
+  color: var(--color-gold);
+}
+
+/* Generic italic overhang fix — apply to any large italic Fraunces span
+   that isn't already a .color-word. Same padding/margin compensation. */
+.italic-fix {
+  display: inline-block;
+  padding-inline: 0.08em;
+  margin-inline: -0.04em;
+}
+
+/* ---- ProcessHorizontalScroll ----
+   The section gets `cardCount * 110vh` of vertical scroll room so the
+   pinned inner viewport can translate the track horizontally (driven by
+   the component's RAF scroll listener).
+
+   Pin height stays at 70vh (visual height of the carousel slot).
+   The vertical-scroll-per-card was bumped from 70vh → 110vh so each
+   pixel of mouse-wheel scroll moves the track less — feels slower and
+   more deliberate to the user. Independent from pin visual height.
+
+   Reduced-motion path: collapse to auto height, drop sticky pinning,
+   make the track wrap into a vertical stack so all cards are reachable. */
+
+.process-horizontal {
+  height: calc(var(--card-count, 4) * 160vh);
+}
+
+.process-horizontal__pin {
+  height: 70vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-horizontal {
+    height: auto;
+  }
+  .process-horizontal__pin {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+  .process-horizontal__track {
+    flex-direction: column;
+    width: 100% !important;
+    height: auto;
+    transform: none !important;
+    gap: 1.5rem;
+  }
+  .process-horizontal__track > article {
+    width: 100% !important;
+    margin-right: 0 !important;
+    height: auto;
+    min-height: 60vh;
+  }
+}
+
+/* ---- Work modal backdrop fade-in ----
+   Used by components/home/WorkModal.tsx. The panel itself uses inline JS
+   transition (FLIP); this just covers the dim/blur curtain underneath. */
+@keyframes work-modal-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.work-modal-backdrop {
+  animation: work-modal-backdrop-in 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-modal-backdrop {
+    animation: none;
+  }
+}
+
+/* LiveMockupViewport drop-in keyframe (see components/contact/LiveMockupViewport.tsx) */
+/* ---- LiveMockupViewport drop-in transition ----
+   When the user picks a different project type on /contact, the new
+   mockup expands from the center like a water drop over the previous
+   one. Two layers stack absolutely; the new one mounts with a 700ms
+   clip-path circle expand + soft fade-in, then the old one unmounts.
+
+   Radius goes to 150% so the circle covers the rectangular viewport's
+   corners (a 100% circle leaves them visible). Eased with the studio's
+   standard cubic-bezier(0.2, 0.8, 0.2, 1) for the smooth ease-out feel. */
+@keyframes mockup-drop-in {
+  from { clip-path: circle(0% at 50% 50%); opacity: 0.4; }
+  to   { clip-path: circle(150% at 50% 50%); opacity: 1; }
+}
+
+.mockup-drop-in {
+  animation: mockup-drop-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mockup-drop-in { animation: none; }
+}
+
+/* ---- Route fade (Next 15 client-side navigation) ----
+   See components/layout/RouteFade.tsx for the React side.
+   We toggle .route-fade-out for one paint to drop opacity, then remove
+   it on the next frame so the new tree fades back in.
+   The 250ms ease-out matches the studio's general motion language. */
+.route-fade {
+  opacity: 1;
+  transition: opacity 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.route-fade.route-fade-out {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-fade {
+    transition: none;
+  }
+}
