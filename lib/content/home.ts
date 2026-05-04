@@ -88,6 +88,15 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://tailwindcss.com",
     tags: ["TEST"],
   },
+  // Real client — PredictBase v1 (predictbase.app). Spread to opposite
+  // side of the ring from the v2 entry below.
+  {
+    slug: "predictbase",
+    client: "PredictBase",
+    title: "Live site",
+    liveUrl: "https://predictbase.app",
+    tags: [],
+  },
   // TEST: REMOVE BEFORE LAUNCH
   {
     slug: "test-shadcn",
@@ -104,71 +113,62 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://supabase.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // TEST: REMOVE BEFORE LAUNCH — modern real estate brokerage
   {
-    slug: "test-wikipedia",
-    client: "Wikipedia",
-    title: "Test entry — content-rich page",
-    liveUrl: "https://en.wikipedia.org/wiki/Web_design",
+    slug: "test-compass",
+    client: "Compass",
+    title: "Test entry — modern real estate brokerage",
+    liveUrl: "https://www.compass.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH — items 6–12 fill the carousel ring at
-  // 30° per item (12 × 30 = 360°). All iframable (Wikipedia + IANA-
-  // reserved example domains). Replace with real shipped projects as
-  // they go live, deleting test entries one-for-one.
+  // TEST: REMOVE BEFORE LAUNCH — interior design firm (editorial-grade)
   {
-    slug: "test-wikipedia-typography",
-    client: "Wikipedia",
-    title: "Test entry — Typography article",
-    liveUrl: "https://en.wikipedia.org/wiki/Typography",
+    slug: "test-studio-mcgee",
+    client: "Studio McGee",
+    title: "Test entry — interior design firm",
+    liveUrl: "https://studio-mcgee.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // Real client — PredictBase v2 (v2.predictbase.app). Sits at index 7
+  // while v1 sits at index 2 → ~150° apart on the 30°-per-item ring,
+  // so the two PredictBase cards are visibly spread, not adjacent.
   {
-    slug: "test-example-org",
-    client: "Example.org",
-    title: "Test entry — IANA reserved domain",
-    liveUrl: "https://example.org",
+    slug: "predictbase-v2",
+    client: "PredictBase",
+    title: "Live site (v2)",
+    liveUrl: "https://v2.predictbase.app",
+    tags: [],
+  },
+  // TEST: REMOVE BEFORE LAUNCH — modern booking SaaS
+  {
+    slug: "test-cal",
+    client: "Cal.com",
+    title: "Test entry — modern booking SaaS",
+    liveUrl: "https://cal.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // TEST: REMOVE BEFORE LAUNCH — premium hardware product site
   {
-    slug: "test-example-net",
-    client: "Example.net",
-    title: "Test entry — IANA reserved domain",
-    liveUrl: "https://example.net",
+    slug: "test-daylight",
+    client: "Daylight Computer",
+    title: "Test entry — premium hardware product",
+    liveUrl: "https://daylight.computer",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // TEST: REMOVE BEFORE LAUNCH — boutique interior design firm
   {
-    slug: "test-wikipedia-graphic",
-    client: "Wikipedia",
-    title: "Test entry — Graphic Design article",
-    liveUrl: "https://en.wikipedia.org/wiki/Graphic_design",
+    slug: "test-amber-interior",
+    client: "Amber Interior Design",
+    title: "Test entry — boutique interior design firm",
+    liveUrl: "https://amberinteriordesign.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // TEST: REMOVE BEFORE LAUNCH — enterprise SaaS dashboard
   {
-    slug: "test-wikipedia-ux",
-    client: "Wikipedia",
-    title: "Test entry — UX Design article",
-    liveUrl: "https://en.wikipedia.org/wiki/User_experience_design",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "test-wikipedia-usability",
-    client: "Wikipedia",
-    title: "Test entry — Usability article",
-    liveUrl: "https://en.wikipedia.org/wiki/Usability",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "test-wikipedia-branding",
-    client: "Wikipedia",
-    title: "Test entry — Branding article",
-    liveUrl: "https://en.wikipedia.org/wiki/Brand",
+    slug: "test-retool",
+    client: "Retool",
+    title: "Test entry — enterprise SaaS dashboard",
+    liveUrl: "https://retool.com",
     tags: ["TEST"],
   },
 ];
