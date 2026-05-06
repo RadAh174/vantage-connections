@@ -8,11 +8,19 @@
 
 import { phases as homePhases } from "./home";
 
+export type PhaseStep = {
+  title: string;
+  body: string;
+};
+
 export type PhaseDetail = {
   number: string;
   name: string;
   blurb: string;
-  description: string;
+  /** Three-or-so structured sub-steps. Each renders as a numbered list
+   *  item with a display-weight title + muted supporting body, rather
+   *  than a flat paragraph. Gives the card real editorial hierarchy. */
+  steps: PhaseStep[];
   marginalia: string[];
   /** Approximate week range for the timeline graphic. */
   weekRange: string;
@@ -21,45 +29,53 @@ export type PhaseDetail = {
 export const phaseDetails: PhaseDetail[] = [
   {
     ...homePhases[0],
-    description:
-      "We start with a working call, not a kickoff deck. We listen for the shape of the business — what it sells, who buys, what conversion actually looks like. Then we walk the existing site (if there is one), audit the competition, and write a one-page scope document that names every page, every section, and every cut. Nothing leaves discovery without a real answer to the question: what is this site supposed to do?",
+    steps: [
+      { title: "30-min call.", body: "No kickoff deck." },
+      { title: "Audit pass.", body: "Existing site + competition." },
+      { title: "One-page scope.", body: "Every cut named upfront." },
+    ],
     marginalia: [
       "the scope doc is the contract",
-      "we say no to ~half the projects we hear about",
-      "kickoff deck = waste of an afternoon",
+      "we say no to half the projects we hear",
     ],
     weekRange: "Week 1",
   },
   {
     ...homePhases[1],
-    description:
-      "Design happens in the browser, not in Figma exports. We build a single hero in real code first — typography, color, spacing, motion — and iterate on it until it carries the page. Once the system is right, the rest of the pages compose quickly. We work in plain components, in the same file structure the developer will inherit. No throwaway mocks.",
+    steps: [
+      { title: "In the browser.", body: "Not Figma." },
+      { title: "Hero first.", body: "Type, color, motion — in real code." },
+      { title: "System carries.", body: "The rest of the pages compose fast." },
+    ],
     marginalia: [
       "design in the browser",
       "the hero sets the whole system",
-      "ship the system, not a screenshot",
     ],
     weekRange: "Week 2",
   },
   {
     ...homePhases[2],
-    description:
-      "Production code from day one. We build on the same stack the site will live on (Next.js, Tailwind, Vercel) so what you see in review is what ships. We track Core Web Vitals from the first page, write semantic HTML, and bake in accessibility — keyboard, screen reader, color contrast — as we go. No retrofits.",
+    steps: [
+      { title: "Production stack.", body: "Same one the site will live on." },
+      { title: "Performance + a11y.", body: "Baked in, not bolted on." },
+      { title: "Real-device tested.", body: "Phones, not just devtools." },
+    ],
     marginalia: [
       "performance is a design decision",
-      "accessibility from day one, not at the end",
-      "we test on real phones, not just devtools",
+      "a11y from day one",
     ],
     weekRange: "Week 3",
   },
   {
     ...homePhases[3],
-    description:
-      "Launch is a checklist, not a celebration. We migrate DNS, set up analytics, monitor the first 48 hours, and hand over a clean repository the client owns outright. No ongoing retainer, no vendor lock-in. We stay reachable for 30 days for fixes, then we&apos;re out of your way.",
+    steps: [
+      { title: "Wired up.", body: "DNS, analytics, monitoring — handled." },
+      { title: "Repo handover.", body: "You own everything." },
+      { title: "30 days of fixes.", body: "Then out of your way." },
+    ],
     marginalia: [
-      "ship date: ~14 days from sign-off",
+      "ship: ~14 days from sign-off",
       "you own the repo, the domain, the code",
-      "we do not retain. you do not depend on us.",
     ],
     weekRange: "Week 4",
   },

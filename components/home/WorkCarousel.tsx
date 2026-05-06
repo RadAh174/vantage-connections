@@ -51,9 +51,7 @@ const AUTO_ROTATION_PERIOD_MS = 240_000; // 4 min per revolution — half-speed 
 const DEGREES_PER_PIXEL = 0.06; // drag rotation — even slower so the user feels each card "settle" rather than fly past.
 const DEGREES_PER_WHEEL_PX = 0.1; // sideways wheel/trackpad → rotation. Much slower per-tick to match drag.
 const RESUME_DELAY_MS = 0; // resume auto-rotate the moment the cursor leaves
-const HOVER_PAUSE_DELAY_MS = 1000; // sustained hover for 1s before pausing —
-                                   // brief mouse passes don't stop drift
-const WHEEL_PAUSE_RESUME_MS = 800; // resume drift this long after last wheel tick
+// Hover-pause removed — carousel keeps drifting even with cursor over it.
 const INERTIA_DECAY_MS = 800;
 const CLICK_MOVEMENT_THRESHOLD_PX = 14;
 const PERSPECTIVE_PX = 4500; // bumped to compensate for larger radius —
@@ -277,9 +275,6 @@ function RingCarousel({
       if (resumeTimerRef.current !== null) {
         window.clearTimeout(resumeTimerRef.current);
       }
-      if (pauseTimerRef.current !== null) {
-        window.clearTimeout(pauseTimerRef.current);
-      }
     };
   }, [applyTransform]);
 
@@ -296,51 +291,28 @@ function RingCarousel({
       // Only intercept when the dominant axis is horizontal.
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
-      angleRef.current += e.deltaX * DEGREES_PER_WHEEL_PX;
-      isPausedRef.current = true;
-      if (resumeTimerRef.current !== null) {
-        window.clearTimeout(resumeTimerRef.current);
-      }
-      resumeTimerRef.current = window.setTimeout(() => {
-        isPausedRef.current = false;
-        resumeTimerRef.current = null;
-      }, WHEEL_PAUSE_RESUME_MS);
+      // Inverted vs deltaX: scrolling right brings the NEXT card forward
+      // (page-scroll mental model — right means "advance"), not the
+      // previous one.
+      //
+      // Auto-rotation is NOT paused during wheel input — the wheel just
+      // adds to angleRef in addition to the per-frame drift. So the
+      // carousel keeps spinning while the user nudges it with the
+      // trackpad. Drag is the only gesture that pauses the drift; that
+      // logic still lives in onPointerDown below.
+      angleRef.current -= e.deltaX * DEGREES_PER_WHEEL_PX;
     };
 
     scene.addEventListener("wheel", onWheel, { passive: false });
     return () => scene.removeEventListener("wheel", onWheel);
   }, []);
 
-  /* ---------------- Hover pause ---------------- */
-
-  // 300ms grace period before pause — a cursor passing through the
-  // carousel area shouldn't stop the drift. Only sustained hover does.
-  const pauseTimerRef = useRef<number | null>(null);
-
-  const handleEnter = () => {
-    if (resumeTimerRef.current !== null) {
-      window.clearTimeout(resumeTimerRef.current);
-      resumeTimerRef.current = null;
-    }
-    if (pauseTimerRef.current !== null) {
-      window.clearTimeout(pauseTimerRef.current);
-    }
-    pauseTimerRef.current = window.setTimeout(() => {
-      isPausedRef.current = true;
-      pauseTimerRef.current = null;
-    }, HOVER_PAUSE_DELAY_MS);
-  };
-
-  const handleLeave = () => {
-    // Cancel pending pause if mouse leaves before the 300ms grace expires —
-    // never even pauses in that case.
-    if (pauseTimerRef.current !== null) {
-      window.clearTimeout(pauseTimerRef.current);
-      pauseTimerRef.current = null;
-    }
-    if (isInteractingRef.current) return;
-    scheduleResume();
-  };
+  /* ---------------- Resume helper ----------------
+     Hover-pause was deliberately removed — the carousel keeps drifting
+     even when the cursor is over it (per user preference). The
+     `isPausedRef` flag is now only flipped by active interaction
+     (drag, wheel) and by the modal-open prop, both of which release
+     it via `scheduleResume()` below. */
 
   function scheduleResume() {
     if (resumeTimerRef.current !== null) {
@@ -498,12 +470,16 @@ function RingCarousel({
   return (
     <div
       ref={sceneRef}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}
+      // No `data-lenis-prevent` here. The carousel's own wheel handler
+      // only preventDefaults on HORIZONTAL wheel (deltaX dominant); pure
+      // vertical wheel passes through. Letting Lenis also process the
+      // event means vertical scroll over the carousel feels the same
+      // weighted-smooth as the rest of the page (no glitch at the edge
+      // where Lenis hands off to native scroll).
       className="relative w-full select-none touch-pan-y"
       style={{
         height: 700, // taller scene to fit the larger radius cleanly
@@ -563,12 +539,15 @@ function WorkCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Iframe rendered at desktop dimensions then scaled down to fit the 16:10
-  // card preview (matches iframe 1440×900 = 1.6 aspect exactly). Scale 0.4
-  // → 576×360 since cards were bumped 20% larger.
-  const PREVIEW_IFRAME_WIDTH = 1440;
-  const PREVIEW_IFRAME_HEIGHT = 900;
-  const PREVIEW_SCALE = 0.4;
+  // Awwwards-style static screenshot via WordPress mShots — much lighter
+  // than embedding 12 simultaneous live iframes (page weight + extension
+  // triggers). The modal still uses a live iframe for the expanded
+  // interactive view; the carousel just needs a faithful preview image.
+  // mShots lazily generates + caches; first visit may show a placeholder
+  // for ~1 frame while the screenshot is being captured.
+  const screenshotUrl = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(
+    item.liveUrl,
+  )}?w=1440&h=900`;
 
   const handleClick = () => {
     if (!cardRef.current) return;
@@ -613,25 +592,15 @@ function WorkCard({
           pointerEvents: isLifted ? "none" : undefined,
         }}
       >
-        <div
-          className="absolute left-0 top-0"
-          style={{
-            width: PREVIEW_IFRAME_WIDTH,
-            height: PREVIEW_IFRAME_HEIGHT,
-            transformOrigin: "top left",
-            transform: `scale(${PREVIEW_SCALE})`,
-          }}
-        >
-          <iframe
-            src={item.liveUrl}
-            title={`${item.client} — preview`}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-popups"
-            className="block h-full w-full border-0"
-            style={{ pointerEvents: "none" }}
-          />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={screenshotUrl}
+          alt={`${item.client} — preview`}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="absolute inset-0 block h-full w-full object-cover object-top select-none"
+          draggable={false}
+        />
 
         <button
           type="button"

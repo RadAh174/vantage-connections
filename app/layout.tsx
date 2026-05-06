@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/content/site";
 import { RouteFade } from "@/components/layout/RouteFade";
 import { AtmosphericBackground } from "@/components/layout/AtmosphericBackground";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -89,6 +90,7 @@ export default function RootLayout({
           glows do not scroll with content. See that component for the
           per-glow rgba/blend-mode setup. */}
       <body className="min-h-full flex flex-col text-ink">
+        <SmoothScroll />
         <AtmosphericBackground />
         <RouteFade>{children}</RouteFade>
       </body>

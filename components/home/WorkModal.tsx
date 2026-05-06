@@ -151,13 +151,31 @@ export function WorkModal({ project, originRect, onClose }: Props) {
     return () => window.clearTimeout(timeout);
   }, [project, mountedProject]);
 
-  // Body scroll lock while modal mounted.
+  // Background scroll lock while modal mounted.
+  // Sets `overflow: hidden` on BOTH <html> and <body> — modern browsers
+  // use <html> as the scrolling element, so locking only body sometimes
+  // leaves vertical scrolling enabled. Also pads the body by the
+  // disappearing scrollbar width so content doesn't reflow horizontally
+  // when the scrollbar vanishes.
   useEffect(() => {
     if (!mountedProject) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevPadding = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - html.clientWidth;
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
     return () => {
-      document.body.style.overflow = prev;
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.paddingRight = prevPadding;
     };
   }, [mountedProject]);
 

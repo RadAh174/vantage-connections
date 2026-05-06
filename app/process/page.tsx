@@ -164,12 +164,45 @@ export default function ProcessPage() {
                     </h2>
                   </Reveal>
                   <Reveal delay={160}>
-                    <p
-                      className="text-ink text-[18px] leading-[1.7] max-w-[640px]"
-                      style={{ whiteSpace: "pre-line" }}
-                    >
-                      {phase.description}
-                    </p>
+                    {/* Numbered process list — same structure as the home
+                        carousel cards but with more breathing room since
+                        this is a long-scroll section. */}
+                    <ol className="flex flex-col max-w-[640px] mt-2">
+                      {phase.steps.map((step, i, arr) => (
+                        <li
+                          key={i}
+                          className="flex items-baseline gap-6 py-5"
+                          style={{
+                            borderBottom:
+                              i < arr.length - 1
+                                ? "1px solid var(--color-line)"
+                                : "none",
+                          }}
+                        >
+                          <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-forest shrink-0 self-start mt-2">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <div className="flex flex-col gap-2">
+                            <span
+                              className="font-display text-ink leading-tight"
+                              style={{
+                                fontSize: "clamp(18px, 1.8vw, 24px)",
+                                fontWeight: 500,
+                                letterSpacing: "-0.01em",
+                              }}
+                            >
+                              {step.title}
+                            </span>
+                            <span
+                              className="text-ink-muted leading-[1.6]"
+                              style={{ fontSize: "clamp(15px, 1.2vw, 17px)" }}
+                            >
+                              {step.body}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
                   </Reveal>
 
                   {phase.marginalia.length > 0 && (

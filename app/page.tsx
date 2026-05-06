@@ -13,6 +13,7 @@ import { RotatingWord } from "@/components/ui/RotatingWord";
 import { ProcessHorizontalScroll } from "@/components/home/ProcessHorizontalScroll";
 import { WorkCarousel } from "@/components/home/WorkCarousel";
 import { HeroFader } from "@/components/home/HeroFader";
+import { ContactDrawerMount } from "@/components/home/ContactDrawerMount";
 
 import { site } from "@/lib/content/site";
 import { home } from "@/lib/content/home";
@@ -219,7 +220,7 @@ export default function HomePage() {
           <AuroraHairline />
           <div className="pt-14 flex flex-col gap-8">
             <Reveal className="flex flex-col gap-3 max-w-2xl">
-              <Eyebrow color="forest">HOW WE WORK</Eyebrow>
+              <Eyebrow color="forest">PROCESS · ~14 DAYS</Eyebrow>
               <h2
                 className="font-display"
                 style={{
@@ -231,10 +232,6 @@ export default function HomePage() {
               >
                 How we <ColorWord>build</ColorWord>.
               </h2>
-              <p className="text-[16px] leading-relaxed text-ink-muted max-w-xl">
-                Scroll. Four phases pin and slide horizontally — Discovery
-                through Launch.
-              </p>
             </Reveal>
           </div>
         </section>
@@ -396,6 +393,15 @@ export default function HomePage() {
           </Reveal>
         </section>
       </main>
+
+      {/* ---------------- Scroll-driven contact drawer ----------------
+          Renders a 120vh scroll sentinel + a fixed-positioned drawer
+          that progressively reveals from the bottom as the user scrolls
+          past the closing CTA. The drawer's height is scrubbed from 0
+          → 100vh across the first 85% of the zone, then dwells at full
+          height for the last 15% (snap region). Reverses cleanly on
+          scroll-up. See ContactDrawer.tsx for the math + a11y notes. */}
+      <ContactDrawerMount />
 
       {/* Footer temporarily removed — see note above where Header was. */}
     </>

@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { AuroraHairline } from "@/components/ui/AuroraHairline";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Marginalia } from "@/components/ui/Marginalia";
 import { phaseDetails, type PhaseDetail } from "@/lib/content/process";
 
 /**
@@ -131,9 +130,35 @@ export function ProcessHorizontalScroll() {
     };
   }, [cardCount]);
 
+  // Redirect horizontal wheel/trackpad input to vertical page scroll while
+  // the user is over the section. This way a sideways trackpad swipe
+  // advances the cards (because card position is driven by vertical
+  // scroll). Non-passive so we can preventDefault and stop the browser
+  // from also trying to scroll the page horizontally. Only kicks in when
+  // the dominant wheel axis is horizontal — vertical scroll passes
+  // through normally.
+  useEffect(() => {
+    const section = parentRef.current;
+    if (!section) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      window.scrollBy(0, e.deltaX);
+    };
+
+    section.addEventListener("wheel", onWheel, { passive: false });
+    return () => section.removeEventListener("wheel", onWheel);
+  }, []);
+
   return (
     <section
       ref={parentRef}
+      // No `data-lenis-prevent` here. The wheel handler below only
+      // preventDefaults on HORIZONTAL wheel; pure vertical wheel passes
+      // through to Lenis for the same weighted-smooth feel as the rest
+      // of the page. Without this, scroll glitched at the section edge
+      // where Lenis handed off to native (jumpy) scroll.
       className="process-horizontal relative"
       style={
         {
@@ -172,7 +197,7 @@ export function ProcessHorizontalScroll() {
 function PhaseCard({ phase }: { phase: PhaseDetail }) {
   return (
     <article
-      className="relative flex h-full shrink-0 flex-col justify-between"
+      className="relative flex h-full shrink-0 flex-col justify-start"
       style={{
         // 85% of the pin width — leaves 7.5% peek on each side once the
         // track's paddingInline pulls things in.
@@ -193,56 +218,89 @@ function PhaseCard({ phase }: { phase: PhaseDetail }) {
         }}
       />
 
-      <div className="relative z-10 flex items-start justify-between gap-8">
-        <div className="flex flex-col gap-4">
-          <Eyebrow color="forest">PHASE {phase.number}</Eyebrow>
-          <h3
-            className="font-display text-headline"
-            style={{
-              fontSize: "clamp(2.25rem, 4.5vw, 4.5rem)",
-              fontWeight: 600,
-              lineHeight: 1.02,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {phase.name}.
-          </h3>
-        </div>
+      {/* Massive gradient phase number — absolutely positioned so its
+          12rem height doesn't inflate the title block and push the steps
+          down. Sits top-right of the card; visually overlaps the steps
+          column on the right side, which reads fine because the steps
+          live in the left 7-of-12 columns of the grid. */}
+      <span
+        aria-hidden
+        className="color-word color-word--has-fallback font-display pointer-events-none absolute select-none leading-none"
+        style={{
+          top: "5vw",
+          right: "5vw",
+          fontSize: "clamp(6rem, 14vw, 12rem)",
+          fontWeight: 700,
+          letterSpacing: "-0.04em",
+          backgroundImage: "var(--gold-grad)",
+          zIndex: 0,
+        }}
+      >
+        {phase.number}
+      </span>
 
-        {/* Massive gradient phase number, top-right of card. Capped lower
-            now that cards are smaller. */}
-        <span
-          aria-hidden
-          className="color-word color-word--has-fallback font-display select-none leading-none"
+      <div className="relative z-10 flex flex-col gap-4">
+        <Eyebrow color="forest">PHASE {phase.number}</Eyebrow>
+        <h3
+          className="font-display text-headline"
           style={{
-            fontSize: "clamp(6rem, 14vw, 12rem)",
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-            backgroundImage: "var(--gold-grad)",
+            fontSize: "clamp(2.25rem, 4.5vw, 4.5rem)",
+            fontWeight: 600,
+            lineHeight: 1.02,
+            letterSpacing: "-0.02em",
           }}
         >
-          {phase.number}
-        </span>
+          {phase.name}.
+        </h3>
       </div>
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
-        <p
-          className="lg:col-span-7 text-ink text-[clamp(14px,1.2vw,17px)] leading-[1.6] max-w-[640px]"
-          style={{ whiteSpace: "pre-line" }}
-        >
-          {phase.description}
-        </p>
+        {/* Numbered process list with two-tier hierarchy per step:
+            - mono forest "01/02/03" anchor on the left
+            - display-weight title on the right
+            - muted supporting body underneath the title
+            - hairline divider between items
+            Gives the card editorial structure rather than a text slab. */}
+        <ol className="lg:col-span-7 flex flex-col max-w-[640px]">
+          {phase.steps.map((step, i, arr) => (
+            <li
+              key={i}
+              className="flex items-baseline gap-5 py-3.5"
+              style={{
+                borderBottom:
+                  i < arr.length - 1 ? "1px solid var(--color-line)" : "none",
+              }}
+            >
+              <span className="font-mono text-[10px] tracking-[0.22em] uppercase text-forest shrink-0 self-start mt-1.5">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="flex flex-col gap-1">
+                <span
+                  className="font-display text-ink leading-tight"
+                  style={{
+                    fontSize: "clamp(15px, 1.4vw, 20px)",
+                    fontWeight: 500,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {step.title}
+                </span>
+                <span
+                  className="text-ink-muted leading-[1.5]"
+                  style={{ fontSize: "clamp(13px, 1.05vw, 15px)" }}
+                >
+                  {step.body}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-        {phase.marginalia.length > 0 && (
-          <div className="lg:col-span-5 flex flex-col gap-2 max-w-md">
-            {phase.marginalia.slice(0, 3).map((m) => (
-              <Marginalia key={m}>— {m}</Marginalia>
-            ))}
-          </div>
-        )}
       </div>
 
-      <div className="relative z-10 flex items-end justify-between gap-6 mt-6">
+      {/* mt-auto pushes the bottom hairline to the bottom of the card
+          while the title + steps stay anchored to the top above it. */}
+      <div className="relative z-10 flex items-end justify-between gap-6 mt-auto pt-6">
         <AuroraHairline className="flex-1" />
       </div>
     </article>
