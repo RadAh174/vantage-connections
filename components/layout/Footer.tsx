@@ -13,14 +13,28 @@ export function Footer() {
     <footer className="mt-32">
       <AuroraHairline />
       <div className="mx-auto max-w-[1320px] px-6 md:px-10 py-12 grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5 flex flex-col gap-3">
+        <div className="md:col-span-6 flex flex-col gap-3">
           <Wordmark />
           <p className="text-ink-muted text-[14px] max-w-sm">
             {site.tagline}
           </p>
+          {site.email && (
+            <a
+              href={`mailto:${site.email}`}
+              className="text-[14px] hover:text-forest transition-colors self-start border-b border-current pb-px"
+            >
+              {site.email}
+            </a>
+          )}
+          <a
+            href="tel:+19499669075"
+            className="text-[14px] text-ink-muted hover:text-forest transition-colors self-start"
+          >
+            +1.949.966.9075
+          </a>
         </div>
 
-        <div className="md:col-span-4 flex flex-col gap-2">
+        <div className="md:col-span-6 md:col-start-9 flex flex-col gap-2">
           <span className="font-mono uppercase text-[11px] tracking-[0.18em] text-ink-muted mb-1">
             Sitemap
           </span>
@@ -33,46 +47,6 @@ export function Footer() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="md:col-span-3 flex flex-col gap-2">
-          <span className="font-mono uppercase text-[11px] tracking-[0.18em] text-ink-muted mb-1">
-            Elsewhere
-          </span>
-          {site.socials.length === 0 ? (
-            <span className="text-ink-muted text-[13px] font-mono">
-              {/* TODO: add real social links to site.socials */}
-              social links: TODO
-            </span>
-          ) : (
-            <ul className="flex flex-col gap-1.5 text-[14px]">
-              {site.socials.map((s) => (
-                <li key={s.href}>
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="hover:text-forest transition-colors"
-                  >
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-          {site.email ? (
-            <a
-              href={`mailto:${site.email}`}
-              className="text-[14px] hover:text-forest transition-colors"
-            >
-              {site.email}
-            </a>
-          ) : (
-            <span className="text-ink-muted text-[13px] font-mono">
-              {/* TODO: set site.email */}
-              email: TODO
-            </span>
-          )}
         </div>
       </div>
 

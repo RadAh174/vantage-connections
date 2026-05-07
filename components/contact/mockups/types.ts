@@ -3,10 +3,11 @@
  *
  * Mockups are *layout illustrations*, not pretend product catalogs.
  * Anywhere a real product/price/testimonial would go, we use a clearly
- * placeholder string ("Item 01", "$ — — .—", em-dashes) so the mockup
- * reads as wireframe-with-real-layout — never as fabricated content.
+ * placeholder string ("—— ——", em-dashes, generic structural labels)
+ * so the mockup reads as wireframe-with-real-layout — never as
+ * fabricated content.
  */
-export type ProjectType = "marketing" | "ecommerce" | "saas" | "brand";
+export type ProjectType = "saas" | "luxury" | "marketing" | "portfolio";
 
 export type MockupProps = {
   /**
@@ -23,8 +24,8 @@ export type MockupProps = {
  * sites (not just swapped a hero block).
  */
 export const HOST_FOR: Record<ProjectType, (slug: string) => string> = {
-  marketing: (slug) => `${slug}.com`,
-  ecommerce: (slug) => `shop.${slug}.com`,
   saas: (slug) => `app.${slug}.com`,
-  brand: (slug) => `${slug}.studio`,
+  luxury: (slug) => `${slug}.com`,
+  marketing: (slug) => `${slug}.com`,
+  portfolio: (slug) => `${slug}.studio`,
 };

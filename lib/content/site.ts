@@ -15,11 +15,9 @@ export const site = {
   description:
     "We design and build modern websites for businesses ready to be seen — calm, confident, built to convert.",
 
-  // TODO: replace empty string with real city once finalized.
-  city: "" as string,
+  city: "California" as string,
 
-  // TODO: replace empty string with the real contact email once finalized.
-  email: "" as string,
+  email: "info@vantageconnections.com" as string,
 
   // TODO: replace empty string with the real Cal.com / Calendly link once finalized.
   schedulingUrl: "" as string,

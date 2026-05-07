@@ -13,25 +13,25 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { LiveMockupViewport } from "@/components/contact/LiveMockupViewport";
 import type { ProjectType as MockupProjectType } from "@/components/contact/mockups/types";
 
+import { sendLead } from "@/app/actions/contact";
 import { site } from "@/lib/content/site";
 
 const PROJECT_TYPES = [
-  "Marketing site",
-  "E-commerce",
   "SaaS",
-  "Other",
+  "Luxury",
+  "Marketing",
+  "Portfolio",
 ] as const;
 type ProjectType = (typeof PROJECT_TYPES)[number];
 
 /**
- * Map form-chip label → mockup style key. "Other" maps to the gallery
- * mockup since it's the most flexible/portfolio-like layout.
+ * Map form-chip label → mockup style key.
  */
 const PROJECT_TYPE_TO_MOCKUP: Record<ProjectType, MockupProjectType> = {
-  "Marketing site": "marketing",
-  "E-commerce": "ecommerce",
   SaaS: "saas",
-  Other: "brand",
+  Luxury: "luxury",
+  Marketing: "marketing",
+  Portfolio: "portfolio",
 };
 
 const BUDGETS = ["<$5k", "$5–15k", "$15k+", "Not sure"] as const;
@@ -47,12 +47,15 @@ export default function ContactPage() {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [projectType, setProjectType] = useState<ProjectType | "">("");
   const [budget, setBudget] = useState<Budget | "">("");
   const [message, setMessage] = useState("");
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validate(): FormErrors {
     const errs: FormErrors = {};
@@ -66,25 +69,32 @@ export default function ContactPage() {
     return errs;
   }
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
 
-    const payload = {
-      name: name.trim(),
-      company: company.trim(),
-      email: email.trim(),
-      projectType,
-      budget,
-      message: message.trim(),
-    };
+    setSending(true);
+    setSubmitError(null);
 
-    // TODO_CONTACT_SUBMIT: wire this to the real server action / Resend
-    // endpoint in task #17. For now, log + show success state.
-    // eslint-disable-next-line no-console
-    console.log("[contact] payload (mock submit):", payload);
+    const result = await sendLead({
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim() || undefined,
+      company: company.trim() || undefined,
+      projectType: projectType || undefined,
+      budget: budget || undefined,
+      message: message.trim(),
+      source: "contact-page",
+    });
+
+    setSending(false);
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
+    }
 
     setSubmitted(true);
   }
@@ -201,7 +211,7 @@ export default function ContactPage() {
                         >
                           {company.trim()}
                         </span>{" "}
-                        could look like (see the mockup).
+                        could look like.
                       </>
                     ) : (
                       "."
@@ -221,7 +231,7 @@ export default function ContactPage() {
               <form
                 onSubmit={onSubmit}
                 noValidate
-                className="flex flex-col gap-7"
+                className="flex flex-col gap-5"
               >
                 <Field
                   id="name"
@@ -266,6 +276,19 @@ export default function ContactPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={inputClass(!!errors.email)}
+                  />
+                </Field>
+
+                <Field id="phone" label="Phone">
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className={inputClass(false)}
                   />
                 </Field>
 
@@ -321,20 +344,43 @@ export default function ContactPage() {
                   />
                 </Field>
 
-                <div className="flex items-center gap-4 pt-2">
-                  <Button type="submit" variant="primary" size="lg">
-                    Send message
-                  </Button>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
-                    24h response · no sales spam
-                  </span>
+                <div className="flex flex-col gap-3 pt-2">
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="lg"
+                      disabled={sending}
+                    >
+                      {sending ? "Sending…" : "Send message"}
+                    </Button>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
+                      24h response · no spam
+                    </span>
+                  </div>
+                  {submitError && (
+                    <p
+                      role="alert"
+                      className="font-mono text-[12px] text-[#C04A2D]"
+                    >
+                      Couldn&apos;t send: {submitError} Please try again or
+                      email{" "}
+                      <a
+                        href={`mailto:${site.email}`}
+                        className="underline"
+                      >
+                        {site.email}
+                      </a>{" "}
+                      directly.
+                    </p>
+                  )}
                 </div>
               </form>
             )}
           </div>
 
           {/* Live mockup */}
-          <div className="lg:col-span-5 lg:sticky lg:top-24 self-start">
+          <div className="lg:col-span-5 lg:sticky lg:top-[120px] self-start">
             <Reveal>
               <LiveMockupViewport
                 companyName={company}
@@ -345,59 +391,11 @@ export default function ContactPage() {
               />
             </Reveal>
             <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
-              ↑ live mockup — types your company name as you fill the form
+              ↑ live mockup — TYPE YOUR COMPANY NAME TO SEE WHAT YOUR NEW WEBSITE WOULD LOOK LIKE
             </p>
           </div>
         </section>
 
-        {/* ---------------- Alt contact ---------------- */}
-        <section className="py-16">
-          <AuroraHairline />
-          <Reveal className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col gap-2">
-              <Eyebrow color="forest">EMAIL</Eyebrow>
-              {site.email ? (
-                <a
-                  href={`mailto:${site.email}`}
-                  className="text-ink text-[17px] hover:text-forest transition-colors border-b border-current pb-0.5 self-start"
-                >
-                  {site.email}
-                </a>
-              ) : (
-                <span className="font-mono text-[13px] text-ink-muted">
-                  {/* TODO: set site.email in lib/content/site.ts */}
-                  email: TODO
-                </span>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Eyebrow color="forest">SCHEDULE</Eyebrow>
-              {site.schedulingUrl ? (
-                <a
-                  href={site.schedulingUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-forest text-[17px] hover:text-ink transition-colors border-b border-current pb-0.5 self-start"
-                >
-                  Book a 30-min intro →
-                </a>
-              ) : (
-                <span className="font-mono text-[13px] text-ink-muted">
-                  {/* TODO: set site.schedulingUrl in lib/content/site.ts */}
-                  scheduling link: TODO
-                </span>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Eyebrow color="forest">AVAILABILITY</Eyebrow>
-              <span className="font-mono text-[13px] text-ink">
-                {site.availability.bookingNote}
-              </span>
-            </div>
-          </Reveal>
-        </section>
       </main>
 
       <Footer />
@@ -406,16 +404,20 @@ export default function ContactPage() {
 }
 
 function inputClass(invalid: boolean) {
-  // Error border uses a hardcoded terracotta — coral is no longer a theme
-  // token and we don't want errors reading as a positive forest signal.
+  // Slightly more visible than a pure underline-only field, without
+  // committing to a full border: a subtle calm-surface fill plus a
+  // bottom underline. Top corners gently rounded so the fill reads as a
+  // contained shape. Error state swaps the underline to terracotta.
   return [
-    "w-full bg-transparent",
-    "border-0 border-b",
+    "w-full",
+    "bg-surface-calm/50",
+    "border-0 border-b-[1.5px]",
     invalid ? "border-[#C04A2D]" : "border-line",
-    "px-0 py-2.5",
+    "rounded-xl",
+    "px-3.5 py-2.5",
     "text-ink text-[16px]",
     "placeholder:text-ink-muted",
-    "focus:outline-none focus:border-forest",
+    "focus:outline-none focus:border-forest focus:bg-surface-calm/80",
     "transition-colors",
   ].join(" ");
 }

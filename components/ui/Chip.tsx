@@ -49,17 +49,33 @@ type ButtonProps = CommonProps &
 
 type Props = SpanProps | ButtonProps;
 
+// Structural classes only — no color utilities — so the BASE never
+// fights ACTIVE/INACTIVE in the cascade. Tailwind orders classes by
+// generation, not by className-string order, so a `bg-surface` in BASE
+// can silently override `bg-forest` in ACTIVE if both are present.
 const BASE =
   "inline-flex items-center gap-2 rounded-full px-3 py-1 " +
-  "text-[12px] font-medium tracking-[-0.005em] " +
-  "border border-line bg-surface text-ink " +
+  "text-[12px] font-medium tracking-[-0.005em] border " +
   "transition-colors duration-200";
 
-const INTERACTIVE =
-  "cursor-pointer hover:border-forest/40 hover:text-forest focus-visible:outline-none " +
+// Mutually-exclusive color sets — only ONE is ever in the className,
+// so they can't conflict with each other.
+const INACTIVE = "border-line bg-surface text-ink";
+// Active = forest border + forest text + a subtle gold → forest
+// diagonal gradient fill. Two stops, light enough that the forest
+// text reads cleanly across the surface.
+const ACTIVE =
+  "border-forest text-forest bg-gradient-to-br from-gold/12 to-forest/15";
+
+const INTERACTIVE_FOCUS =
+  "cursor-pointer focus-visible:outline-none " +
   "focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
-const ACTIVE = "border-forest text-forest bg-forest/5";
+// Hover styles split by state. Active hover slightly intensifies the
+// gradient stops; inactive hover lifts the border + text toward forest.
+const INACTIVE_HOVER = "hover:border-forest/40 hover:text-forest";
+const ACTIVE_HOVER =
+  "hover:from-gold/18 hover:to-forest/22 hover:border-forest hover:text-forest";
 
 export function Chip(props: Props) {
   const {
@@ -76,16 +92,17 @@ export function Chip(props: Props) {
     />
   ) : null;
 
-  const cls = `${BASE} ${active ? ACTIVE : ""} ${className}`;
+  const cls = `${BASE} ${active ? ACTIVE : INACTIVE} ${className}`;
 
   if ("as" in props && props.as === "button") {
     const { as: _as, dotColor: _d, active: _a, className: _c, children: _ch, ...rest } =
       props as ButtonProps;
     void _as; void _d; void _a; void _c; void _ch;
+    const hover = active ? ACTIVE_HOVER : INACTIVE_HOVER;
     return (
       <button
         type="button"
-        className={`${cls} ${INTERACTIVE}`}
+        className={`${cls} ${hover} ${INTERACTIVE_FOCUS}`}
         aria-pressed={active}
         {...rest}
       >

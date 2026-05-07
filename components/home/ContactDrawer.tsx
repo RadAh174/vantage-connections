@@ -12,6 +12,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
 import { ColorWord } from "@/components/ui/ColorWord";
 import { Chip } from "@/components/ui/Chip";
+import { sendLead } from "@/app/actions/contact";
 import { site } from "@/lib/content/site";
 
 /**
@@ -138,6 +139,8 @@ export function ContactDrawer({ zoneRef }: Props) {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validate(): FormErrors {
     const errs: FormErrors = {};
@@ -151,22 +154,30 @@ export function ContactDrawer({ zoneRef }: Props) {
     return errs;
   }
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
 
-    const payload = {
+    setSending(true);
+    setSubmitError(null);
+
+    const result = await sendLead({
       name: name.trim(),
       email: email.trim(),
-      projectType,
+      projectType: projectType || undefined,
       message: message.trim(),
-    };
-    // TODO_CONTACT_SUBMIT: same stub as /contact — wire to real server
-    // action when task #17 lands.
-    // eslint-disable-next-line no-console
-    console.log("[contact-drawer] payload (mock submit):", payload);
+      source: "home-drawer",
+    });
+
+    setSending(false);
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
+    }
+
     setSubmitted(true);
   }
 
@@ -350,9 +361,23 @@ export function ContactDrawer({ zoneRef }: Props) {
                 </DrawerField>
 
                 <div className="flex flex-col gap-3 pt-2">
-                  <Button type="submit" variant="primary" size="lg">
-                    Send →
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={sending}
+                  >
+                    {sending ? "Sending…" : "Send →"}
                   </Button>
+                  {submitError && (
+                    <span
+                      role="alert"
+                      className="font-mono text-[11px] text-[#C04A2D]"
+                    >
+                      Couldn&apos;t send: {submitError} Try again or email us
+                      directly.
+                    </span>
+                  )}
                   {site.email ? (
                     <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
                       or email us at{" "}
