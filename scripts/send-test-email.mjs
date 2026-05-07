@@ -79,7 +79,7 @@ function renderLeadHtml(p) {
     `<html><body style="margin:0;padding:0;background:#0E0E10;">`,
     `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0E0E10;">`,
     `<tr><td align="center" style="padding:40px 20px;">`,
-    `<table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#1A1A1C;border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.45);">`,
+    `<table width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#1A1A1C" style="max-width:600px;width:100%;background-color:#1A1A1C;background-image:radial-gradient(ellipse 600px 450px at 12% 18%, rgba(212,158,15,0.20) 0%, rgba(212,158,15,0.04) 40%, transparent 70%), radial-gradient(ellipse 500px 380px at 88% 65%, rgba(224,180,66,0.22) 0%, rgba(224,180,66,0.06) 35%, transparent 65%), radial-gradient(ellipse 350px 260px at 95% 95%, rgba(250,220,133,0.10) 0%, transparent 55%);border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.45);">`,
     `<tr><td style="height:3px;background:linear-gradient(90deg,#8B6914 0%,#D49E0F 30%,#FADC85 50%,#D49E0F 70%,#8B6914 100%);font-size:0;line-height:0;">&nbsp;</td></tr>`,
     `<tr><td style="padding:40px 44px 36px;">`,
     `<p style="margin:0 0 24px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#3D7755;font-weight:500;">VANTAGE CONNECTIONS</p>`,
