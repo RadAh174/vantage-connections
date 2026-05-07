@@ -85,7 +85,7 @@ export function AtmosphericBackground() {
     // Hero streaks — narrow + tall + rotated near 45° so the long axis
     // reads as a diagonal beam cutting into the center of the page.
     // Asymmetric border-radius weights one end. Heavy blur softens edges.
-    { top: "-28vh", left: "-2vw", width: "20vw", height: "100vh",
+    { top: "-28vh", left: "-2vw", width: "20vw", height: "100dvh",
       color: GOLD, alpha: op.hero,
       radius: "80% 20% 70% 30% / 65% 35% 60% 40%",
       blur: "85px", rotate: "-68deg" },

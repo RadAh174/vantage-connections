@@ -81,6 +81,20 @@ export function ContactDrawer({ zoneRef }: Props) {
   // --- Scroll-driven openness (0 → 1) -------------------------------
   const [openness, setOpenness] = useState(0);
 
+  // Mobile-aware width: at < md the 85vw drawer leaves only 7.5vw on
+  // each side, which combined with the form's `px-6` padding squeezes
+  // inputs into ~30vw of usable width on iPhone SE. On mobile we
+  // expand to full viewport width and use a smaller corner radius
+  // (large radii at 100vw show too much page bg through the corners).
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   useEffect(() => {
     const zone = zoneRef.current;
     if (!zone) return;
@@ -213,9 +227,13 @@ export function ContactDrawer({ zoneRef }: Props) {
       inert={isClosed}
       className="fixed bottom-0 left-1/2 z-40 flex flex-col"
       style={{
-        height: `calc(100vh - ${HEADER_RESERVE_PX}px)`,
-        width: "85vw",
-        maxWidth: "1400px",
+        // 100dvh handles iOS Safari URL-bar collapse: `100vh` would
+        // cap at the always-visible chrome height and leave the
+        // submit button below the fold during the URL-bar's visible
+        // state.
+        height: `calc(100dvh - ${HEADER_RESERVE_PX}px)`,
+        width: isMobile ? "100vw" : "85vw",
+        maxWidth: isMobile ? undefined : "1400px",
         transform: `translate3d(-50%, ${(1 - openness) * 100}%, 0)`,
         // Gradient-border-with-radius trick. Both layers MUST be
         // <bg-image> (a bare color isn't valid in the shorthand) — so
@@ -229,8 +247,11 @@ export function ContactDrawer({ zoneRef }: Props) {
         border: "2px solid transparent",
         // Only round the top corners — the drawer is anchored at
         // viewport bottom, so rounded bottom corners would clip into
-        // the viewport edge and look like cut-off curves.
-        borderRadius: "40px 40px 0 0",
+        // the viewport edge and look like cut-off curves. On mobile
+        // the drawer is full-width, so we soften the radius from 40px
+        // to 24px to avoid showing too much page bg through the
+        // corner curve.
+        borderRadius: isMobile ? "24px 24px 0 0" : "40px 40px 0 0",
         overflow: "hidden",
         boxShadow: "0 -24px 60px -20px rgba(0,0,0,0.55)",
         pointerEvents: isClosed ? "none" : "auto",
@@ -411,11 +432,13 @@ export function ContactDrawer({ zoneRef }: Props) {
 
 function inputClass(invalid: boolean) {
   // Mirrors /contact: bottom-border-only, transparent bg, forest focus.
+  // py-3.5 lifts the field height to ≥44px (iOS HIG floor) so the input
+  // is comfortable to tap on touch.
   return [
     "w-full bg-transparent",
     "border-0 border-b",
     invalid ? "border-[#C04A2D]" : "border-line",
-    "px-0 py-2.5",
+    "px-0 py-3.5",
     "text-ink text-[16px]",
     "placeholder:text-ink-muted",
     "focus:outline-none focus:border-forest",

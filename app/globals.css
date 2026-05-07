@@ -123,6 +123,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
+  /* Belt-and-suspenders horizontal-overflow guard. `html` already has
+     overflow-x: clip, but mobile Safari pre-16 doesn't recognize clip
+     and falls back to allowing horizontal scroll; pairing with body
+     keeps misbehaving full-bleed children (calc rounding, scrollbar
+     off-by-one, viewport unit quirks) from leaking a horizontal scroll
+     bar across browsers. */
+  overflow-x: clip;
   /* Body must be transparent so the absolutely-positioned
      AtmosphericBackground (a body-sized layer that scrolls with content)
      shows through. `position: relative` makes body the containing block
@@ -419,7 +426,13 @@ html.light { --shine-band: var(--color-headline); }
   height: 70vh;
 }
 
-@media (prefers-reduced-motion: reduce) {
+/* Collapse to a vertical card stack when:
+   - The user prefers reduced motion (a11y), OR
+   - The viewport is < md (768px) — the pin/scrub pattern is hostile
+     on touch (no wheel events, four full screens of vertical scroll
+     just to pan four cards). On mobile the cards work fine as a
+     normal vertical stack. */
+@media (prefers-reduced-motion: reduce), (max-width: 767px) {
   .process-horizontal {
     height: auto;
   }
@@ -434,12 +447,14 @@ html.light { --shine-band: var(--color-headline); }
     height: auto;
     transform: none !important;
     gap: 1.5rem;
+    padding-inline: 0 !important;
   }
   .process-horizontal__track > article {
     width: 100% !important;
     margin-right: 0 !important;
     height: auto;
-    min-height: 60vh;
+    min-height: auto;
+    padding: 8vw 6vw 7vw !important;
   }
 }
 

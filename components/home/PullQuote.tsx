@@ -55,6 +55,14 @@ export function PullQuote() {
     const section = sectionRef.current;
     if (!section) return;
 
+    // Gate the scroll-velocity modulation on "fine" pointers (mouse +
+    // trackpad). Lenis only intercepts wheel events; on touch the
+    // browser owns the scroll, so any time-scale we set is a silent
+    // no-op AND the per-frame state churn is wasted work on phones
+    // that are already battery-constrained.
+    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!isFinePointer) return;
+
     let raf = 0;
     let mounted = true;
     let currentScale = 1;
@@ -111,7 +119,15 @@ export function PullQuote() {
   return (
     <section
       ref={sectionRef}
-      className="relative left-1/2 -ml-[50vw] w-screen overflow-hidden"
+      // Full-bleed via `margin-left: calc(50% - 50vw)`. This pattern
+      // self-adjusts to whatever horizontal padding the parent uses
+      // (px-6 / px-10 / centered max-width) without leaking past the
+      // viewport — the legacy `left-1/2 -ml-[50vw]` recipe leaves the
+      // element offset by half the parent's padding, which on mobile
+      // (where px-6 = 24px) caused a 24px overflow off the right edge
+      // and a horizontal page scroll.
+      className="relative w-screen overflow-hidden"
+      style={{ marginLeft: "calc(50% - 50vw)" }}
     >
       {/* Image — natural aspect, no crop. Mask fades top + bottom edges
           so the section blends into the page bg above and below. */}

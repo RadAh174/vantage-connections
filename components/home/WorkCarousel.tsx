@@ -58,12 +58,29 @@ const PERSPECTIVE_PX = 4500; // bumped to compensate for larger radius —
                               // keeps the front card from ballooning at
                               // R=1200 (front scale ≈ 4500/3300 ≈ 1.36×).
 
+/** Track whether the viewport is in the mobile range (< md). The 3D
+ *  ring is incoherent on a 375px screen — perspective + R=1200 puts
+ *  side cards way off-canvas — so we render a native scroll-snap rail
+ *  instead. SSR-safe: starts false, syncs on mount. */
+function useIsMobile(maxWidth = 767): boolean {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${maxWidth}px)`);
+    const update = () => setMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [maxWidth]);
+  return mobile;
+}
+
 export function WorkCarousel({ items }: Props) {
   const count = items.length;
   const [selected, setSelected] = useState<{
     item: FeaturedWork;
     rect: DOMRect;
   } | null>(null);
+  const isMobile = useIsMobile();
 
   // Empty case (defensive — page already gates with an empty state).
   if (count === 0) return null;
@@ -81,29 +98,39 @@ export function WorkCarousel({ items }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      {count === 1 && (
-        <SingleCard
-          item={items[0]}
-          onOpen={handleOpen}
-          isLifted={items[0].slug === liftedSlug}
-        />
-      )}
-
-      {count === 2 && (
-        <PairLayout
+      {isMobile ? (
+        <MobileRail
           items={items}
           onOpen={handleOpen}
           liftedSlug={liftedSlug}
         />
-      )}
+      ) : (
+        <>
+          {count === 1 && (
+            <SingleCard
+              item={items[0]}
+              onOpen={handleOpen}
+              isLifted={items[0].slug === liftedSlug}
+            />
+          )}
 
-      {count >= 3 && (
-        <RingCarousel
-          items={items}
-          onOpen={handleOpen}
-          paused={selected !== null}
-          liftedSlug={liftedSlug}
-        />
+          {count === 2 && (
+            <PairLayout
+              items={items}
+              onOpen={handleOpen}
+              liftedSlug={liftedSlug}
+            />
+          )}
+
+          {count >= 3 && (
+            <RingCarousel
+              items={items}
+              onOpen={handleOpen}
+              paused={selected !== null}
+              liftedSlug={liftedSlug}
+            />
+          )}
+        </>
       )}
 
       <WorkModal
@@ -111,6 +138,58 @@ export function WorkCarousel({ items }: Props) {
         originRect={selected?.rect ?? null}
         onClose={handleClose}
       />
+    </div>
+  );
+}
+
+/* ---------------- Mobile rail ----------------
+   Native horizontal scroll-snap. Cards are 80vw with snap-center, so
+   the previous/next cards peek at the edges and a single-finger swipe
+   advances by exactly one card. Uses `touch-action: pan-x` so vertical
+   page scroll still wins on diagonal swipes. */
+
+function MobileRail({
+  items,
+  onOpen,
+  liftedSlug = null,
+}: {
+  items: FeaturedWork[];
+  onOpen: (item: FeaturedWork, rect: DOMRect) => void;
+  liftedSlug?: string | null;
+}) {
+  return (
+    <div
+      role="region"
+      aria-label="Selected work — swipe to explore"
+      className="relative -mx-6 overflow-x-auto flex gap-4 pb-3 touch-pan-x"
+      style={{
+        scrollSnapType: "x mandatory",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        WebkitOverflowScrolling: "touch",
+        // Inset padding so the first/last card can snap-center cleanly.
+        // 10vw + 6px aligns with main's px-6 page padding when the rail
+        // is broken out via -mx-6.
+        paddingInline: "calc(10vw + 6px)",
+      }}
+    >
+      {items.map((item) => (
+        <div
+          key={item.slug}
+          className="shrink-0"
+          style={{
+            width: "80vw",
+            maxWidth: 380,
+            scrollSnapAlign: "center",
+          }}
+        >
+          <WorkCard
+            item={item}
+            onOpen={onOpen}
+            isLifted={item.slug === liftedSlug}
+          />
+        </div>
+      ))}
     </div>
   );
 }

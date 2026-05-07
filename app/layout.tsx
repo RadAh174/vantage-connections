@@ -51,6 +51,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Don't disable user scaling — accessibility requires it. Browsers
+  // ignore `user-scalable=no` for SMB sites since 2023 anyway.
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F8F5EE" },
     { media: "(prefers-color-scheme: dark)", color: "#0E0E10" },

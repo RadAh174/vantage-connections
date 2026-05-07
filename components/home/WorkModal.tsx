@@ -229,7 +229,10 @@ export function WorkModal({ project, originRect, onClose }: Props) {
         className="relative flex flex-col shadow-[0_60px_120px_-40px_rgba(0,0,0,0.5)]"
         style={{
           width: "90vw",
-          height: "90vh",
+          // 90dvh keeps the close button reachable on iOS Safari when
+          // the URL bar is visible — `90vh` would push the button below
+          // the system chrome on first paint.
+          height: "90dvh",
           // Same stronger gradient + 3px padding as the carousel cards
           // so the modal looks like the card grew open with the same
           // frame — high-contrast dark→light gold band, deliberate width.
@@ -269,7 +272,7 @@ export function WorkModal({ project, originRect, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label="Close work preview"
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-forest/10 hover:border-forest/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-forest/10 hover:border-forest/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
             <svg
               width="14"

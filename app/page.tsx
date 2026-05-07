@@ -52,7 +52,17 @@ export default function HomePage() {
           return (
             <section className="relative min-h-[140dvh]">
               <HeroFader>
-                <div className="relative h-[100dvh] flex flex-col items-center justify-start pt-[27dvh] px-6 text-center">
+                <div
+                  className="relative h-[100dvh] flex flex-col items-center justify-start px-6 text-center"
+                  // pt clamps so landscape phones (where 100dvh ≈ 320px) don't
+                  // push the headline below the fold. Floor 56px keeps the
+                  // wordmark's safe-area-padding visible above; max 27dvh
+                  // preserves the desktop hero proportions.
+                  style={{
+                    paddingTop:
+                      "clamp(56px, 17dvh, calc(27dvh - env(safe-area-inset-top)))",
+                  }}
+                >
                   <h1
                     className="font-display text-headline"
                     style={{
@@ -282,7 +292,7 @@ export default function HomePage() {
         </section>
       </ContactDrawerMount>
 
-      {/* Footer temporarily removed — see note above where Header was. */}
+      <Footer />
     </>
   );
 }

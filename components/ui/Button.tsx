@@ -24,10 +24,13 @@ type AsLink = CommonProps & {
 
 type Props = AsButton | AsLink;
 
+// `min-h-[44px]` ensures every size variant clears the iOS HIG / Material
+// 44–48 dp tap-target floor. Without it `sm`/`md` fall under spec on
+// touch devices.
 const SIZE_MAP: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-[13px]",
-  md: "px-4 py-2.5 text-[14px]",
-  lg: "px-5 py-3 text-[15px]",
+  sm: "px-3 py-2 text-[13px] min-h-[40px]",
+  md: "px-4 py-2.5 text-[14px] min-h-[44px]",
+  lg: "px-5 py-3 text-[15px] min-h-[48px]",
 };
 
 const BASE =

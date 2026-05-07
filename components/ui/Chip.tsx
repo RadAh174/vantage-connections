@@ -53,8 +53,11 @@ type Props = SpanProps | ButtonProps;
 // fights ACTIVE/INACTIVE in the cascade. Tailwind orders classes by
 // generation, not by className-string order, so a `bg-surface` in BASE
 // can silently override `bg-forest` in ACTIVE if both are present.
+// `min-h-[40px]` keeps interactive chips (project-type selector etc.)
+// in the safe tap-target range on touch. Decorative span chips inherit
+// the same height for visual consistency.
 const BASE =
-  "inline-flex items-center gap-2 rounded-full px-3 py-1 " +
+  "inline-flex items-center gap-2 rounded-full px-3 py-2 min-h-[40px] " +
   "text-[12px] font-medium tracking-[-0.005em] border " +
   "transition-colors duration-200";
 

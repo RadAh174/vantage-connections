@@ -67,10 +67,16 @@ export function ProcessHorizontalScroll() {
     const track = trackRef.current;
     if (!parent || !pin || !track) return;
 
-    const reduced =
+    // Bail out of pin/scrub when reduced-motion is requested OR the
+    // viewport is mobile — the matching CSS media query collapses the
+    // layout to a vertical card stack, so any inline transform would
+    // fight that. Also the wheel→scrollBy redirect (below) does
+    // nothing on touch, so the pin pattern was unusable on phones.
+    const isMobileOrReduced =
       typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+      (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        window.matchMedia("(max-width: 767px)").matches);
+    if (isMobileOrReduced) {
       track.style.transform = "translate3d(0, 0, 0)";
       return;
     }

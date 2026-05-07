@@ -40,9 +40,15 @@ export function ContactDrawerMount({ children }: Props) {
       <div
         ref={runwayRef}
         className="relative"
-        style={{ height: "300vh" }}
+        // dvh keeps the pin runway honest as iOS Safari's URL bar
+        // collapses — vh would over-allocate by the URL-bar height
+        // and drift the openness math off by ~12% on iOS.
+        style={{ height: "300dvh" }}
       >
-        <div className="sticky top-0 h-screen w-full">
+        <div
+          className="sticky top-0 w-full"
+          style={{ height: "100dvh" }}
+        >
           <div className="absolute inset-x-0 bottom-0">{children}</div>
         </div>
       </div>
