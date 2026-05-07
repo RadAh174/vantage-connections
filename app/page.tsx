@@ -8,12 +8,12 @@ import { ColorWord } from "@/components/ui/ColorWord";
 import { Marginalia } from "@/components/ui/Marginalia";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { StatStrip } from "@/components/ui/StatStrip";
 import { RotatingWord } from "@/components/ui/RotatingWord";
 import { ProcessHorizontalScroll } from "@/components/home/ProcessHorizontalScroll";
 import { WorkCarousel } from "@/components/home/WorkCarousel";
 import { HeroFader } from "@/components/home/HeroFader";
 import { ContactDrawerMount } from "@/components/home/ContactDrawerMount";
+import { PullQuote } from "@/components/home/PullQuote";
 
 import { site } from "@/lib/content/site";
 import { home } from "@/lib/content/home";
@@ -116,47 +116,11 @@ export default function HomePage() {
           );
         })()}
 
-        {/* ---------------- Stats ---------------- */}
-        <section className="py-20">
-          <AuroraHairline />
-          <div className="pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-7">
-              {home.stats.length === 0 ? (
-                <div className="flex flex-col gap-3 max-w-md">
-                  <Eyebrow color="ink-muted">STATS · TODO</Eyebrow>
-                  <p className="text-ink-muted text-[15px] leading-relaxed font-mono">
-                    {/* TODO_STATS: fill home.ts > stats with real shipped /
-                        on-time / avg-ship-days numbers. Empty for now. */}
-                    Stats appear here once the first cohort ships. We do not
-                    publish numbers we cannot back up.
-                  </p>
-                </div>
-              ) : (
-                <Reveal>
-                  <StatStrip items={home.stats} />
-                </Reveal>
-              )}
-            </div>
-            <div className="lg:col-span-5">
-              <Reveal>
-                <p className="text-[18px] leading-[1.55] text-ink">
-                  {home.mission.body
-                    .split(home.mission.emphasis)
-                    .map((part, i, arr) => (
-                      <span key={i}>
-                        {part}
-                        {i < arr.length - 1 && (
-                          <ColorWord italic={false}>
-                            {home.mission.emphasis}
-                          </ColorWord>
-                        )}
-                      </span>
-                    ))}
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
+        {/* ---------------- Pull quote ----------------
+            Extracted to a client component so it can modulate the
+            global Lenis wheelMultiplier as the user scrolls near it
+            (slow approach, normal speed once past). See PullQuote.tsx. */}
+        <PullQuote />
 
         {/* ---------------- Selected Work teaser ---------------- */}
         <section className="py-20">
@@ -257,92 +221,16 @@ export default function HomePage() {
           </Link>
         </section>
 
-        {/* ---------------- Pricing teaser ---------------- */}
-        <section className="py-20">
-          <AuroraHairline />
-          <div className="pt-14 flex flex-col gap-8">
-            <Reveal className="flex flex-col gap-3 max-w-2xl">
-              <Eyebrow color="forest">PRICING</Eyebrow>
-              <h2
-                className="font-display"
-                style={{
-                  fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
-                  fontWeight: 600,
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.015em",
-                }}
-              >
-                Simple <ColorWord>pricing</ColorWord>. Honest scope.
-              </h2>
-            </Reveal>
+      </main>
 
-            {home.pricingTiers.length === 0 ? (
-              <Reveal>
-                <div className="rounded-xl border border-line bg-surface-calm px-8 py-10 max-w-2xl flex flex-col gap-3">
-                  <Eyebrow color="ink-muted">TIERS · TODO</Eyebrow>
-                  <p className="text-ink text-[16px]">
-                    Pricing details available on request.
-                  </p>
-                  <p className="text-ink-muted text-[13px] font-mono">
-                    {/* TODO_PRICING_TIERS: fill home.ts > pricingTiers with
-                        real Starter / Standard / Bespoke ranges. */}
-                    We don&apos;t publish numbers we&apos;re not ready to honor.
-                  </p>
-                  <Button href="/contact" variant="secondary" size="md">
-                    Ask about pricing
-                  </Button>
-                </div>
-              </Reveal>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {home.pricingTiers.map((t) => (
-                  <article
-                    key={t.name}
-                    className={`rounded-xl p-6 flex flex-col gap-4 border ${
-                      t.highlighted
-                        ? "bg-surface text-ink border-transparent shadow-[0_0_0_1.5px_var(--color-gold)]"
-                        : "bg-surface text-ink border-line"
-                    }`}
-                  >
-                    <h3
-                      className="font-display text-[24px]"
-                      style={{ fontWeight: 500 }}
-                    >
-                      {t.name}
-                    </h3>
-                    <span className="font-mono text-[13px] opacity-80">
-                      {t.range}
-                    </span>
-                    <ul className="text-[14px] flex flex-col gap-1.5 opacity-90">
-                      {t.features.map((f) => (
-                        <li key={f}>— {f}</li>
-                      ))}
-                    </ul>
-                    <div className="mt-auto">
-                      <Button
-                        href={t.ctaHref ?? "/contact"}
-                        variant={t.highlighted ? "secondary" : "primary"}
-                        size="md"
-                      >
-                        {t.ctaLabel ?? "Start a project"}
-                      </Button>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-
-            <Link
-              href="/pricing"
-              className="text-forest text-[14px] inline-flex items-center gap-1.5 self-start border-b border-current pb-0.5"
-            >
-              See full pricing →
-            </Link>
-          </div>
-        </section>
-
-        {/* ---------------- Closing CTA ---------------- */}
-        <section className="py-24">
+      {/* ---------------- Closing CTA + scroll-driven contact drawer ----
+          Pin-and-scrub: the closing CTA is wrapped in ContactDrawerMount,
+          which pins it to viewport bottom while the user scrolls through
+          a 100vh runway. Over that runway, the drawer (85vw, rounded
+          top, centered) rises up from below — closing CTA stays visible
+          as a frame around it instead of scrolling away. */}
+      <ContactDrawerMount>
+        <section className="mx-auto max-w-[1320px] px-6 md:px-10 pt-32 pb-56">
           <AuroraHairline />
           <Reveal className="pt-16 flex flex-col gap-7 items-start">
             <h2
@@ -392,16 +280,7 @@ export default function HomePage() {
             </p>
           </Reveal>
         </section>
-      </main>
-
-      {/* ---------------- Scroll-driven contact drawer ----------------
-          Renders a 120vh scroll sentinel + a fixed-positioned drawer
-          that progressively reveals from the bottom as the user scrolls
-          past the closing CTA. The drawer's height is scrubbed from 0
-          → 100vh across the first 85% of the zone, then dwells at full
-          height for the last 15% (snap region). Reverses cleanly on
-          scroll-up. See ContactDrawer.tsx for the math + a11y notes. */}
-      <ContactDrawerMount />
+      </ContactDrawerMount>
 
       {/* Footer temporarily removed — see note above where Header was. */}
     </>

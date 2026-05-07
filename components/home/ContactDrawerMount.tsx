@@ -1,48 +1,53 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { ContactDrawer } from "@/components/home/ContactDrawer";
 
 /**
- * Client-side mount point for the ContactDrawer + its scroll zone.
+ * Pin-and-scrub mount for the ContactDrawer.
  *
- * Renders two things:
- *   1. A 120vh sentinel `<div>` that creates the scroll runway the
- *      drawer reads. Its document-coord top + height define when the
- *      drawer starts opening (rawT=0 at zone top, rawT=1 at zone end).
- *      102vh of that is the scrub region (0–0.85 normalized) and the
- *      remaining 18vh is the snap-dwell region.
- *   2. The drawer itself, fixed-positioned, reading scrollY against
- *      that sentinel via a ref.
+ * Wraps the closing CTA section as `children`. Renders a 200vh outer
+ * container with an inner sticky-top-0 100vh viewport. The children
+ * (closing section) are anchored to the inner viewport's bottom, so:
  *
- * The two are co-rendered here so the zone ref never has to cross the
- * client/server boundary — we keep app/page.tsx as a server component.
+ *   1. As the user scrolls, the inner sticky enters from below in
+ *      normal flow — the closing section comes into view from the
+ *      bottom edge of the viewport.
+ *   2. When the inner sticky's top reaches the viewport top, the
+ *      closing section is now positioned exactly at viewport bottom.
+ *      Sticky pinning kicks in.
+ *   3. For the next 100vh of scroll (the pin runway), the closing
+ *      section stays pinned at viewport bottom while the drawer rises
+ *      up over it. The drawer is 85vw wide with rounded top corners,
+ *      so the closing section remains visible as a frame around it.
+ *   4. After the runway, the inner sticky unpins and scrolls out.
  *
- * The sentinel renders inline where this component is dropped (so it
- * adds 120vh of page height after the closing CTA). The drawer is
- * fixed-positioned, so its position in the JSX tree doesn't matter
- * for layout — only for stacking / portal-style rendering. We render
- * it inside this same wrapper for simplicity; z-index 40 keeps it
- * below the header (z-50) and above page content.
+ * The drawer reads the outer runway via `zoneRef` and computes its
+ * openness against the pin runway (zoneHeight - viewport), so 0%
+ * happens exactly when pinning begins and 100% at the end of the
+ * runway.
  */
-export function ContactDrawerMount() {
-  const zoneRef = useRef<HTMLDivElement>(null);
+
+type Props = {
+  children: ReactNode;
+};
+
+export function ContactDrawerMount({ children }: Props) {
+  const runwayRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
-      {/* Scroll-runway sentinel — 120vh of empty page below the closing
-          CTA. Drawer height scrubs from 0 → 100vh across the first 85%
-          (102vh) and dwells at 100vh for the last 15% (18vh) so the
-          fully-open form has a moment to "settle" before the user
-          either keeps scrolling (no further visual change) or scrolls
-          back up to dismiss. */}
       <div
-        ref={zoneRef}
-        aria-hidden="true"
-        className="h-[120vh] w-full"
-      />
+        ref={runwayRef}
+        className="relative"
+        style={{ height: "300vh" }}
+      >
+        <div className="sticky top-0 h-screen w-full">
+          <div className="absolute inset-x-0 bottom-0">{children}</div>
+        </div>
+      </div>
 
-      <ContactDrawer zoneRef={zoneRef} />
+      <ContactDrawer zoneRef={runwayRef} />
     </>
   );
 }

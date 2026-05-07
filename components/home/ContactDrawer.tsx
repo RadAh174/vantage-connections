@@ -63,6 +63,19 @@ type Props = {
   zoneRef: RefObject<HTMLDivElement | null>;
 };
 
+// Header reservation — drawer top sits just below the header so it
+// snaps "up to the header, not over it." Tune this if the header
+// height changes.
+const HEADER_RESERVE_PX = 88;
+
+// Two-phase animation:
+//   0 → SLIDE_END  — slide-up (drawer rises from below the viewport)
+//   SLIDE_END → 1.0 — dwell (drawer holds at rest; further scroll is
+//                    absorbed without visual change)
+// The slide completing IS the "snap" — no separate width-expansion
+// phase, no easing tail.
+const SLIDE_END = 0.35;
+
 export function ContactDrawer({ zoneRef }: Props) {
   // --- Scroll-driven openness (0 → 1) -------------------------------
   const [openness, setOpenness] = useState(0);
@@ -80,31 +93,28 @@ export function ContactDrawer({ zoneRef }: Props) {
     const update = () => {
       raf = 0;
       const rect = zone.getBoundingClientRect();
-      // zoneTop in document coords:
       const zoneTop = rect.top + window.scrollY;
       const zoneHeight = zone.offsetHeight || 1;
       const viewport = window.innerHeight;
 
-      // Scroll progress through the zone, measured from "zone first
-      // enters the viewport bottom" (rawT = 0) to "max scroll, zone
-      // bottom at viewport bottom" (rawT = 1). This matches the
-      // *available* scroll distance through the zone — using just
-      // (scrollY - zoneTop) / zoneHeight caps out around `1 -
-      // viewport/zoneHeight` ≈ 0.17 because you can only scroll INTO
-      // the zone by `zoneHeight - viewport`.
-      const rawT = (window.scrollY - zoneTop + viewport) / zoneHeight;
+      // Pin-and-scrub progress through the runway (= zoneHeight -
+      // viewport). 0 = pin begins (closing CTA just hit viewport
+      // bottom), 1 = pin ends.
+      const runway = Math.max(1, zoneHeight - viewport);
+      const rawT = (window.scrollY - zoneTop) / runway;
       const clamped = Math.max(0, Math.min(1, rawT));
 
-      let next: number;
+      let nextOpen: number;
       if (reduced) {
-        // Binary: closed until zone end, then snap open.
-        next = clamped >= 1 ? 1 : 0;
+        nextOpen = clamped >= 1 ? 1 : 0;
+      } else if (clamped < SLIDE_END) {
+        nextOpen = clamped / SLIDE_END;
       } else {
-        // Scrub 0–0.85 → 0–1; hold 0.85–1 at 1 (the snap dwell region).
-        const SNAP = 0.85;
-        next = clamped < SNAP ? clamped / SNAP : 1;
+        nextOpen = 1;
       }
-      setOpenness((prev) => (Math.abs(prev - next) < 0.001 ? prev : next));
+      setOpenness((prev) =>
+        Math.abs(prev - nextOpen) < 0.001 ? prev : nextOpen,
+      );
     };
 
     const onScroll = () => {
@@ -167,41 +177,57 @@ export function ContactDrawer({ zoneRef }: Props) {
   const hintVisible = openness >= 0.9;
 
   return (
-    // Slide-up drawer. The outer wrapper is ALWAYS 100vh tall and
-    // position-fixed to cover the full viewport. We translate it down by
-    // `(1 - openness) * 100%` so at openness 0 it sits entirely below
-    // the viewport, and at openness 1 it covers the screen. Sliding the
-    // whole sheet keeps the form fixed inside it (no fade-in / no
-    // crop-from-top).
+    // Two-phase drawer:
+    //   1. Slide phase (openness 0 → 1) — drawer rises from below the
+    //      viewport to its resting position just under the header.
+    //   2. Snap phase (snapness 0 → 1) — drawer holds open while width
+    //      expands from 85vw to 100vw. The snap is the magnetic
+    //      "settle" moment.
     //
-    // z-[60] sits ABOVE the sticky header (z-50) so the drawer covers
-    // it when fully open — that's the "snaps full to the top and
-    // sides" behavior the user asked for.
+    // The drawer never covers the header: height = 100vh -
+    // HEADER_RESERVE_PX, anchored to bottom-0, so its top edge lands
+    // just below the header at full openness.
+    //
+    // Gold gradient border all-around via the standard
+    // gradient-border-with-radius trick: bg has two layers — gradient
+    // on border-box, dark fill on padding-box — combined with a
+    // transparent solid border. Border-radius applies to all four
+    // corners.
+    //
+    // z-40 keeps the drawer below the sticky header (z-50) so the
+    // header always paints on top, even if the drawer's geometry
+    // overlaps via shadow.
     <div
       aria-hidden={isClosed ? true : undefined}
       inert={isClosed}
-      className="fixed inset-x-0 bottom-0 h-[100vh] z-[60] flex flex-col"
+      className="fixed bottom-0 left-1/2 z-40 flex flex-col"
       style={{
-        transform: `translate3d(0, ${(1 - openness) * 100}%, 0)`,
+        height: `calc(100vh - ${HEADER_RESERVE_PX}px)`,
+        width: "85vw",
+        maxWidth: "1400px",
+        transform: `translate3d(-50%, ${(1 - openness) * 100}%, 0)`,
+        // Gradient-border-with-radius trick. Both layers MUST be
+        // <bg-image> (a bare color isn't valid in the shorthand) — so
+        // the dark fill is wrapped as a same-color linear-gradient.
+        // Order: padding-box layer first = top, covers interior; the
+        // border-box gradient underneath shows only in the 2px border
+        // ring.
+        background:
+          "linear-gradient(var(--color-bg), var(--color-bg)) padding-box, " +
+          "linear-gradient(135deg, #8B6914 0%, #D4A12A 25%, #FFE49A 50%, #FADC85 60%, #D4A12A 80%, #8B6914 100%) border-box",
+        border: "2px solid transparent",
+        // Only round the top corners — the drawer is anchored at
+        // viewport bottom, so rounded bottom corners would clip into
+        // the viewport edge and look like cut-off curves.
+        borderRadius: "40px 40px 0 0",
+        overflow: "hidden",
+        boxShadow: "0 -24px 60px -20px rgba(0,0,0,0.55)",
         pointerEvents: isClosed ? "none" : "auto",
         willChange: "transform",
       }}
     >
-      {/* Gold gradient top border — signature treatment, matches the
-          carousel cards' outer ring. Lives as the first flex child so
-          it never gets covered by the body that follows. Bumped to 2px
-          for visibility. */}
-      <div
-        aria-hidden="true"
-        className="h-[2px] shrink-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(90deg, #8B6914 0%, #D4A12A 30%, #FFE49A 50%, #D4A12A 70%, #8B6914 100%)",
-        }}
-      />
-
-      {/* Drawer body — solid bg-bg covers everything behind. */}
-      <div className="relative flex-1 bg-bg overflow-hidden">
+      {/* Drawer body — fills the space inside the gradient border. */}
+      <div className="relative flex-1">
         {/* Top hint — "scroll up to dismiss". Pinned to drawer top, fades
             in only when the drawer is essentially fully open. */}
         <div
@@ -214,12 +240,12 @@ export function ContactDrawer({ zoneRef }: Props) {
           </span>
         </div>
 
-        {/* Centred form column — always at full opacity since the drawer
-            slides as a unit. */}
+        {/* Form column — top-aligned with generous top padding so the
+            heading breathes from the drawer's top edge. */}
         <div
-          className="absolute inset-0 flex items-center justify-center px-6 md:px-10"
+          className="absolute inset-0 flex items-start justify-center px-6 md:px-10 pt-24 pb-12"
         >
-          <div className="w-full max-w-[560px] flex flex-col gap-7 py-12">
+          <div className="w-full max-w-[560px] flex flex-col gap-7">
             <div className="flex flex-col gap-4">
               <Eyebrow color="forest">CONTACT · 24H REPLY</Eyebrow>
               <h2

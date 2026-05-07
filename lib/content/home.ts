@@ -6,15 +6,6 @@
 
 import type { ReactNode } from "react";
 
-export type Stat = {
-  num: number;
-  label: string;
-  /** Accent dot color. Forest+Gold palette only. */
-  dotColor?: "forest" | "gold";
-  /** Display suffix on the number (e.g. "%", "d"). */
-  suffix?: string;
-};
-
 export type FeaturedWork = {
   slug: string;
   client: string;
@@ -49,9 +40,6 @@ export const hero = {
   },
   scrollCue: "scroll to see what we build",
 };
-
-// TODO_STATS: user fills with real numbers. Empty array → StatStrip renders nothing.
-export const stats: Stat[] = [];
 
 export const mission = {
   // Generic, truthful framing. The emphasis word renders as gold-gradient text.
@@ -193,7 +181,6 @@ export const closing = {
 
 export type HomeContent = {
   hero: typeof hero;
-  stats: Stat[];
   mission: typeof mission;
   featuredWork: FeaturedWork[];
   phases: Phase[];
@@ -203,7 +190,6 @@ export type HomeContent = {
 
 export const home: HomeContent = {
   hero,
-  stats,
   mission,
   featuredWork,
   phases,

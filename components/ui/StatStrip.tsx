@@ -34,6 +34,8 @@ export type StatItem = {
   dotColor?: DotColor;
   /** Display suffix on the number, e.g. "%", "d". */
   suffix?: string;
+  /** Citation for industry-stat usage, e.g. "Google" or "Stanford". */
+  source?: string;
 };
 
 type Props = {
@@ -132,6 +134,11 @@ export function StatStrip({ items, className = "" }: Props) {
           <span className="font-mono text-[12px] uppercase tracking-[0.14em] text-ink-muted">
             {s.label}
           </span>
+          {s.source && (
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted/60">
+              source · {s.source}
+            </span>
+          )}
         </div>
       ))}
     </div>
