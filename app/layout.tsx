@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { site } from "@/lib/content/site";
 import { RouteFade } from "@/components/layout/RouteFade";
@@ -97,6 +98,7 @@ export default function RootLayout({
         <SmoothScroll />
         <AtmosphericBackground />
         <RouteFade>{children}</RouteFade>
+        <Analytics />
       </body>
     </html>
   );

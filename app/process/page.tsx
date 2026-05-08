@@ -5,10 +5,10 @@ import { AuroraHairline } from "@/components/ui/AuroraHairline";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
 import { ColorWord } from "@/components/ui/ColorWord";
-import { Marginalia } from "@/components/ui/Marginalia";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { ConnectionLine } from "@/components/process/ConnectionLine";
+import { TimelineCard } from "@/components/process/TimelineCard";
 
 import { phaseDetails } from "@/lib/content/process";
 
@@ -102,8 +102,7 @@ export default function ProcessPage() {
               animationDelay: `${(totalHeroWords + 1) * HERO_STEP_MS}ms`,
             }}
           >
-            Four phases. Honest scope, honest timeline, no surprises. Every
-            project moves through the same shape — only the prose changes.
+            Four phases. Honest scope, honest timeline, no surprises.
           </p>
         </section>
 
@@ -205,15 +204,6 @@ export default function ProcessPage() {
                     </ol>
                   </Reveal>
 
-                  {phase.marginalia.length > 0 && (
-                    <Reveal delay={240}>
-                      <div className="flex flex-col gap-2 mt-4 max-w-md">
-                        {phase.marginalia.map((m) => (
-                          <Marginalia key={m}>— {m}</Marginalia>
-                        ))}
-                      </div>
-                    </Reveal>
-                  )}
                 </div>
               </section>
 
@@ -250,24 +240,41 @@ export default function ProcessPage() {
           </Reveal>
 
           <Reveal>
-            <div className="mt-12 rounded-xl border border-line bg-surface-calm px-6 py-8 overflow-x-auto">
-              <pre
-                className="font-mono text-[13px] leading-[1.7] text-ink"
-                style={{ whiteSpace: "pre", margin: 0 }}
-              >
-{`╔══════════╤══════════╤══════════╤══════════╗
-║  WEEK 1  │  WEEK 2  │  WEEK 3  │  WEEK 4  ║
-╠══════════╪══════════╪══════════╪══════════╣
-║ DISCOVER │  DESIGN  │  BUILD   │  LAUNCH  ║
-║          │          │          │          ║
-║ scope    │ system   │ pages    │ migrate  ║
-║ audit    │ hero     │ a11y     │ monitor  ║
-║ doc      │ tokens   │ vitals   │ handover ║
-╚══════════╧══════════╧══════════╧══════════╝
-   ▲          ▲          ▲          ▲
-   │          │          │          │
-  kick      review     review      ship`}
-              </pre>
+            {/* 4 floating cards at staggered top offsets (lg+) so each
+                sits at its own vertical position. Bottom-only gold
+                drop shadow under each. Hover bobs the card up and
+                down slowly via JS; mouse-leave smoothly glides back
+                to rest over 700ms. See TimelineCard for the
+                animation logic. */}
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 lg:gap-7 items-start lg:pb-20">
+              <TimelineCard
+                num="1"
+                phase="Discover"
+                milestone="Kickoff"
+                tasks={["Scope", "Audit", "Documentation"]}
+                staggerClass="lg:mt-0"
+              />
+              <TimelineCard
+                num="2"
+                phase="Design"
+                milestone="Review"
+                tasks={["System", "Hero", "Tokens"]}
+                staggerClass="lg:mt-12"
+              />
+              <TimelineCard
+                num="3"
+                phase="Build"
+                milestone="Polish"
+                tasks={["Pages", "Accessibility", "Vitals"]}
+                staggerClass="lg:mt-4"
+              />
+              <TimelineCard
+                num="4"
+                phase="Launch"
+                milestone="Ship"
+                tasks={["Migrate", "Monitor", "Handover"]}
+                staggerClass="lg:mt-16"
+              />
             </div>
           </Reveal>
         </section>

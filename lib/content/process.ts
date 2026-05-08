@@ -57,7 +57,7 @@ export const phaseDetails: PhaseDetail[] = [
     ...homePhases[2],
     steps: [
       { title: "Production stack.", body: "Same one the site will live on." },
-      { title: "Performance + a11y.", body: "Baked in, not bolted on." },
+      { title: "Performance + SEO.", body: "Baked in, not bolted on." },
       { title: "Real-device tested.", body: "Phones, not just devtools." },
     ],
     marginalia: [
