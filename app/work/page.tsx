@@ -149,8 +149,14 @@ function CollageCard({
   onOpen: (project: FeaturedProject, rect: DOMRect) => void;
 }) {
   const liveUrl = project.metadata.liveUrl;
+  // mShots `w`/`h` are output dimensions, NOT capture viewport — without
+  // explicit `vpw`/`vph`, mShots' default viewport can be served the
+  // site's mobile breakpoint when its UA gets sniffed mobile, producing
+  // a phone-shaped thumbnail. Forcing `vpw=1440&vph=900` makes mShots
+  // render the page at desktop width every time, then output at our
+  // requested 2000×1250.
   const screenshotUrl = liveUrl
-    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?w=2000&h=1250`
+    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?w=2000&h=1250&vpw=1440&vph=900`
     : null;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -183,16 +189,22 @@ function CollageCard({
           </div>
         )}
 
+        {/* Caption + scrim are desktop-only. On mobile each tile is
+            small enough that an overlay buries the screenshot — the
+            actual artifact the user came to see — so we hide both
+            below the md breakpoint and let the thumbnail speak for
+            itself. The client name + project title still surface in
+            the modal that opens on tap. */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none"
+          className="hidden md:block absolute inset-x-0 bottom-0 h-2/5 pointer-events-none"
           style={{
             background:
               "linear-gradient(to top, rgba(6,10,8,0.92) 0%, rgba(6,10,8,0.6) 45%, rgba(6,10,8,0) 100%)",
           }}
         />
 
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 lg:p-6 flex flex-col gap-1.5">
+        <div className="hidden md:flex absolute inset-x-0 bottom-0 p-4 md:p-5 lg:p-6 flex-col gap-1.5">
           <span className="font-mono text-[10px] lg:text-[11px] uppercase tracking-[0.2em] text-white/65">
             {project.client}
             {project.metadata.year ? ` · ${project.metadata.year}` : ""}

@@ -731,9 +731,14 @@ function WorkCard({
   // interactive view; the carousel just needs a faithful preview image.
   // mShots lazily generates + caches; first visit may show a placeholder
   // for ~1 frame while the screenshot is being captured.
+  // mShots `w`/`h` are output dimensions, not capture viewport. Pass
+  // `vpw`/`vph` explicitly so the page is always rendered at desktop
+  // width before screenshotting — otherwise mShots' default viewport
+  // can serve a site's mobile breakpoint and produce a phone-shaped
+  // thumbnail (Black Diamond did this on bare `w`/`h`).
   const screenshotUrl = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(
     item.liveUrl,
-  )}?w=1440&h=900`;
+  )}?w=1440&h=900&vpw=1440&vph=900`;
 
   const handleClick = () => {
     if (!cardRef.current) return;
