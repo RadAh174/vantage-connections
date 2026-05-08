@@ -24,7 +24,7 @@ export type LeadPayload = {
   budget?: string;
   message: string;
   /** Which surface the lead originated from — useful for triage. */
-  source: "contact-page" | "home-drawer";
+  source: "contact-page" | "home-drawer" | "home-mobile-inline";
 };
 
 export type LeadResult = { ok: true } | { ok: false; error: string };

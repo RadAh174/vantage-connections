@@ -48,11 +48,18 @@ export function RotatingWord({ words, interval = 4000, className = "" }: Props) 
 
   const current = words[idx] ?? "";
 
+  // Slot width is the longest word × an em multiplier. Capped at
+  // `50vw` on small viewports so the rotating-word slot can't blow
+  // out the parent line on a 375px screen — at clamp's font floor
+  // the prior 3.3em was wider than the available space and made the
+  // headline overflow the right edge.
+  const slotEm = Math.max(...words.map((w) => w.length)) * 0.55;
+
   return (
     <span
       className={`relative inline-block align-baseline ${className}`}
       style={{
-        minWidth: `${Math.max(...words.map((w) => w.length)) * 0.55}em`,
+        minWidth: `min(${slotEm}em, 50vw)`,
         // Left-align the rotating word inside its reserved width so the
         // content "anchors" on the left edge instead of centering within
         // the slot. Otherwise text-align inherits from the headline

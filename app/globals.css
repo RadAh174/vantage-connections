@@ -113,7 +113,12 @@ html {
   /* Clip horizontal overflow so off-screen carousel cards (R=1200 puts
      side items past the viewport edge) don't introduce a horizontal
      scrollbar. `clip` is preferable to `hidden` because it doesn't
-     create a containing block for fixed/sticky descendants. */
+     create a containing block for fixed/sticky descendants — but
+     iOS Safari pre-16 ignores `clip` and falls back to `visible`,
+     re-allowing horizontal scroll. Declaring `hidden` first gives
+     those browsers a working fallback; modern browsers override
+     with `clip`. */
+  overflow-x: hidden;
   overflow-x: clip;
 }
 
@@ -128,7 +133,8 @@ body {
      and falls back to allowing horizontal scroll; pairing with body
      keeps misbehaving full-bleed children (calc rounding, scrollbar
      off-by-one, viewport unit quirks) from leaking a horizontal scroll
-     bar across browsers. */
+     bar across browsers. iOS pre-16 fallback as on html. */
+  overflow-x: hidden;
   overflow-x: clip;
   /* Body must be transparent so the absolutely-positioned
      AtmosphericBackground (a body-sized layer that scrolls with content)
@@ -137,6 +143,19 @@ body {
      height). */
   position: relative;
   background-color: transparent;
+}
+
+@media (max-width: 767px) {
+  /* Mobile-only: clip horizontal overflow at the <main> level so
+     ANY runaway descendant (full-bleed section using width: 100vw,
+     a 3D-transformed element, a stale measurement) can't push the
+     page wider than the viewport. Desktop is unaffected — full-bleed
+     sections (PullQuote, ProcessHorizontalScroll) intentionally
+     break past main's max-width and need overflow-x: visible. */
+  main {
+    overflow-x: clip;
+    min-width: 0;
+  }
 }
 
 ::selection {

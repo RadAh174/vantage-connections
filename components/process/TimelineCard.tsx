@@ -80,14 +80,16 @@ export function TimelineCard({
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`relative flex flex-col gap-5 rounded-2xl border border-line/60 bg-surface-calm p-6 md:p-7 lg:p-8 will-change-transform ${staggerClass}`}
+      className={`relative flex flex-col gap-3.5 md:gap-5 rounded-xl md:rounded-2xl border border-line/60 bg-surface-calm p-5 md:p-7 lg:p-8 will-change-transform ${staggerClass}`}
       style={{
         // Gold drop-shadow positioned below the card. The negative
-        // spread (-25px) is bigger than the blur (25px), so the
-        // shadow's horizontal extent is contained within the card's
-        // width and only shows below — no halo on the sides.
+        // spread is bigger than the blur, so the shadow's horizontal
+        // extent is contained within the card's width and only shows
+        // below — no side halo, no edge bleed past the viewport.
+        // Smaller offsets on mobile so cards don't push around in a
+        // tight viewport.
         boxShadow:
-          "0 32px 25px -25px rgba(212,158,15,0.55), 0 6px 14px -10px rgba(0,0,0,0.18)",
+          "0 24px 22px -22px rgba(212,158,15,0.5), 0 4px 10px -8px rgba(0,0,0,0.15)",
         // Transition only when NOT hovered — during hover the JS
         // RAF writes new transforms each frame and we don't want the
         // transition to interpolate between them (would damp the bob).
@@ -115,7 +117,7 @@ export function TimelineCard({
       <h3
         className="font-display text-ink leading-tight"
         style={{
-          fontSize: "clamp(1.5rem, 2vw, 1.75rem)",
+          fontSize: "clamp(1.25rem, 2vw, 1.75rem)",
           fontWeight: 500,
           letterSpacing: "-0.012em",
         }}
@@ -137,7 +139,7 @@ export function TimelineCard({
       </ul>
 
       {/* Milestone bar */}
-      <div className="mt-auto pt-5 flex items-center gap-2.5 border-t border-line/60">
+      <div className="mt-auto pt-4 md:pt-5 flex items-center gap-2.5 border-t border-line/60">
         <span
           aria-hidden="true"
           className="block h-1.5 w-1.5 rounded-full bg-forest shrink-0"

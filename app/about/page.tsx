@@ -104,45 +104,51 @@ export default function AboutPage() {
 
         <AuroraHairline />
 
-        {/* ---------------- Bio + portrait ---------------- */}
+        {/* ---------------- Bio ----------------
+            Editorial wide-bio layout. No portrait — we don't ship
+            individual photos. Eyebrow + marginalia anchor the left
+            column; the bio body lives on the right with generous
+            measure. Empty state is a typographic statement, not a
+            wireframe TODO card. */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 pt-20 pb-24">
-          <div className="lg:col-span-5">
-            <Reveal>
-              <PortraitPlaceholder />
-            </Reveal>
-          </div>
-          <div className="lg:col-span-7 flex flex-col gap-6">
-            <Reveal className="flex items-end justify-between flex-wrap gap-5">
+          <div className="lg:col-span-4">
+            <Reveal className="flex flex-col gap-4 lg:sticky lg:top-28">
               <Eyebrow color="forest">WHO WE ARE</Eyebrow>
               <Marginalia>we don&apos;t take every project</Marginalia>
             </Reveal>
+          </div>
+          <div className="lg:col-span-8">
             {about.bio ? (
-              <Reveal delay={80}>
+              <Reveal>
                 <div
-                  className="text-ink text-[18px] leading-[1.7] max-w-[640px]"
+                  className="text-ink text-[19px] leading-[1.75] max-w-[640px]"
                   style={{ whiteSpace: "pre-line" }}
                 >
                   {about.bio}
                 </div>
               </Reveal>
             ) : (
-              <Reveal delay={80}>
-                <div className="rounded-xl border border-line bg-surface-calm px-8 py-10 max-w-2xl flex flex-col gap-4 items-start">
-                  <Eyebrow color="ink-muted">BIO · TODO</Eyebrow>
-                  <p
-                    className="font-display text-[24px] leading-tight text-ink"
-                    style={{ fontWeight: 500 }}
-                  >
-                    Bio coming soon.
-                  </p>
-                  <p className="font-mono text-[13px] text-ink-muted">
-                    {/* TODO_BIO: fill lib/content/about.ts > bio with the real bio. */}
-                    We don&apos;t ship invented founder copy. Real story only.
-                  </p>
-                  <Button href="/contact" variant="secondary" size="md">
-                    Talk to us instead
-                  </Button>
-                </div>
+              <Reveal className="flex flex-col gap-5 max-w-[640px]">
+                <p
+                  className="font-display italic text-ink leading-[1.1]"
+                  style={{
+                    fontWeight: 500,
+                    fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                    letterSpacing: "-0.012em",
+                  }}
+                >
+                  Real story coming with launch.
+                </p>
+                <p className="text-ink-muted text-[16px] leading-relaxed">
+                  We don&apos;t ship invented founder copy. The full studio
+                  story lands when we do.
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                >
+                  Talk to us instead →
+                </Link>
               </Reveal>
             )}
           </div>
@@ -186,29 +192,31 @@ export default function AboutPage() {
               </Reveal>
             ) : (
               <Reveal>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-5xl">
                   <div className="lg:col-span-4">
                     <Eyebrow color="forest">MISSION</Eyebrow>
                   </div>
-                  <div className="lg:col-span-8 flex flex-col gap-4 items-start">
-                    <div className="rounded-xl border border-line bg-surface-calm px-8 py-10 flex flex-col gap-4 items-start max-w-2xl">
-                      <Eyebrow color="ink-muted">MISSION · TODO</Eyebrow>
-                      <p
-                        className="font-display text-[24px] leading-tight text-ink"
-                        style={{ fontWeight: 500 }}
-                      >
-                        Mission coming soon — written for the May 2026
-                        launch.
-                      </p>
-                      <p className="font-mono text-[13px] text-ink-muted">
-                        {/* TODO_MISSION: fill lib/content/about.ts > mission
-                            with the real mission statement. */}
-                        No invented mission text.
-                      </p>
-                      <Button href="/process" variant="secondary" size="md">
-                        Read the process
-                      </Button>
-                    </div>
+                  <div className="lg:col-span-8 flex flex-col gap-5">
+                    <p
+                      className="font-display italic text-ink leading-[1.1]"
+                      style={{
+                        fontWeight: 500,
+                        fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                        letterSpacing: "-0.012em",
+                      }}
+                    >
+                      Mission statement coming with launch.
+                    </p>
+                    <p className="text-ink-muted text-[16px] leading-relaxed max-w-[560px]">
+                      No invented mission text. The position we hold lands
+                      when the studio opens.
+                    </p>
+                    <Link
+                      href="/process"
+                      className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                    >
+                      Read the process →
+                    </Link>
                   </div>
                 </div>
               </Reveal>
@@ -238,25 +246,27 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-8">
               {about.values.length === 0 ? (
-                <Reveal>
-                  <div className="rounded-xl border border-line bg-surface-calm px-8 py-10 max-w-xl flex flex-col gap-4 items-start">
-                    <Eyebrow color="ink-muted">VALUES · TODO</Eyebrow>
-                    <p
-                      className="font-display text-[24px] leading-tight text-ink"
-                      style={{ fontWeight: 500 }}
-                    >
-                      Values coming with launch.
-                    </p>
-                    <p className="font-mono text-[13px] text-ink-muted">
-                      {/* TODO_VALUES: fill lib/content/about.ts > values with
-                          3–5 real values. */}
-                      No filler principles. We&apos;ll publish the real list
-                      when the studio opens.
-                    </p>
-                    <Button href="/contact" variant="secondary" size="md">
-                      Get in touch
-                    </Button>
-                  </div>
+                <Reveal className="flex flex-col gap-5 max-w-[640px]">
+                  <p
+                    className="font-display italic text-ink leading-[1.1]"
+                    style={{
+                      fontWeight: 500,
+                      fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                      letterSpacing: "-0.012em",
+                    }}
+                  >
+                    The list lands with launch.
+                  </p>
+                  <p className="text-ink-muted text-[16px] leading-relaxed">
+                    No filler principles. We&apos;ll publish the values that
+                    actually shape the work when the studio opens.
+                  </p>
+                  <Link
+                    href="/contact"
+                    className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                  >
+                    Get in touch →
+                  </Link>
                 </Reveal>
               ) : (
                 <ol className="flex flex-col">
@@ -417,43 +427,3 @@ export default function AboutPage() {
   );
 }
 
-/**
- * Honest portrait placeholder. Clearly a placeholder, not a fake photo.
- * Neutral SVG silhouette inside a soft gold-gradient ring.
- */
-function PortraitPlaceholder() {
-  return (
-    <div className="aspect-[4/5] w-full max-w-md relative rounded-xl overflow-hidden bg-surface-calm border border-line flex flex-col items-center justify-center gap-5 p-10">
-      {/* Soft gold ring around the silhouette — echoes the .color-word
-          gold gradient used for accents elsewhere on the page. */}
-      <div
-        className="relative h-32 w-32 rounded-full p-[2px]"
-        style={{ backgroundImage: "var(--gold-grad)" }}
-      >
-        <div className="h-full w-full rounded-full bg-surface-calm flex items-center justify-center">
-          <svg
-            viewBox="0 0 120 120"
-            width="80"
-            height="80"
-            aria-hidden="true"
-            className="text-ink-muted opacity-50"
-          >
-            <circle cx="60" cy="46" r="22" fill="currentColor" />
-            <path
-              d="M16 116 C 22 86, 42 74, 60 74 C 78 74, 98 86, 104 116 Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-1">
-        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted">
-          Portrait · TODO
-        </span>
-        <span className="font-mono text-[10px] text-ink-muted/70">
-          real photo coming with launch
-        </span>
-      </div>
-    </div>
-  );
-}

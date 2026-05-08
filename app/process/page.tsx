@@ -116,7 +116,7 @@ export default function ProcessPage() {
             <div key={id}>
               <section
                 id={id}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 pt-32 pb-16"
+                className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 pt-16 md:pt-24 lg:pt-32 pb-12 md:pb-16"
               >
                 {/* Big number — gold gradient, sets the rhythm of the page. */}
                 <div className="lg:col-span-5">
@@ -124,7 +124,7 @@ export default function ProcessPage() {
                     <span
                       className="color-word color-word--has-fallback font-display block"
                       style={{
-                        fontSize: "clamp(7rem, 18vw, 16rem)",
+                        fontSize: "clamp(5rem, 18vw, 16rem)",
                         fontWeight: 700,
                         lineHeight: 0.9,
                         letterSpacing: "-0.04em",
@@ -142,7 +142,7 @@ export default function ProcessPage() {
                 </div>
 
                 {/* Body */}
-                <div className="lg:col-span-7 flex flex-col gap-6">
+                <div className="lg:col-span-7 flex flex-col gap-5 md:gap-6">
                   <Reveal>
                     <Eyebrow color="forest">
                       PHASE {phase.number} — {phase.name.toUpperCase()}
@@ -152,7 +152,7 @@ export default function ProcessPage() {
                     <h2
                       className="font-display text-ink"
                       style={{
-                        fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                        fontSize: "clamp(1.75rem, 4vw, 3.5rem)",
                         fontWeight: 600,
                         lineHeight: 1.05,
                         letterSpacing: "-0.015em",
@@ -166,11 +166,11 @@ export default function ProcessPage() {
                     {/* Numbered process list — same structure as the home
                         carousel cards but with more breathing room since
                         this is a long-scroll section. */}
-                    <ol className="flex flex-col max-w-[640px] mt-2">
+                    <ol className="flex flex-col max-w-[640px] mt-1 md:mt-2">
                       {phase.steps.map((step, i, arr) => (
                         <li
                           key={i}
-                          className="flex items-baseline gap-6 py-5"
+                          className="flex items-baseline gap-4 md:gap-6 py-4 md:py-5"
                           style={{
                             borderBottom:
                               i < arr.length - 1
@@ -178,14 +178,14 @@ export default function ProcessPage() {
                                 : "none",
                           }}
                         >
-                          <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-forest shrink-0 self-start mt-2">
+                          <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-forest shrink-0 self-start mt-1.5 md:mt-2">
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <div className="flex flex-col gap-2">
+                          <div className="flex flex-col gap-1.5 md:gap-2 min-w-0">
                             <span
                               className="font-display text-ink leading-tight"
                               style={{
-                                fontSize: "clamp(18px, 1.8vw, 24px)",
+                                fontSize: "clamp(16px, 1.8vw, 24px)",
                                 fontWeight: 500,
                                 letterSpacing: "-0.01em",
                               }}
@@ -193,8 +193,8 @@ export default function ProcessPage() {
                               {step.title}
                             </span>
                             <span
-                              className="text-ink-muted leading-[1.6]"
-                              style={{ fontSize: "clamp(15px, 1.2vw, 17px)" }}
+                              className="text-ink-muted leading-[1.55]"
+                              style={{ fontSize: "clamp(14px, 1.2vw, 17px)" }}
                             >
                               {step.body}
                             </span>
@@ -219,13 +219,13 @@ export default function ProcessPage() {
         })}
 
         {/* ---------------- Timeline ---------------- */}
-        <section className="py-24">
+        <section className="py-16 md:py-24">
           <Reveal className="flex flex-col gap-3 max-w-2xl">
             <Eyebrow color="forest">TIMELINE</Eyebrow>
             <h2
               className="font-display"
               style={{
-                fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                fontSize: "clamp(1.75rem, 4vw, 3.5rem)",
                 fontWeight: 600,
                 lineHeight: 1.05,
                 letterSpacing: "-0.015em",
@@ -233,7 +233,7 @@ export default function ProcessPage() {
             >
               Four <ColorWord>weeks</ColorWord>, end to end.
             </h2>
-            <p className="text-ink-muted text-[16px] leading-relaxed">
+            <p className="text-ink-muted text-[15px] md:text-[16px] leading-relaxed">
               Standard ship cadence. Bespoke projects extend; Starter projects
               compress. Every project has a written ship date before we start.
             </p>
@@ -246,7 +246,7 @@ export default function ProcessPage() {
                 down slowly via JS; mouse-leave smoothly glides back
                 to rest over 700ms. See TimelineCard for the
                 animation logic. */}
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 lg:gap-7 items-start lg:pb-20">
+            <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-7 items-start lg:pb-20">
               <TimelineCard
                 num="1"
                 phase="Discover"
@@ -280,13 +280,13 @@ export default function ProcessPage() {
         </section>
 
         {/* ---------------- Closing ---------------- */}
-        <section className="py-24">
+        <section className="py-16 md:py-24">
           <AuroraHairline />
-          <Reveal className="pt-16 flex flex-col gap-7 items-start">
+          <Reveal className="pt-12 md:pt-16 flex flex-col gap-6 md:gap-7 items-start">
             <h2
               className="font-display text-ink"
               style={{
-                fontSize: "clamp(2.5rem, 5vw, 4.25rem)",
+                fontSize: "clamp(2rem, 5vw, 4.25rem)",
                 fontWeight: 600,
                 lineHeight: 1.05,
                 letterSpacing: "-0.015em",

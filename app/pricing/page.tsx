@@ -46,7 +46,7 @@ export default function PricingPage() {
         {/* ---------------- Hero ----------------
             Inner-page hero pattern (mirrors /work): ~52dvh, no
             HeroFader, eyebrow + per-word cascade headline + lede. */}
-        <section className="relative min-h-[52dvh] flex flex-col gap-7 pt-20 md:pt-28 pb-16 max-w-4xl">
+        <section className="relative min-h-[52dvh] flex flex-col gap-6 md:gap-7 pt-16 md:pt-28 pb-12 md:pb-16 max-w-4xl">
           <Reveal>
             <Eyebrow color="forest">PRICING · HONEST SCOPE</Eyebrow>
           </Reveal>
@@ -54,9 +54,9 @@ export default function PricingPage() {
           <h1
             className="font-display text-headline"
             style={{
-              fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)",
+              fontSize: "clamp(2.25rem, 5.5vw, 4.75rem)",
               fontWeight: 500,
-              lineHeight: 1.15,
+              lineHeight: 1.12,
               letterSpacing: "-0.018em",
             }}
           >
@@ -92,7 +92,7 @@ export default function PricingPage() {
           </h1>
 
           <Reveal delay={ledeDelayMs}>
-            <p className="max-w-[540px] text-[18px] leading-[1.55] text-ink-muted">
+            <p className="max-w-[540px] text-[16px] md:text-[18px] leading-[1.55] text-ink-muted">
               Three tiers. Fixed scope, fixed timeline, fixed price. No
               hourly. No retainers. Every project ships and we move on.
             </p>
@@ -102,13 +102,13 @@ export default function PricingPage() {
         <AuroraHairline />
 
         {/* ---------------- Tiers ---------------- */}
-        <section className="pt-16 pb-20">
+        <section className="pt-12 md:pt-16 pb-16 md:pb-20">
           {pricingTiers.length === 0 ? (
             <Reveal>
-              <div className="rounded-xl border border-line bg-surface-calm px-8 py-14 flex flex-col gap-5 items-start max-w-3xl">
+              <div className="rounded-xl border border-line bg-surface-calm px-6 md:px-8 py-10 md:py-14 flex flex-col gap-5 items-start max-w-3xl">
                 <Eyebrow color="ink-muted">TIERS · TODO</Eyebrow>
                 <p
-                  className="font-display text-[28px] leading-tight text-ink"
+                  className="font-display text-[22px] md:text-[28px] leading-tight text-ink"
                   style={{ fontWeight: 500 }}
                 >
                   Tiered pricing finalized for May 2026 launch — get in touch
@@ -130,22 +130,22 @@ export default function PricingPage() {
               </div>
             </Reveal>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5">
               {pricingTiers.map((t, i) => (
                 <Reveal key={t.name} delay={i * 80}>
                   {/* Highlighted tier: gold-gradient ring (via box-shadow) on
                       a normal surface card. The inner contents stay legible
                       against bg-surface in both light and dark mode. */}
                   <article
-                    className={`relative rounded-2xl p-7 flex flex-col gap-5 border h-full bg-surface text-ink ${
+                    className={`relative rounded-2xl p-5 md:p-7 flex flex-col gap-4 md:gap-5 border h-full bg-surface text-ink ${
                       t.highlighted
                         ? "border-transparent shadow-[0_0_0_1.5px_var(--color-gold)]"
                         : "border-line"
                     }`}
                   >
-                    <header className="flex flex-col gap-2">
+                    <header className="flex flex-col gap-1.5 md:gap-2">
                       <h3
-                        className="font-display text-[28px]"
+                        className="font-display text-[24px] md:text-[28px]"
                         style={{ fontWeight: 600 }}
                       >
                         {t.name}
@@ -217,16 +217,16 @@ export default function PricingPage() {
         </section>
 
         {/* ---------------- FAQ ---------------- */}
-        <section className="py-20">
+        <section className="py-16 md:py-20">
           <AuroraHairline />
-          <div className="pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <div className="pt-10 md:pt-14 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
             <div className="lg:col-span-4">
               <Reveal className="flex flex-col gap-3">
                 <Eyebrow color="forest">FAQ</Eyebrow>
                 <h2
                   className="font-display"
                   style={{
-                    fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                    fontSize: "clamp(1.75rem, 4vw, 3.5rem)",
                     fontWeight: 600,
                     lineHeight: 1.05,
                     letterSpacing: "-0.015em",
@@ -252,22 +252,22 @@ export default function PricingPage() {
                   {faqs.map((item, i) => (
                     <Reveal key={item.q} delay={i * 60}>
                       <li className="border-b border-line last:border-b-0">
-                        <details className="group py-6">
-                          <summary className="flex items-center justify-between gap-6 cursor-pointer list-none">
+                        <details className="group py-5 md:py-6">
+                          <summary className="flex items-start justify-between gap-4 md:gap-6 cursor-pointer list-none">
                             <span
-                              className="font-display text-[20px] text-ink"
+                              className="font-display text-[17px] md:text-[20px] text-ink leading-snug min-w-0"
                               style={{ fontWeight: 500 }}
                             >
                               {item.q}
                             </span>
                             <span
                               aria-hidden="true"
-                              className="font-mono text-ink-muted text-[14px] group-open:rotate-45 transition-transform"
+                              className="font-mono text-ink-muted text-[14px] group-open:rotate-45 transition-transform shrink-0 mt-1"
                             >
                               +
                             </span>
                           </summary>
-                          <p className="mt-3 text-ink-muted text-[16px] leading-relaxed max-w-[640px]">
+                          <p className="mt-3 text-ink-muted text-[15px] md:text-[16px] leading-relaxed max-w-[640px]">
                             {item.a}
                           </p>
                         </details>
@@ -281,13 +281,13 @@ export default function PricingPage() {
         </section>
 
         {/* ---------------- Closing ---------------- */}
-        <section className="py-20">
+        <section className="py-16 md:py-20">
           <AuroraHairline />
-          <Reveal className="pt-14 flex flex-col gap-6 items-start">
+          <Reveal className="pt-12 md:pt-14 flex flex-col gap-5 md:gap-6 items-start">
             <h2
               className="font-display text-ink"
               style={{
-                fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                fontSize: "clamp(1.75rem, 4vw, 3.5rem)",
                 fontWeight: 600,
                 lineHeight: 1.05,
                 letterSpacing: "-0.015em",

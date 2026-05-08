@@ -58,29 +58,12 @@ const PERSPECTIVE_PX = 4500; // bumped to compensate for larger radius —
                               // keeps the front card from ballooning at
                               // R=1200 (front scale ≈ 4500/3300 ≈ 1.36×).
 
-/** Track whether the viewport is in the mobile range (< md). The 3D
- *  ring is incoherent on a 375px screen — perspective + R=1200 puts
- *  side cards way off-canvas — so we render a native scroll-snap rail
- *  instead. SSR-safe: starts false, syncs on mount. */
-function useIsMobile(maxWidth = 767): boolean {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${maxWidth}px)`);
-    const update = () => setMobile(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, [maxWidth]);
-  return mobile;
-}
-
 export function WorkCarousel({ items }: Props) {
   const count = items.length;
   const [selected, setSelected] = useState<{
     item: FeaturedWork;
     rect: DOMRect;
   } | null>(null);
-  const isMobile = useIsMobile();
 
   // Empty case (defensive — page already gates with an empty state).
   if (count === 0) return null;
@@ -98,40 +81,47 @@ export function WorkCarousel({ items }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      {isMobile ? (
+      {/* Mobile: scroll-snap rail. CSS-only visibility so the 3D ring
+          below is never even momentarily laid out on phones — its
+          `translateZ(1200)` cards can briefly project a wide bounding
+          box during hydration before a JS-driven `isMobile` flip
+          unmounts them, leaving the page visibly wider than viewport. */}
+      <div className="md:hidden">
         <MobileRail
           items={items}
           onOpen={handleOpen}
           liftedSlug={liftedSlug}
+          paused={selected !== null}
         />
-      ) : (
-        <>
-          {count === 1 && (
-            <SingleCard
-              item={items[0]}
-              onOpen={handleOpen}
-              isLifted={items[0].slug === liftedSlug}
-            />
-          )}
+      </div>
 
-          {count === 2 && (
-            <PairLayout
-              items={items}
-              onOpen={handleOpen}
-              liftedSlug={liftedSlug}
-            />
-          )}
+      {/* Desktop: 1 / 2 / 3+ branches. */}
+      <div className="hidden md:block">
+        {count === 1 && (
+          <SingleCard
+            item={items[0]}
+            onOpen={handleOpen}
+            isLifted={items[0].slug === liftedSlug}
+          />
+        )}
 
-          {count >= 3 && (
-            <RingCarousel
-              items={items}
-              onOpen={handleOpen}
-              paused={selected !== null}
-              liftedSlug={liftedSlug}
-            />
-          )}
-        </>
-      )}
+        {count === 2 && (
+          <PairLayout
+            items={items}
+            onOpen={handleOpen}
+            liftedSlug={liftedSlug}
+          />
+        )}
+
+        {count >= 3 && (
+          <RingCarousel
+            items={items}
+            onOpen={handleOpen}
+            paused={selected !== null}
+            liftedSlug={liftedSlug}
+          />
+        )}
+      </div>
 
       <WorkModal
         project={selected?.item ?? null}
@@ -146,19 +136,127 @@ export function WorkCarousel({ items }: Props) {
    Native horizontal scroll-snap. Cards are 80vw with snap-center, so
    the previous/next cards peek at the edges and a single-finger swipe
    advances by exactly one card. Uses `touch-action: pan-x` so vertical
-   page scroll still wins on diagonal swipes. */
+   page scroll still wins on diagonal swipes.
+
+   Auto-advances every AUTO_ADVANCE_MS to give the rail motion (the
+   desktop ring's "spin" equivalent for mobile). Pauses on touch +
+   resumes a few seconds after the user lifts their finger; pauses
+   permanently if the work modal opens. Uses `scrollTo({ behavior:
+   "smooth" })` so native snap takes over after each step. */
+
+const AUTO_ADVANCE_MS = 3000;
+const RESUME_AFTER_TOUCH_MS = 3500;
 
 function MobileRail({
   items,
   onOpen,
   liftedSlug = null,
+  paused = false,
 }: {
   items: FeaturedWork[];
   onOpen: (item: FeaturedWork, rect: DOMRect) => void;
   liftedSlug?: string | null;
+  /** External pause signal — true when the work modal is open. */
+  paused?: boolean;
 }) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const userPausedRef = useRef(false);
+  const resumeTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    // Infinite/circular wrap: items are rendered twice in the rail
+    // (see the JSX below). Auto-advance always scrolls forward one
+    // card. After the smooth scroll settles, if we've crossed the
+    // halfway mark of the rail's scrollWidth (= the boundary between
+    // copy A and copy B), we instantly teleport scrollLeft back by
+    // the halfway distance — landing on the *same* card visually
+    // (because copy B == copy A) but in copy A's range. The user
+    // sees a continuous, never-ending loop with no jarring snap-back
+    // to the start.
+    const tick = () => {
+      if (paused || userPausedRef.current) return;
+      const firstChild = rail.firstElementChild as HTMLElement | null;
+      if (!firstChild) return;
+      const cardWidth = firstChild.offsetWidth;
+      const gapPx =
+        parseFloat(getComputedStyle(rail).columnGap || "0") || 16;
+      const step = cardWidth + gapPx;
+
+      rail.scrollBy({ left: step, behavior: "smooth" });
+
+      // After the smooth scroll completes, check if we've crossed the
+      // halfway boundary and silently rewind into copy A.
+      window.setTimeout(() => {
+        const halfway = rail.scrollWidth / 2;
+        if (rail.scrollLeft >= halfway) {
+          rail.scrollLeft = rail.scrollLeft - halfway;
+        }
+      }, 600);
+    };
+
+    const id = window.setInterval(tick, AUTO_ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [paused]);
+
+  // Touch handlers — pause auto-advance while finger is down, resume
+  // a few seconds after lift so the user's manual swipe isn't fought
+  // by a pending auto-advance.
+  const onTouchStart = () => {
+    userPausedRef.current = true;
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  };
+  const onTouchEnd = () => {
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+    }
+    resumeTimerRef.current = window.setTimeout(() => {
+      userPausedRef.current = false;
+      resumeTimerRef.current = null;
+    }, RESUME_AFTER_TOUCH_MS);
+  };
+
+  // Manual-swipe infinite wrap. When the user drags far past the
+  // halfway boundary (into copy B), or backwards past zero (into
+  // copy A from copy B reversed), silently teleport to the matching
+  // position in the opposite copy. Debounced — only fires once the
+  // user's scroll settles, so we don't fight an in-progress drag.
+  const wrapTimerRef = useRef<number | null>(null);
+  const onScroll = () => {
+    if (wrapTimerRef.current !== null) {
+      window.clearTimeout(wrapTimerRef.current);
+    }
+    wrapTimerRef.current = window.setTimeout(() => {
+      const rail = railRef.current;
+      if (!rail) return;
+      const halfway = rail.scrollWidth / 2;
+      if (rail.scrollLeft >= halfway) {
+        rail.scrollLeft = rail.scrollLeft - halfway;
+      } else if (rail.scrollLeft < 4) {
+        // Near the very start — jump to the equivalent in copy B so
+        // the user can keep swiping right-to-left forever too.
+        rail.scrollLeft = halfway;
+      }
+    }, 200);
+  };
+
   return (
     <div
+      ref={railRef}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchEnd}
+      onScroll={onScroll}
       role="region"
       aria-label="Selected work — swipe to explore"
       className="relative -mx-6 overflow-x-auto flex gap-4 pb-3 touch-pan-x"
@@ -167,15 +265,24 @@ function MobileRail({
         scrollbarWidth: "none",
         msOverflowStyle: "none",
         WebkitOverflowScrolling: "touch",
-        // Inset padding so the first/last card can snap-center cleanly.
-        // 10vw + 6px aligns with main's px-6 page padding when the rail
-        // is broken out via -mx-6.
-        paddingInline: "calc(10vw + 6px)",
+        // Snap-center formula: padding-inline = (clientWidth - cardWidth)/2.
+        // With cards at 80vw inside a 100vw rail (the rail breaks out via
+        // -mx-6 to span the full viewport), the formula = (100vw-80vw)/2 =
+        // 10vw exactly. The previous `calc(10vw + 6px)` was off by 6px,
+        // which made auto-advance and manual swipe both stop with the
+        // snapped card half a card-width off-center.
+        paddingInline: "10vw",
       }}
     >
-      {items.map((item) => (
+      {/* Items rendered TWICE so the rail can wrap continuously.
+          Auto-advance + manual swipe both teleport scrollLeft back by
+          half (= one full set's width) once the boundary is crossed,
+          so the rail behaves as an infinite circular carousel without
+          a visible snap-back. The duplicate keys are suffixed `:a`
+          and `:b` to keep React's reconciliation happy. */}
+      {[...items, ...items].map((item, idx) => (
         <div
-          key={item.slug}
+          key={`${item.slug}:${idx < items.length ? "a" : "b"}`}
           className="shrink-0"
           style={{
             width: "80vw",

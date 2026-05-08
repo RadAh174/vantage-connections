@@ -29,17 +29,23 @@ export function HeroFader({ children }: { children: ReactNode }) {
 
     const update = () => {
       raf = 0;
+      const vw = window.innerWidth;
+
+      // Mobile (< md): skip the fade entirely. Even with a wide
+      // fade-range, any touch flick on a phone reads as the hero
+      // "popping then disappearing" instead of a deliberate parallax.
+      // The hero scrolls out of view naturally — no script needed.
+      if (vw < 768) {
+        el.style.opacity = "1";
+        el.style.transform = "translate3d(0, 0, 0)";
+        el.style.pointerEvents = "";
+        return;
+      }
+
       const scrollY = window.scrollY;
       const vh = window.innerHeight;
-      // On phones (< md) the fade-range scale is bumped from 0.7 → 1.4
-      // so an accidental ~200px touch flick doesn't immediately blank
-      // the hero. The parallax coefficient is halved for the same
-      // reason — at 0.15× on a 600px viewport the hero translates 30px
-      // by the time the fade has even started, which reads as the
-      // text "lifting away" before the user has consciously scrolled.
-      const isMobile = vh < 800 || window.innerWidth < 768;
-      const fadeRange = vh * (isMobile ? 1.4 : 0.7);
-      const parallax = reduced ? 0 : isMobile ? 0.07 : 0.15;
+      const fadeRange = vh * 0.7;
+      const parallax = reduced ? 0 : 0.15;
       const t = Math.min(1, Math.max(0, scrollY / fadeRange));
       const opacity = 1 - t;
       const translateY = scrollY * parallax;

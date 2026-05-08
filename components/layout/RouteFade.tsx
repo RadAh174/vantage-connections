@@ -60,7 +60,16 @@ export function RouteFade({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <div ref={ref} className="route-fade flex flex-col flex-1 min-h-0">
+    // NOTE: this wrapper is a *flex item* of <body> (which is flex-col),
+    // but it is NOT itself a flex container. Making it `flex flex-col`
+    // turned <main> into a flex item, and the flex cross-axis sizing
+    // algorithm computed <main>'s width as its max-content (= the
+    // `max-w-[1320px]` value) instead of stretching it to the parent's
+    // width. On a 500px-wide viewport that produced a 1320px-wide
+    // <main>, which cascaded a 1320px-wide pull-quote card and the
+    // quote text bleeding past the right edge. Plain block layout keeps
+    // <main> at 100% of its parent — the correct mobile behavior.
+    <div ref={ref} className="route-fade flex-1 min-h-0 w-full min-w-0">
       {children}
     </div>
   );
