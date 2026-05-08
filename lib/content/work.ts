@@ -37,6 +37,12 @@ export type FeaturedProject = {
   tags: string[];
   /** Used to filter on the index page. */
   category: WorkCategory;
+  /**
+   * Drives gallery card width. `true` → full-row card (col-span-12).
+   * `false` / undefined → standard card placed in the asymmetric
+   * [7,5][5,7][6,6] pattern.
+   */
+  featured?: boolean;
   /** Sticky-sidebar metadata on the case study page. */
   metadata: ProjectMetadata;
   /** Body sections — keep generic shape so writer can fill prose. */
@@ -62,14 +68,34 @@ export const filters: WorkFilter[] = [
 ];
 
 /**
- * Real shipped projects only — never invent prose, quotes, or metrics.
+ * Real shipped projects + carousel test entries.
  *
- * Black Diamond Pavers is live; brief / approach / results stay empty
- * strings with TODO markers below until the user supplies copy. Empty
- * strings render as visible blank paragraphs in the case-study route — that
- * is intentional and surfaces the gap rather than masking it with filler.
+ * Black Diamond Pavers and PredictBase (v1, v2) are real client work
+ * — brief / approach / results stay empty strings with TODO markers
+ * until the user supplies copy. Empty strings render as visible blank
+ * paragraphs in the case-study route — that is intentional and surfaces
+ * the gap rather than masking it with filler.
+ *
+ * TEST_GALLERY_ENTRIES: every entry tagged "TEST" below is a public
+ * design-quality reference site mirrored from the home carousel — they
+ * exercise the asymmetric grid layout and are NOT real Vantage client
+ * work. Each is marked `// TEST: REMOVE BEFORE LAUNCH`. Strip them
+ * before any public push.
  */
+// The work-page renders projects in chapter groups (see
+// app/work/page.tsx CHAPTERS) — each chapter looks projects up by
+// slug, so the order of this array no longer matters for layout.
+// Real shipped client projects:
+//   - Black Diamond Pavers
+//   - PredictBase (v1, v2)
+//   - Pacific Family Dental
+//   - Jenny Smith
+//   - Patriot Plumbing
+// Test entries (`slug: "test-..."`, `tags: ["TEST"]`) are public
+// reference sites mirrored from the home carousel — strip them
+// before any public push.
 export const featuredProjects: FeaturedProject[] = [
+  // Real client.
   {
     slug: "black-diamond",
     client: "Black Diamond Pavers",
@@ -77,6 +103,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: undefined,
     tags: ["Marketing site", "Service"],
     category: "Service",
+    featured: true,
     metadata: {
       client: "Black Diamond Pavers",
       // TODO_BLACKDIAMOND_META: user to confirm year / role / scope.
@@ -87,6 +114,271 @@ export const featuredProjects: FeaturedProject[] = [
       liveUrl: "https://vantageconnections-blackdiamond.vercel.app/",
     },
     // TODO_BLACKDIAMOND_COPY: user to supply brief / approach / results prose.
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-shadcn",
+    client: "shadcn/ui",
+    title: "Component library + docs",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "shadcn/ui",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://ui.shadcn.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-supabase",
+    client: "Supabase",
+    title: "Modern marketing site",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Supabase",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://supabase.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-compass",
+    client: "Compass",
+    title: "Modern real-estate brokerage",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Service",
+    metadata: {
+      client: "Compass",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://www.compass.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-studio-mcgee",
+    client: "Studio McGee",
+    title: "Interior-design portfolio",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Studio McGee",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://studio-mcgee.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // Real client.
+  {
+    slug: "predictbase",
+    client: "PredictBase",
+    title: "Forecasting product, v1",
+    tagline: undefined,
+    tags: ["Product surface", "SaaS"],
+    category: "SaaS",
+    metadata: {
+      client: "PredictBase",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: ["Product surface"],
+      liveUrl: "https://predictbase.app",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-cal",
+    client: "Cal.com",
+    title: "Modern booking SaaS",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Cal.com",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://cal.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-daylight",
+    client: "Daylight Computer",
+    title: "Premium hardware product",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "E-commerce",
+    metadata: {
+      client: "Daylight Computer",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://daylight.computer",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-amber-interior",
+    client: "Amber Interior Design",
+    title: "Boutique interior-design firm",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Amber Interior Design",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://amberinteriordesign.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // Real client.
+  {
+    slug: "predictbase-v2",
+    client: "PredictBase",
+    title: "Forecasting product, v2",
+    tagline: undefined,
+    tags: ["Product surface", "SaaS"],
+    category: "SaaS",
+    metadata: {
+      client: "PredictBase",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Product surface"],
+      liveUrl: "https://v2.predictbase.app",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "test-retool",
+    client: "Retool",
+    title: "Enterprise SaaS dashboard",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Retool",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://retool.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // Real client.
+  {
+    slug: "pacific-family-dental",
+    client: "Pacific Family Dental",
+    title: "Family-practice dental site",
+    tagline: undefined,
+    tags: ["Marketing site", "Service"],
+    category: "Service",
+    metadata: {
+      client: "Pacific Family Dental",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://pacific-family-dental.vercel.app/",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client.
+  {
+    slug: "jenny-smith",
+    client: "Jenny Smith",
+    title: "Personal brand site",
+    tagline: undefined,
+    tags: ["Marketing site", "Service"],
+    category: "Editorial",
+    metadata: {
+      client: "Jenny Smith",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://jenny-smith.vercel.app/",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client.
+  {
+    slug: "patriot-plumbing",
+    client: "Patriot Plumbing",
+    title: "Trade-business marketing site",
+    tagline: undefined,
+    tags: ["Marketing site", "Service"],
+    category: "Service",
+    metadata: {
+      client: "Patriot Plumbing",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://patriot-plumbing.vercel.app/",
+    },
     brief: "",
     approach: "",
     results: "",

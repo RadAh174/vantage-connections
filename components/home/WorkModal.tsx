@@ -44,6 +44,28 @@ type Props = {
 
 const TRANSITION_MS = 350;
 
+// Hosts known to refuse iframe embedding via `X-Frame-Options` or a
+// restrictive `Content-Security-Policy: frame-ancestors`. The browser
+// silently shows a "refused to connect" message for these and there's
+// no reliable client-side way to detect the block (cross-origin SOP
+// blinds the parent), so we maintain a manual list and route them to
+// a screenshot-with-open-link fallback view.
+const IFRAME_BLOCKED_HOSTS = new Set<string>([
+  "www.compass.com",
+  "compass.com",
+  // Vercel deployment protection on this preview returns 403 on
+  // iframe load; route to the open-in-new-tab fallback instead.
+  "patriot-plumbing.vercel.app",
+]);
+
+function isIframeBlocked(url: string): boolean {
+  try {
+    return IFRAME_BLOCKED_HOSTS.has(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 export function WorkModal({ project, originRect, onClose }: Props) {
   // We mount the modal node only when there's a project, and keep it
   // mounted through the closing transition by tracking a separate state.
@@ -228,17 +250,17 @@ export function WorkModal({ project, originRect, onClose }: Props) {
         ref={panelRef}
         className="relative flex flex-col shadow-[0_60px_120px_-40px_rgba(0,0,0,0.5)]"
         style={{
-          width: "90vw",
-          // 90dvh keeps the close button reachable on iOS Safari when
-          // the URL bar is visible — `90vh` would push the button below
+          width: "96vw",
+          // dvh keeps the close button reachable on iOS Safari when
+          // the URL bar is visible — `vh` would push the button below
           // the system chrome on first paint.
-          height: "90dvh",
+          height: "96dvh",
           // Same stronger gradient + 3px padding as the carousel cards
           // so the modal looks like the card grew open with the same
           // frame — high-contrast dark→light gold band, deliberate width.
           backgroundImage: "linear-gradient(135deg, #FFE49A 0%, #D4A12A 60%, #8B6914 100%)",
           padding: "3px",
-          borderRadius: "24px",
+          borderRadius: "12px",
         }}
         // Block both mousedown AND click from bubbling so backdrop close
         // only fires for clicks that are actually outside the panel.
@@ -247,7 +269,7 @@ export function WorkModal({ project, originRect, onClose }: Props) {
       >
         <div
           className="relative flex h-full w-full flex-col overflow-hidden bg-surface"
-          style={{ borderRadius: "21px" }}
+          style={{ borderRadius: "9px" }}
         >
         {/* Top bar — mac dots removed per request */}
         <div className="flex items-center gap-3 border-b border-line bg-surface-calm px-4 py-3">
@@ -291,14 +313,49 @@ export function WorkModal({ project, originRect, onClose }: Props) {
           </button>
         </div>
 
-          {/* Iframe — full size, scrollable */}
-          <iframe
-            src={mountedProject.liveUrl}
-            title={`${mountedProject.client} — live site`}
-            className="block flex-1 w-full border-0 bg-surface-calm"
-            referrerPolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-          />
+          {/* Body — iframe for embeddable sites, screenshot-fallback
+              for hosts that refuse via X-Frame-Options / CSP. */}
+          {isIframeBlocked(mountedProject.liveUrl) ? (
+            <div className="relative flex-1 w-full overflow-hidden bg-surface-calm">
+              {/* Background screenshot via mShots — full bleed, dimmed
+                  with a scrim so the foreground CTA reads cleanly. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://s.wordpress.com/mshots/v1/${encodeURIComponent(mountedProject.liveUrl)}?w=2400&h=1500`}
+                alt={`${mountedProject.client} — preview`}
+                className="absolute inset-0 block h-full w-full object-cover object-top select-none"
+                draggable={false}
+                referrerPolicy="no-referrer"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, rgba(6,10,8,0.55) 0%, rgba(6,10,8,0.78) 100%)",
+                }}
+              />
+              <div className="relative z-10 flex h-full w-full items-center justify-center px-6 md:px-10">
+                <a
+                  href={mountedProject.liveUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-md font-medium text-[15px] text-[#0E0E10] hover:scale-[1.03] active:scale-[0.98] transition-transform duration-200 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]"
+                  style={{ backgroundImage: "var(--gold-grad)" }}
+                >
+                  Open {hostname} →
+                </a>
+              </div>
+            </div>
+          ) : (
+            <iframe
+              src={mountedProject.liveUrl}
+              title={`${mountedProject.client} — live site`}
+              className="block flex-1 w-full border-0 bg-surface-calm"
+              referrerPolicy="no-referrer"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            />
+          )}
         </div>
       </div>
     </div>
