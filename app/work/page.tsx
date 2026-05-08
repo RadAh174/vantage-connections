@@ -93,11 +93,11 @@ const CHAPTERS: readonly Chapter[] = [
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
     pattern: PATTERN_8,
     slugs: [
-      "black-diamond",            // BIG (real)
+      "jenny-smith",              // BIG (real)
       "pacific-family-dental",    // SMALL (real)
       "test-compass",             // SMALL
       "patriot-plumbing",         // WIDE (real)
-      "jenny-smith",              // BIG (real)
+      "black-diamond",            // BIG (real)
       "test-studio-mcgee",        // SMALL
       "test-amber-interior",      // SMALL
       "test-daylight",            // WIDE

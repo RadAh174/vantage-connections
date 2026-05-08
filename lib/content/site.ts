@@ -32,8 +32,7 @@ export const site = {
     { label: "Work", href: "/work" },
     { label: "Process", href: "/process" },
     { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
+    // { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ] satisfies NavItem[],
 

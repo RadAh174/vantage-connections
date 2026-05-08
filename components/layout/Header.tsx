@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Wordmark } from "./Wordmark";
-import { ThemeToggle } from "./ThemeToggle";
+// import { ThemeToggle } from "./ThemeToggle";
 import { AvailableStamp } from "@/components/ui/AvailableStamp";
 import { site } from "@/lib/content/site";
 
@@ -100,15 +100,17 @@ export function Header() {
     };
   }, []);
 
-  // Defensive: on mount, clear any stale html/body overflow lock from
-  // a prior mount or HMR cycle. Without this, an interrupted lock can
-  // freeze the whole page (including all scroll-driven animations:
-  // Reveal, HeroFader, the contact drawer pin runway, etc.) until a
-  // full reload.
+  // Defensive: on mount AND on every route change, clear any stale
+  // html/body overflow lock left behind by a sibling component (the
+  // mobile sheet, the WorkModal, etc.) whose cleanup didn't fire
+  // correctly during HMR or fast navigation. Without this, an
+  // interrupted lock freezes the whole page (every scroll-driven
+  // animation, every section, every pin runway) until a full reload —
+  // and the user has to rediscover the bug per route.
   useEffect(() => {
     document.documentElement.style.overflow = "";
     document.body.style.overflow = "";
-  }, []);
+  }, [pathname]);
 
   // Lock body scroll while the mobile sheet is open.
   useEffect(() => {
@@ -207,7 +209,7 @@ export function Header() {
             </nav>
 
             <div className="flex items-center gap-3">
-              <ThemeToggle />
+              {/* <ThemeToggle /> — hidden until light/dark theming is finalized */}
               <span className="hidden sm:inline-block">
                 <AvailableStamp size={56} />
               </span>
