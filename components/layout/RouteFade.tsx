@@ -27,6 +27,30 @@ export function RouteFade({ children }: { children: ReactNode }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Reset scroll to the top on every route change. Next.js's
+    // default scroll-to-top can race with Lenis — Lenis virtualizes
+    // scroll via its own targetScroll, so a native window.scrollTo(0)
+    // gets clobbered by Lenis's next RAF tick (it lerps back to its
+    // OLD targetScroll). Telling Lenis directly with `immediate: true`
+    // syncs animatedScroll, targetScroll, and the native scroll
+    // position to 0 in one shot — no lerp, no flash of the previous
+    // scroll position, no sticky half-page state. Falls through to
+    // window.scrollTo if Lenis isn't mounted yet (e.g. first paint).
+    //
+    // Skip when there's a hash (#section) so anchor links still work.
+    if (!window.location.hash) {
+      type LenisHandle = {
+        scrollTo: (target: number, options?: { immediate?: boolean }) => void;
+      };
+      const lenis = (window as Window & { __lenis?: LenisHandle }).__lenis;
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
+
     // Snap to faded-out state, then on next frame fade back in.
     el.classList.add("route-fade-out");
     const id = requestAnimationFrame(() => {
