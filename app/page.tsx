@@ -13,6 +13,8 @@ import { ProcessHorizontalScroll } from "@/components/home/ProcessHorizontalScro
 import { WorkCarousel } from "@/components/home/WorkCarousel";
 import { HeroFader } from "@/components/home/HeroFader";
 import { ContactDrawerMount } from "@/components/home/ContactDrawerMount";
+import { WordmarkBackdrop } from "@/components/home/WordmarkBackdrop";
+import { DrawerDarkOverlay } from "@/components/home/DrawerDarkOverlay";
 import { InlineContactForm } from "@/components/home/InlineContactForm";
 import { PullQuote } from "@/components/home/PullQuote";
 
@@ -507,63 +509,27 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* DESKTOP PATH */}
+      {/* DESKTOP PATH
+          Editorial wordmark backdrop with aurora glow + gold shimmer
+          + scroll-tied outline→fill animation sits behind the contact
+          drawer during its slide-up. Decorative only — all CTAs and
+          contact info live in the drawer itself. */}
       <div className="hidden md:block">
         <ContactDrawerMount>
-          <section className="mx-auto max-w-[1320px] px-6 md:px-10 pt-32 pb-56">
-            <AuroraHairline />
-            <Reveal className="pt-16 flex flex-col gap-7 items-start">
-              <h2
-                className="font-display text-ink"
-                style={{
-                  fontSize: "clamp(2.5rem, 5vw, 4.25rem)",
-                  fontWeight: 600,
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.015em",
-                }}
-              >
-                {home.closing.headline}{" "}
-                <ColorWord>{home.closing.accent}</ColorWord>
-                {home.closing.trailing}
-              </h2>
-
-              <Reveal stagger className="flex flex-wrap items-center gap-4">
-                {site.email ? (
-                  <Button
-                    href={`mailto:${site.email}`}
-                    variant="primary"
-                    size="lg"
-                    external
-                  >
-                    {site.email}
-                  </Button>
-                ) : (
-                  <Button href="/contact" variant="primary" size="lg">
-                    {/* TODO: set site.email so this becomes a mailto */}
-                    Get in touch
-                  </Button>
-                )}
-                {site.schedulingUrl ? (
-                  <Button href={site.schedulingUrl} variant="ghost" external>
-                    Schedule a 30-min intro →
-                  </Button>
-                ) : (
-                  <span className="font-mono text-[12px] text-ink-muted">
-                    {/* TODO: site.schedulingUrl */}
-                    scheduling link: TODO
-                  </span>
-                )}
-              </Reveal>
-
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted">
-                {site.availability.bookingNote}
-              </p>
-            </Reveal>
-          </section>
+          <DrawerDarkOverlay />
+          <WordmarkBackdrop />
         </ContactDrawerMount>
       </div>
 
-      <Footer />
+      {/* Footer hidden on desktop home — the ContactDrawerMount above
+          consumes the full remaining scroll, ending exactly at
+          drawer-fully-open. A footer below would create scrollable
+          content visible at the drawer's edges as the user scrolls
+          past fully-open, defeating the "no scroll behind the open
+          drawer" intent. Mobile keeps the footer (no drawer there). */}
+      <div className="md:hidden">
+        <Footer />
+      </div>
     </>
   );
 }

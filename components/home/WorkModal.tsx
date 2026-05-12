@@ -316,35 +316,99 @@ export function WorkModal({ project, originRect, onClose }: Props) {
           {/* Body — iframe for embeddable sites, screenshot-fallback
               for hosts that refuse via X-Frame-Options / CSP. */}
           {isIframeBlocked(mountedProject.liveUrl) ? (
-            <div className="relative flex-1 w-full overflow-hidden bg-surface-calm">
-              {/* Background screenshot via mShots — full bleed, dimmed
-                  with a scrim so the foreground CTA reads cleanly. */}
+            <div
+              className="relative flex-1 w-full overflow-hidden"
+              style={{
+                // Solid dark bedrock so the modal never paints a
+                // raw white surface while the screenshot is fetching
+                // or if mShots returns a transparent placeholder.
+                backgroundColor: "#0E0E10",
+              }}
+            >
+              {/* Soft gold radial glow behind the screenshot — gives
+                  the fallback its own atmospheric identity instead of
+                  reading as "the iframe failed." Mirrors the studio's
+                  AtmosphericBackground vocabulary. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(ellipse 70% 60% at 30% 25%, rgba(212,158,15,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(61,119,85,0.12) 0%, transparent 65%)",
+                }}
+              />
+              {/* Background screenshot via mShots — desktop viewport
+                  (vpw=1440&vph=900) so it always reads as a real
+                  desktop site, not a phone-shaped capture. Slightly
+                  blurred + scaled so it functions as backdrop, not
+                  primary content; the CTA in front carries the focus. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://s.wordpress.com/mshots/v1/${encodeURIComponent(mountedProject.liveUrl)}?w=2400&h=1500`}
+                src={`https://s.wordpress.com/mshots/v1/${encodeURIComponent(mountedProject.liveUrl)}?w=2400&h=1500&vpw=1440&vph=900`}
                 alt={`${mountedProject.client} — preview`}
                 className="absolute inset-0 block h-full w-full object-cover object-top select-none"
                 draggable={false}
                 referrerPolicy="no-referrer"
+                style={{
+                  filter: "blur(2px) saturate(1.05)",
+                  transform: "scale(1.04)",
+                  transformOrigin: "center top",
+                  opacity: 0.85,
+                }}
               />
+              {/* Layered scrim — heavier in the center where the CTA
+                  sits, lighter at the edges so the screenshot's
+                  composition still reads as a backdrop. */}
               <div
                 aria-hidden="true"
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(to bottom, rgba(6,10,8,0.55) 0%, rgba(6,10,8,0.78) 100%)",
+                    "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(6,10,8,0.78) 0%, rgba(6,10,8,0.55) 60%, rgba(6,10,8,0.35) 100%)",
                 }}
               />
+              {/* Top gold hairline — same vocabulary as the modal's
+                  outer border ring, ties the fallback to the rest of
+                  the modal chrome. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, transparent 0%, rgba(224,180,66,0.35) 50%, transparent 100%)",
+                }}
+              />
+
+              {/* Foreground stack — eyebrow, hostname headline, CTA,
+                  small note. Centered, single column, generous gap.
+                  Replaces the lone gold pill so the fallback feels
+                  intentional rather than apologetic. */}
               <div className="relative z-10 flex h-full w-full items-center justify-center px-6 md:px-10">
-                <a
-                  href={mountedProject.liveUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-md font-medium text-[15px] text-[#0E0E10] hover:scale-[1.03] active:scale-[0.98] transition-transform duration-200 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]"
-                  style={{ backgroundImage: "var(--gold-grad)" }}
-                >
-                  Open {hostname} →
-                </a>
+                <div className="flex flex-col items-center gap-5 text-center max-w-[420px]">
+                  <span className="font-mono text-[10.5px] md:text-[11px] uppercase tracking-[0.22em] text-white/65">
+                    Live site
+                  </span>
+                  <p
+                    className="font-display text-white"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.2vw, 2.25rem)",
+                      fontWeight: 500,
+                      lineHeight: 1.15,
+                      letterSpacing: "-0.014em",
+                    }}
+                  >
+                    {hostname}
+                  </p>
+                  <a
+                    href={mountedProject.liveUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="inline-flex items-center gap-2 px-7 py-4 rounded-full font-medium text-[15px] text-[#0E0E10] hover:scale-[1.03] active:scale-[0.98] transition-transform duration-200 shadow-[0_24px_48px_-12px_rgba(212,158,15,0.45)]"
+                    style={{ backgroundImage: "var(--gold-grad)" }}
+                  >
+                    Open in a new tab →
+                  </a>
+                </div>
               </div>
             </div>
           ) : (

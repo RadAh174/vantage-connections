@@ -535,3 +535,83 @@ html.light { --shine-band: var(--color-headline); }
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------
+   Vantage backdrop wordmark — gold shimmer + aurora pulse.
+   Used only by <WordmarkBackdrop /> behind the home-page contact
+   drawer's slide-up. Aurora halo pulses opacity + scale; the
+   shimmer drags a bright highlight across the gold gradient fill
+   in a 5s loop. Both honor prefers-reduced-motion below.
+   --------------------------------------------------------------- */
+@keyframes vantage-aurora-pulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+/* Two-layer shimmer:
+     Layer 1 (top, animated): a narrow `transparent → #FFF4C2 → transparent`
+        band that sweeps right-to-left across the text. Both ends are
+        transparent so when the layer is positioned fully off-canvas
+        (either side), the layer contributes nothing and the solid
+        base below shows uncontested.
+     Layer 2 (bottom, static): solid `#FFE49A` gold. Always fills every
+        glyph region, including descenders / bowls / italic joins. With
+        the base as a single uniform color, there's no possible "darker
+        spot" anywhere on the letterforms — the prior single-gradient
+        approach had darker stops at the endpoints which painted patches
+        of `g` and `e` in less-gold tones at certain animation phases.
+   Position keyframes for layer 1:
+     200%   → highlight fully off-canvas LEFT (invisible)
+     -100%  → highlight fully off-canvas RIGHT (invisible)
+   Sweep is 200% → -100% (highlight enters from left edge, travels
+   right, exits right edge — left-to-right). Then parks off-canvas-right
+   for the pause. Both pause positions (-100% start of next cycle, 200%
+   loop) are invisible states; the wrap is invisible. The sweep takes
+   40% of the duration; the remaining 60% is a true pause with no
+   shimmer band on the text. */
+@keyframes vantage-shimmer {
+  0% {
+    background-position: 200% 50%, 0% 50%;
+  }
+  58% {
+    background-position: -100% 50%, 0% 50%;
+  }
+  100% {
+    background-position: -100% 50%, 0% 50%;
+  }
+}
+
+.vantage-shimmer {
+  background-image:
+    linear-gradient(
+      115deg,
+      transparent 30%,
+      #FFE49A 42%,
+      #FFF4C2 50%,
+      #FFE49A 58%,
+      transparent 70%
+    ),
+    linear-gradient(115deg, #F0C868 0%, #F0C868 100%);
+  background-size: 200% 100%, 100% 100%;
+  background-position: -100% 50%, 0% 50%;
+  background-repeat: no-repeat, no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: vantage-shimmer 9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vantage-shimmer {
+    animation: none;
+    /* Park layer 1 (highlight) off-canvas so only the solid gold
+       base shows — no static highlight band sitting on the text. */
+    background-position: 200% 50%, 0% 50%;
+  }
+}
