@@ -1,16 +1,13 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ChapterNav } from "@/components/layout/ChapterNav";
 import { AuroraHairline } from "@/components/ui/AuroraHairline";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
 import { ColorWord } from "@/components/ui/ColorWord";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { ConnectionLine } from "@/components/process/ConnectionLine";
 import { TimelineCard } from "@/components/process/TimelineCard";
-
-import { phaseDetails } from "@/lib/content/process";
+import { PinnedPhaseStack } from "@/components/process/PinnedPhaseStack";
 
 export const metadata = {
   title: "Process",
@@ -24,19 +21,12 @@ const HERO_LINE_2 = ["build."];
 const HERO_STEP_MS = 240;
 
 export default function ProcessPage() {
-  const navItems = phaseDetails.map((p) => ({
-    id: `phase-${p.number}`,
-    label: p.name,
-    short: `${p.number} ${p.name.toUpperCase()}`,
-  }));
-
   const totalHeroWords = HERO_LINE_1.length + HERO_LINE_2.length;
 
   return (
     <>
       <ScrollProgress />
       <Header />
-      <ChapterNav items={navItems} />
 
       <main className="mx-auto max-w-[1320px] px-6 md:px-10">
         {/* ---------------- Hero ----------------
@@ -108,115 +98,27 @@ export default function ProcessPage() {
 
         <AuroraHairline />
 
-        {/* ---------------- Phases ---------------- */}
-        {phaseDetails.map((phase, i) => {
-          const id = `phase-${phase.number}`;
-          const isLast = i === phaseDetails.length - 1;
-          return (
-            <div key={id}>
-              <section
-                id={id}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 pt-16 md:pt-24 lg:pt-32 pb-12 md:pb-16"
-              >
-                {/* Big number — gold gradient, sets the rhythm of the page. */}
-                <div className="lg:col-span-5">
-                  <Reveal>
-                    <span
-                      className="color-word color-word--has-fallback font-display block"
-                      style={{
-                        fontSize: "clamp(5rem, 18vw, 16rem)",
-                        fontWeight: 700,
-                        lineHeight: 0.9,
-                        letterSpacing: "-0.04em",
-                        backgroundImage: "var(--gold-grad)",
-                      }}
-                    >
-                      {phase.number}
-                    </span>
-                  </Reveal>
-                  <Reveal delay={120}>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted mt-3 block">
-                      {phase.weekRange}
-                    </span>
-                  </Reveal>
-                </div>
+        {/* ---------------- Phases ----------------
+            Pinned-deck section. Replaces the prior 4 stacked phase
+            sections + ConnectionLine separators. As the user scrolls,
+            the section pins and the phase inside the centered card
+            snap-switches as scroll progress crosses each `i/N`
+            threshold. ChapterNav anchors (#phase-1 ... #phase-4) jump
+            to the matching scroll offset via the anchor stops the
+            component renders internally.
 
-                {/* Body */}
-                <div className="lg:col-span-7 flex flex-col gap-5 md:gap-6">
-                  <Reveal>
-                    <Eyebrow color="forest">
-                      PHASE {phase.number} — {phase.name.toUpperCase()}
-                    </Eyebrow>
-                  </Reveal>
-                  <Reveal delay={80}>
-                    <h2
-                      className="font-display text-ink"
-                      style={{
-                        fontSize: "clamp(1.75rem, 4vw, 3.5rem)",
-                        fontWeight: 600,
-                        lineHeight: 1.05,
-                        letterSpacing: "-0.015em",
-                      }}
-                    >
-                      {phase.name}
-                      <ColorWord>.</ColorWord>
-                    </h2>
-                  </Reveal>
-                  <Reveal delay={160}>
-                    {/* Numbered process list — same structure as the home
-                        carousel cards but with more breathing room since
-                        this is a long-scroll section. */}
-                    <ol className="flex flex-col max-w-[640px] mt-1 md:mt-2">
-                      {phase.steps.map((step, i, arr) => (
-                        <li
-                          key={i}
-                          className="flex items-baseline gap-4 md:gap-6 py-4 md:py-5"
-                          style={{
-                            borderBottom:
-                              i < arr.length - 1
-                                ? "1px solid var(--color-line)"
-                                : "none",
-                          }}
-                        >
-                          <span className="font-mono text-[11px] tracking-[0.22em] uppercase text-forest shrink-0 self-start mt-1.5 md:mt-2">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <div className="flex flex-col gap-1.5 md:gap-2 min-w-0">
-                            <span
-                              className="font-display text-ink leading-tight"
-                              style={{
-                                fontSize: "clamp(16px, 1.8vw, 24px)",
-                                fontWeight: 500,
-                                letterSpacing: "-0.01em",
-                              }}
-                            >
-                              {step.title}
-                            </span>
-                            <span
-                              className="text-ink-muted leading-[1.55]"
-                              style={{ fontSize: "clamp(14px, 1.2vw, 17px)" }}
-                            >
-                              {step.body}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  </Reveal>
+            Wrapped in a full-bleed div (w-screen + negative margin)
+            so the tinted pin backdrop reaches edge-to-edge instead of
+            being clamped to main's max-width — matches the home
+            page's pattern around ProcessHorizontalScroll. */}
+        <div
+          className="relative w-screen"
+          style={{ marginLeft: "calc(50% - 50vw)" }}
+        >
+          <PinnedPhaseStack />
+        </div>
 
-                </div>
-              </section>
-
-              <AuroraHairline />
-
-              {!isLast && (
-                <ConnectionLine
-                  direction={i % 2 === 0 ? "left-to-right" : "right-to-left"}
-                />
-              )}
-            </div>
-          );
-        })}
+        <AuroraHairline />
 
         {/* ---------------- Timeline ---------------- */}
         <section className="py-16 md:py-24">

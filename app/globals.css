@@ -477,6 +477,211 @@ html.light { --shine-band: var(--color-headline); }
   }
 }
 
+/* ---- PinnedPhaseStack ----
+   Process-page "page deck" section. The outer `.process-pinned` gets
+   `N * 100vh` of vertical scroll runway. The inner `.process-pinned__pin`
+   sticks to viewport top while the user scrolls through that runway —
+   each phase owns `1/N` of the runway. Within that phase's range, the
+   card stays still and only the panel content inside changes (snap-in
+   keyframe), giving the "flipping a page" feel.
+
+   Heights live in CSS so they apply before hydration — no first-paint
+   collapse waiting for JS. */
+
+.process-pinned {
+  position: relative;
+  /* Section height = one viewport for the pin + `dwell-vh` per panel
+     for scroll-driven snap input. Each panel owns exactly `dwell-vh`
+     of scroll before snapping to the next. The component pairs this
+     with a wheel-event boost so the user's wheel input is amplified
+     over the section — more scroll runway, fewer wheel rotations to
+     traverse it. */
+  --dwell-vh: 100;
+  height: calc(100vh + var(--panel-count, 4) * var(--dwell-vh) * 1vh);
+}
+
+.process-pinned__anchor {
+  /* Zero-height ChapterNav targets. Positioned at the OUTER scroll
+     offsets that correspond to each panel becoming active. */
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 0;
+  pointer-events: none;
+  scroll-margin-top: 8rem;
+}
+
+.process-pinned__pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.process-pinned__stage {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 1200px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Section caption above the card — "OUR PROCESS · 02 / 04". Gives the
+   pinned area an identity beyond just "a card." */
+.process-pinned__caption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.process-pinned__caption-label {
+  color: var(--color-forest);
+  font-weight: 600;
+}
+.process-pinned__caption-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--color-line);
+}
+.process-pinned__caption-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+.process-pinned__caption-count-of {
+  color: var(--color-ink-muted);
+}
+
+/* The stationary card frame. Holds the stacked phase layers. The card
+   itself never moves — only the layers inside translate. `overflow:
+   hidden` clips sliding layers to the rounded corner shape. */
+.process-pinned__card {
+  position: relative;
+  width: 100%;
+  height: min(72vh, 680px);
+  border-radius: 28px;
+  background: var(--color-surface);
+  border: 1px solid color-mix(in oklab, var(--color-forest) 8%, var(--color-line));
+  box-shadow:
+    0 1px 0 0 rgba(240, 200, 104, 0.15) inset,
+    0 30px 80px -30px rgba(15, 25, 20, 0.18),
+    0 8px 24px -10px rgba(15, 25, 20, 0.08);
+  overflow: hidden;
+}
+
+/* Each phase is a layer absolutely positioned inside the card. The
+   scroll handler in PinnedPhaseStack sets transform: translate3d(0, X%, 0)
+   on each layer to slide them up over one another. Each layer carries
+   its own background (so a slid-in layer is opaque, not see-through
+   onto the layer below), its own border + rounded corners (so the
+   leading edge reads as a real card during the slide), and a slight
+   downward drop shadow (so the sliding layer feels lifted off the
+   one behind it). The card's `overflow: hidden` clips the shadow
+   the moment the layer settles, so the shadow only shows during
+   the actual slide — exactly when it's useful. */
+.process-pinned__layer {
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface);
+  /* All-side border, tinted with forest so the layer reads as its own
+     card not a flat overlay. Stronger than the previous 6% mix so
+     the leading edge is actually visible during the slide. */
+  border: 1px solid color-mix(in oklab, var(--color-forest) 25%, var(--color-line));
+  border-radius: 28px;
+  /* Two-part shadow that does the heavy lifting for "you can see the
+     leading edge":
+       1. -y shadow — projects ABOVE the layer onto whatever is behind.
+          During the slide, this casts a dark band onto the previous
+          layer at the moment the new layer's top edge crosses it. The
+          card's `overflow: hidden` clips this once the layer settles
+          (top edge sits flush with the card's top), so it only shows
+          DURING motion — exactly when you want the edge to read.
+       2. +y shadow — modest bottom drop so the layer feels "lifted"
+          off the deck while sliding. Clipped at rest the same way. */
+  box-shadow:
+    0 -12px 32px -8px rgba(15, 25, 20, 0.22),
+    0 8px 20px -6px rgba(15, 25, 20, 0.10);
+  display: flex;
+  align-items: center;
+  padding: clamp(2rem, 4vw, 4rem);
+  will-change: transform;
+  /* No CSS transition — transform is driven directly by scroll so it
+     mirrors the user's wheel/touch input 1:1 (with the easeOutCubic
+     applied JS-side). A transition here would add latency and fight
+     the scroll-tied feel. */
+}
+
+/* Stepper below the card. Active segment widens and paints with the
+   gold gradient; past segments use a subtle filled state; upcoming
+   segments stay slim and faint. */
+.process-pinned__stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.process-pinned__step {
+  display: block;
+  height: 3px;
+  width: 22px;
+  border-radius: 999px;
+  background: var(--color-line);
+  transition:
+    width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 240ms linear,
+    opacity 240ms linear;
+  opacity: 0.6;
+}
+.process-pinned__step[data-past="true"] {
+  background: color-mix(in oklab, var(--color-forest) 30%, var(--color-line));
+  opacity: 0.85;
+}
+.process-pinned__step[data-active="true"] {
+  width: 48px;
+  background: var(--gold-grad);
+  opacity: 1;
+}
+
+/* Mobile fallback container. Hidden on desktop; takes over on mobile.
+   Has its own horizontal padding because the parent section is
+   full-bleed (`w-screen` + negative margin escape from main's padding),
+   so the mobile panels need to re-establish gutter space themselves. */
+.process-pinned__mobile {
+  display: none;
+}
+.process-pinned__mobile-panel {
+  padding: 3rem 1.5rem;
+  border-bottom: 1px solid var(--color-line);
+}
+.process-pinned__mobile-panel:last-child {
+  border-bottom: none;
+}
+
+/* Mobile / reduced-motion: collapse the pin runway, hide the desktop
+   stage, render every phase as a normal stacked section. */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .process-pinned {
+    height: auto;
+  }
+  .process-pinned__anchor {
+    position: relative;
+    top: auto !important;
+  }
+  .process-pinned__pin {
+    display: none;
+  }
+  .process-pinned__mobile {
+    display: block;
+  }
+}
+
 /* ---- Work modal backdrop fade-in ----
    Used by components/home/WorkModal.tsx. The panel itself uses inline JS
    transition (FLIP); this just covers the dim/blur curtain underneath. */
