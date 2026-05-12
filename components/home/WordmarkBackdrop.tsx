@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useDrawerProgress } from "@/components/home/ContactDrawerMount";
 
 /**
@@ -45,6 +46,22 @@ export function WordmarkBackdrop() {
     0,
     Math.min(1, (progress - APPEAR_AT) / FADE),
   );
+
+  // Mirror the fill opacity to a document-level CSS variable so the
+  // header's Wordmark (which lives outside the DrawerProgressContext
+  // tree) can sync its own gold-overlay opacity to ours without
+  // subscribing. On pages without the backdrop (no provider, no
+  // updates), the var defaults to 0 → header stays in its normal
+  // non-gold state.
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--vantage-fill",
+      String(opacity),
+    );
+    return () => {
+      document.documentElement.style.removeProperty("--vantage-fill");
+    };
+  }, [opacity]);
 
   return (
     <div

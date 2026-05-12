@@ -8,12 +8,51 @@ type Props = {
   className?: string;
 };
 
+/**
+ * Brand wordmark. The "Vantage" italic portion (full name or just the
+ * V in compact form) is rendered as a base ink layer with a gold
+ * gradient layer stacked on top via grid same-cell. The gold layer's
+ * opacity is tied to `--vantage-fill`, a CSS variable set by the home
+ * page's <WordmarkBackdrop /> as it fills with gold. On pages without
+ * the backdrop, the variable is unset → the gold layer falls back to
+ * opacity 0 and the wordmark reads as its normal ink color.
+ */
+
+const VANTAGE_FZ = "1.1rem";
+const VANTAGE_WEIGHT = 500;
+
+function VantageItalic({ text }: { text: string }) {
+  return (
+    <span className="relative inline-grid">
+      <span
+        className="font-display italic row-start-1 col-start-1"
+        style={{ fontWeight: VANTAGE_WEIGHT, fontSize: VANTAGE_FZ }}
+      >
+        {text}
+      </span>
+      <span
+        aria-hidden="true"
+        className="font-display italic row-start-1 col-start-1"
+        style={{
+          fontWeight: VANTAGE_WEIGHT,
+          fontSize: VANTAGE_FZ,
+          backgroundImage: "var(--gold-grad)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+          opacity: "var(--vantage-fill, 0)",
+        }}
+      >
+        {text}
+      </span>
+    </span>
+  );
+}
+
 export function Wordmark({ compact = false, asLink = true, className = "" }: Props) {
   const inner = compact ? (
     <span className="inline-flex items-baseline gap-1 leading-none">
-      <span className="font-display italic" style={{ fontWeight: 500, fontSize: "1.1rem" }}>
-        V
-      </span>
+      <VantageItalic text="V" />
       <span
         aria-hidden="true"
         className="inline-block h-1.5 w-1.5 rounded-full"
@@ -28,12 +67,7 @@ export function Wordmark({ compact = false, asLink = true, className = "" }: Pro
     </span>
   ) : (
     <span className="inline-flex items-baseline gap-2 leading-none">
-      <span
-        className="font-display italic"
-        style={{ fontWeight: 500, fontSize: "1.1rem" }}
-      >
-        Vantage
-      </span>
+      <VantageItalic text="Vantage" />
       <span
         className="font-sans uppercase text-ink-muted"
         style={{
