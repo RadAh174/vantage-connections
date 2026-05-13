@@ -28,16 +28,19 @@ import type { FeaturedWork } from "@/lib/content/home";
  * cells reads as a wall of squares; chapters let the eye rest and
  * give it something to read between rows.
  *
- * Chapter 1 — 8-card pattern (4 cols × 4 rows):
+ * Chapter 1 — 12-card pattern (4 cols × 6 rows):
  *   ┌───┬───┬───┬───┐
  *   │ B │ B │ W │ W │   row 1
  *   │ B │ B │ s │ s │   row 2
  *   │ B │ B │ s │ s │   row 3
  *   │ B │ B │ W │ W │   row 4
+ *   │ W │ W │ W │ W │   row 5 — 2×2 real-estate grid (rows 5-6)
+ *   │ W │ W │ W │ W │   row 6
  *   └───┴───┴───┴───┘
- *   Two BIG anchors stacked on the left, satellites on the right —
- *   the right rail now reads WIDE → 2 SMALL → 2 SMALL → WIDE, an
- *   inverted symmetry to the BIG/BIG anchors on the left.
+ *   Top block (rows 1-4): two BIG anchors on the left, asymmetric
+ *   satellites on the right (WIDE → 2 SMALL → 2 SMALL → WIDE).
+ *   Bottom block (rows 5-6): a clean 2×2 grid of four WIDE cells
+ *   holding the luxury real-estate portfolio reference set.
  *
  * Chapter 2 — 6-card pattern (4 cols × 3 rows):
  *   ┌───┬───┬───┬───┐
@@ -63,18 +66,26 @@ const PATTERN_6: readonly string[] = [
   "lg:col-span-2 lg:row-span-1", // 5 — WIDE
 ];
 
-// 8-card pattern: 2 BIG + 4 SMALL + 2 WIDE = 16 cells, 4 rows.
-// Two BIG anchors on the left rail, satellites on the right. Right rail
-// is WIDE → 2 SMALL → 2 SMALL → WIDE (top-and-bottom anchored).
-const PATTERN_8: readonly string[] = [
-  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor
-  "lg:col-span-2 lg:row-span-1", // 1 — WIDE
-  "lg:col-span-1 lg:row-span-1", // 2 — SMALL
-  "lg:col-span-1 lg:row-span-1", // 3 — SMALL
-  "lg:col-span-2 lg:row-span-2", // 4 — BIG anchor
-  "lg:col-span-1 lg:row-span-1", // 5 — SMALL
-  "lg:col-span-1 lg:row-span-1", // 6 — SMALL
-  "lg:col-span-2 lg:row-span-1", // 7 — WIDE
+// 12-card pattern: 8-card top block + 2×2 grid of 4 WIDE cells.
+// Top block (slots 0-7) is the same shape as the prior PATTERN_8.
+// Bottom block (slots 8-11) is a clean 2×2 of WIDE cells holding the
+// luxury real-estate portfolio reference set — WIDE cells keep the
+// chapter from getting comically tall AND pair with the 16:10
+// screenshot capture used for wide cells, which fits real-estate
+// hero imagery well.
+const PATTERN_12: readonly string[] = [
+  "lg:col-span-2 lg:row-span-2", // 0  — BIG anchor
+  "lg:col-span-2 lg:row-span-1", // 1  — WIDE
+  "lg:col-span-1 lg:row-span-1", // 2  — SMALL
+  "lg:col-span-1 lg:row-span-1", // 3  — SMALL
+  "lg:col-span-2 lg:row-span-2", // 4  — BIG anchor
+  "lg:col-span-1 lg:row-span-1", // 5  — SMALL
+  "lg:col-span-1 lg:row-span-1", // 6  — SMALL
+  "lg:col-span-2 lg:row-span-1", // 7  — WIDE
+  "lg:col-span-2 lg:row-span-1", // 8  — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 9  — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 10 — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 11 — WIDE (2×2 grid)
 ];
 
 type Chapter = {
@@ -94,16 +105,21 @@ const CHAPTERS: readonly Chapter[] = [
     eyebrow: "MARKETING SURFACES",
     title: "Where clients meet you for the first time.",
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
-    pattern: PATTERN_8,
+    pattern: PATTERN_12,
     slugs: [
-      "test-juliette-hohnen",     // BIG
+      "test-kumara-wilcoxon",     // BIG  (replaces juliette as the anchor)
       "jenny-smith",              // WIDE (real)
       "pacific-family-dental",    // SMALL (real)
       "test-studio-mcgee",        // SMALL
-      "black-diamond",            // BIG (real)
+      "black-diamond",            // BIG  (real)
       "test-daylight",            // SMALL
       "test-amber-interior",      // SMALL
       "pioneer-engineer",         // WIDE (real)
+      // 2×2 luxury real-estate portfolio grid:
+      "test-aaron-kirman",        // WIDE
+      "test-saslove-warwick",     // WIDE
+      "test-ginger-martin",       // WIDE
+      "test-eklund-gomes",        // WIDE
     ],
   },
   {

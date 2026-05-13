@@ -406,21 +406,107 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
-  // TEST: REMOVE BEFORE LAUNCH — luxury real-estate brand site.
+  // TEST: REMOVE BEFORE LAUNCH — Austin luxury real estate
+  // (Kuper Sotheby's, $1B+ sales). Replaces the earlier juliette-hohnen
+  // entry as the BIG anchor in chapter 1.
   {
-    slug: "test-juliette-hohnen",
-    client: "Juliette Hohnen",
-    title: "Luxury real-estate brand",
+    slug: "test-kumara-wilcoxon",
+    client: "Kumara Wilcoxon",
+    title: "Austin luxury real-estate brand",
     tagline: undefined,
     tags: ["TEST"],
     category: "Editorial",
     metadata: {
-      client: "Juliette Hohnen",
+      client: "Kumara Wilcoxon",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://juliettehohnen.com",
+      liveUrl: "https://kumarawilcoxon.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — LA luxury real estate
+  // (Christie's International, #1 luxury agent in LA).
+  {
+    slug: "test-aaron-kirman",
+    client: "Aaron Kirman",
+    title: "LA luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Aaron Kirman",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://aaronkirman.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — Aspen luxury real estate
+  // (Douglas Elliman, $5B+ team sales).
+  {
+    slug: "test-saslove-warwick",
+    client: "Saslove & Warwick",
+    title: "Aspen luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Saslove & Warwick",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://saslovewarwick.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — Napa/Sonoma wine-country luxury
+  // (Sotheby's International, $3B+ sales).
+  {
+    slug: "test-ginger-martin",
+    client: "Ginger Martin + Co",
+    title: "Napa Valley luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Ginger Martin + Co",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://gingermartin.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — NYC/LA/Miami luxury real estate
+  // (Douglas Elliman, $10B+ in last decade).
+  {
+    slug: "test-eklund-gomes",
+    client: "Eklund | Gomes",
+    title: "NYC luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Eklund | Gomes",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://eklundgomes.com",
     },
     brief: "",
     approach: "",

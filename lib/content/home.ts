@@ -111,12 +111,14 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://supabase.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH — luxury real-estate brand site (BH).
+  // TEST: REMOVE BEFORE LAUNCH — Austin luxury real estate
+  // (Kuper Sotheby's, $1B+). Replaced the earlier juliette-hohnen entry
+  // when chapter 1 of the work gallery picked Kumara as the BIG anchor.
   {
-    slug: "test-juliette-hohnen",
-    client: "Juliette Hohnen",
-    title: "Test entry — luxury real-estate brand",
-    liveUrl: "https://juliettehohnen.com",
+    slug: "test-kumara-wilcoxon",
+    client: "Kumara Wilcoxon",
+    title: "Test entry — Austin luxury real-estate brand",
+    liveUrl: "https://kumarawilcoxon.com",
     tags: ["TEST"],
   },
   // TEST: REMOVE BEFORE LAUNCH — interior design firm (editorial-grade)
