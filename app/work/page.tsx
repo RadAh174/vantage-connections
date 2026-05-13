@@ -30,12 +30,14 @@ import type { FeaturedWork } from "@/lib/content/home";
  *
  * Chapter 1 — 8-card pattern (4 cols × 4 rows):
  *   ┌───┬───┬───┬───┐
- *   │ B │ B │ s │ s │   row 1
- *   │ B │ B │ W │ W │   row 2
+ *   │ B │ B │ W │ W │   row 1
+ *   │ B │ B │ s │ s │   row 2
  *   │ B │ B │ s │ s │   row 3
  *   │ B │ B │ W │ W │   row 4
  *   └───┴───┴───┴───┘
- *   Two BIG anchors stacked on the left, satellites on the right.
+ *   Two BIG anchors stacked on the left, satellites on the right —
+ *   the right rail now reads WIDE → 2 SMALL → 2 SMALL → WIDE, an
+ *   inverted symmetry to the BIG/BIG anchors on the left.
  *
  * Chapter 2 — 6-card pattern (4 cols × 3 rows):
  *   ┌───┬───┬───┬───┐
@@ -62,12 +64,13 @@ const PATTERN_6: readonly string[] = [
 ];
 
 // 8-card pattern: 2 BIG + 4 SMALL + 2 WIDE = 16 cells, 4 rows.
-// Two BIG anchors on the left rail, satellites on the right.
+// Two BIG anchors on the left rail, satellites on the right. Right rail
+// is WIDE → 2 SMALL → 2 SMALL → WIDE (top-and-bottom anchored).
 const PATTERN_8: readonly string[] = [
   "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor
-  "lg:col-span-1 lg:row-span-1", // 1 — SMALL
+  "lg:col-span-2 lg:row-span-1", // 1 — WIDE
   "lg:col-span-1 lg:row-span-1", // 2 — SMALL
-  "lg:col-span-2 lg:row-span-1", // 3 — WIDE
+  "lg:col-span-1 lg:row-span-1", // 3 — SMALL
   "lg:col-span-2 lg:row-span-2", // 4 — BIG anchor
   "lg:col-span-1 lg:row-span-1", // 5 — SMALL
   "lg:col-span-1 lg:row-span-1", // 6 — SMALL
@@ -93,14 +96,14 @@ const CHAPTERS: readonly Chapter[] = [
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
     pattern: PATTERN_8,
     slugs: [
-      "jenny-smith",              // BIG (real)
+      "test-juliette-hohnen",     // BIG
+      "jenny-smith",              // WIDE (real)
       "pacific-family-dental",    // SMALL (real)
-      "test-compass",             // SMALL
-      "patriot-plumbing",         // WIDE (real)
-      "black-diamond",            // BIG (real)
       "test-studio-mcgee",        // SMALL
+      "black-diamond",            // BIG (real)
+      "test-daylight",            // SMALL
       "test-amber-interior",      // SMALL
-      "test-daylight",            // WIDE
+      "pioneer-engineer",         // WIDE (real)
     ],
   },
   {
@@ -149,14 +152,23 @@ function CollageCard({
   onOpen: (project: FeaturedProject, rect: DOMRect) => void;
 }) {
   const liveUrl = project.metadata.liveUrl;
-  // mShots `w`/`h` are output dimensions, NOT capture viewport — without
-  // explicit `vpw`/`vph`, mShots' default viewport can be served the
-  // site's mobile breakpoint when its UA gets sniffed mobile, producing
-  // a phone-shaped thumbnail. Forcing `vpw=1440&vph=900` makes mShots
-  // render the page at desktop width every time, then output at our
-  // requested 2000×1250.
+  // Cell-aware screenshot aspect via mShots:
+  //   - WIDE cells (col-span-2 row-span-1, ~2.5:1) get a 16:10 capture.
+  //     The flatter image matches the flatter container, so object-cover
+  //     shows the full width with only a small slice of bottom cropped.
+  //   - BIG / SMALL cells (~1.15:1) get a 1:1 capture. Squarer image
+  //     into squarer container means object-cover keeps the full width
+  //     and a tall slice of the page top — no "zoomed-in middle" feel
+  //     that a 16:10 image produced in these cells.
+  // mShots `w`/`h` set the output dimensions; `vpw`/`vph` set the
+  // browser viewport at capture time (forces desktop layout regardless
+  // of UA-sniff).
+  const isWideCell = span === "lg:col-span-2 lg:row-span-1";
+  const captureParams = isWideCell
+    ? "w=2000&h=1250&vpw=1440&vph=900"
+    : "w=2000&h=2000&vpw=1440&vph=1440";
   const screenshotUrl = liveUrl
-    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?w=2000&h=1250&vpw=1440&vph=900`
+    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?${captureParams}`
     : null;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,7 +183,7 @@ function CollageCard({
         type="button"
         onClick={handleClick}
         aria-label={`Open ${project.client} preview`}
-        className="group relative block h-full w-full overflow-hidden rounded-lg border border-line/40 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5),_0_2px_8px_rgba(0,0,0,0.08)] aspect-[16/10] lg:aspect-auto transition-transform duration-500 ease-out hover:scale-[1.04] hover:z-10 will-change-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-bg text-left"
+        className="group relative block h-full w-full overflow-hidden rounded-lg border border-line/40 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5),_0_2px_8px_rgba(0,0,0,0.08)] aspect-[16/10] lg:aspect-auto bg-surface-calm transition-transform duration-500 ease-out hover:scale-[1.04] hover:z-10 will-change-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-bg text-left"
       >
         {screenshotUrl ? (
           // eslint-disable-next-line @next/next/no-img-element

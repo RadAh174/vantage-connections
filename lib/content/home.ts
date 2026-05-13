@@ -65,6 +65,16 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://vantageconnections-blackdiamond.vercel.app/",
     tags: ["Marketing site", "Service"],
   },
+  // Real client — industrial automation services, Mission Viejo CA.
+  // Sits next to black-diamond so the two real services entries cluster
+  // visibly on the ring.
+  {
+    slug: "pioneer-engineer",
+    client: "Pioneer Engineer",
+    title: "Industrial automation services",
+    liveUrl: "https://pioneer-engineer.vercel.app/",
+    tags: ["Marketing site", "Service"],
+  },
   // TEST: REMOVE BEFORE LAUNCH — verified iframe-allowed via curl headers.
   // Iana / Vercel / Next.js / Clerk / Resend all set X-Frame-Options DENY
   // and were swapped out. The four below allow embedding (no X-Frame-Options,
@@ -101,12 +111,12 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://supabase.com",
     tags: ["TEST"],
   },
-  // TEST: REMOVE BEFORE LAUNCH — modern real estate brokerage
+  // TEST: REMOVE BEFORE LAUNCH — luxury real-estate brand site (BH).
   {
-    slug: "test-compass",
-    client: "Compass",
-    title: "Test entry — modern real estate brokerage",
-    liveUrl: "https://www.compass.com",
+    slug: "test-juliette-hohnen",
+    client: "Juliette Hohnen",
+    title: "Test entry — luxury real-estate brand",
+    liveUrl: "https://juliettehohnen.com",
     tags: ["TEST"],
   },
   // TEST: REMOVE BEFORE LAUNCH — interior design firm (editorial-grade)
@@ -117,8 +127,8 @@ export const featuredWork: FeaturedWork[] = [
     liveUrl: "https://studio-mcgee.com",
     tags: ["TEST"],
   },
-  // Real client — PredictBase v2 (v2.predictbase.app). Sits at index 7
-  // while v1 sits at index 2 → ~150° apart on the 30°-per-item ring,
+  // Real client — PredictBase v2 (v2.predictbase.app). Sits at index 8
+  // while v1 sits at index 3 → ~5 indices apart on a 13-item ring,
   // so the two PredictBase cards are visibly spread, not adjacent.
   {
     slug: "predictbase-v2",

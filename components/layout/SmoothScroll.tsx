@@ -30,12 +30,12 @@ import Lenis from "lenis";
 export function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      // Lighter coast — was 1.35 (middle-ground), now 1.0. Still adds
-      // smoothing over native scroll but feels markedly less weighty;
-      // wheel input resolves to its target ~25% faster. Drop further
-      // (0.7–0.9) for an even snappier feel; raise back toward 1.3+
-      // if smoothing reads as too clipped.
-      duration: 1.0,
+      // Light coast — was 1.0, now 0.7. Lenis is mounted in the root
+      // layout so this affects every page. Most of the smoothing is
+      // gone; what's left is a thin lerp that softens wheel snapping
+      // without adding noticeable inertia. Drop to 0.5 for "almost
+      // native" feel; raise back toward 1.0+ for more coast.
+      duration: 0.7,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       wheelMultiplier: 1,
       // Don't intercept on elements (or their descendants) that opt out.

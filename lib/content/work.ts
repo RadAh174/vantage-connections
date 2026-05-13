@@ -91,6 +91,7 @@ export const filters: WorkFilter[] = [
 //   - Pacific Family Dental
 //   - Jenny Smith
 //   - Patriot Plumbing
+//   - Pioneer Engineer
 // Test entries (`slug: "test-..."`, `tags: ["TEST"]`) are public
 // reference sites mirrored from the home carousel — strip them
 // before any public push.
@@ -383,6 +384,47 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "",
     results: "",
     pullQuote: undefined,
+  },
+  // Real client — industrial automation services, Mission Viejo CA.
+  {
+    slug: "pioneer-engineer",
+    client: "Pioneer Engineer",
+    title: "Industrial automation services",
+    tagline: undefined,
+    tags: ["Marketing site", "Service"],
+    category: "Service",
+    metadata: {
+      client: "Pioneer Engineer",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://pioneer-engineer.vercel.app/",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH — luxury real-estate brand site.
+  {
+    slug: "test-juliette-hohnen",
+    client: "Juliette Hohnen",
+    title: "Luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Juliette Hohnen",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://juliettehohnen.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
   },
 ];
 
