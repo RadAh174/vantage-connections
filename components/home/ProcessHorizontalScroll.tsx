@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AuroraHairline } from "@/components/ui/AuroraHairline";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { phaseDetails, type PhaseDetail } from "@/lib/content/process";
@@ -58,8 +58,37 @@ export function ProcessHorizontalScroll() {
   const parentRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [showHint, setShowHint] = useState(false);
+  const hintShownRef = useRef(false);
   const phases = phaseDetails;
   const cardCount = phases.length;
+
+  // Ephemeral "scroll down" hint — appears the first time the section
+  // enters the viewport, fades out via its own CSS animation (~4s).
+  // Once shown, never shows again in the session. Helps first-time
+  // visitors realize the cards advance on VERTICAL scroll even though
+  // they translate horizontally.
+  useEffect(() => {
+    const parent = parentRef.current;
+    if (!parent) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hintShownRef.current) {
+          hintShownRef.current = true;
+          setShowHint(true);
+          // Match the keyframes total — 4.2s — then unmount the node
+          // so it doesn't stay around as a stale fixed element.
+          window.setTimeout(() => setShowHint(false), 4200);
+        }
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(parent);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const parent = parentRef.current;
@@ -195,6 +224,18 @@ export function ProcessHorizontalScroll() {
             <PhaseCard key={phase.number} phase={phase} />
           ))}
         </div>
+
+        {/* Ephemeral hint — fixed at the bottom of the viewport so it
+            doesn't compete with card content. Shows once, fades out. */}
+        {showHint && (
+          <div
+            aria-hidden
+            className="process-horizontal__hint"
+          >
+            <span className="process-horizontal__hint-label">SCROLL</span>
+            <span className="process-horizontal__hint-arrow">↓</span>
+          </div>
+        )}
       </div>
     </section>
   );

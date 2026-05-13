@@ -438,11 +438,57 @@ html.light { --shine-band: var(--color-headline); }
    make the track wrap into a vertical stack so all cards are reachable. */
 
 .process-horizontal {
-  height: calc(var(--card-count, 4) * 160vh);
+  /* 80vh per card — was 160vh. Roughly half the wheel input needed to
+     traverse the carousel. Pin height stays at 70vh; lowering this
+     value only speeds up the scroll-to-translate mapping. */
+  height: calc(var(--card-count, 4) * 80vh);
 }
 
 .process-horizontal__pin {
   height: 70vh;
+}
+
+/* Ephemeral "scroll down" hint — appears on first intersection of the
+   horizontal section, fades through opacity over ~4.2s, then unmounts.
+   Pinned to bottom-center of viewport so it sits under the carousel
+   without overlapping card content. */
+.process-horizontal__hint {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  animation: process-horizontal-hint-life 4.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.process-horizontal__hint-arrow {
+  font-size: 14px;
+  line-height: 1;
+  animation: process-horizontal-hint-bounce 1.4s ease-in-out infinite;
+}
+@keyframes process-horizontal-hint-life {
+  0%   { opacity: 0; transform: translate(-50%, 12px); }
+  10%  { opacity: 0.85; transform: translate(-50%, 0); }
+  85%  { opacity: 0.85; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -12px); }
+}
+@keyframes process-horizontal-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .process-horizontal__hint,
+  .process-horizontal__hint-arrow {
+    animation: none;
+  }
 }
 
 /* Collapse to a vertical card stack when:

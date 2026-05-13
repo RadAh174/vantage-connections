@@ -79,9 +79,11 @@ export function ContactDrawerMount({ children }: Props) {
       <div
         ref={runwayRef}
         className="relative"
-        // Outer = sticky height (100dvh) + slide distance (50dvh).
+        // Outer = sticky height (100dvh) + slide distance (70dvh).
+        // Was 150dvh (50dvh slide). Increased so the drawer takes a bit
+        // more scroll to rise — feels slightly less eager.
         // dvh keeps the math honest as iOS Safari's URL bar collapses.
-        style={{ height: "150dvh" }}
+        style={{ height: "170dvh" }}
       >
         <div
           className="sticky top-0 w-full"
