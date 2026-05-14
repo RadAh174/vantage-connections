@@ -197,15 +197,38 @@ export function Header() {
               aria-label="Primary"
               className="hidden md:flex items-center gap-6 text-[13px] text-ink-muted"
             >
-              {site.nav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="hover:text-forest transition-colors py-1"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {site.nav.map((item) => {
+                // Active when the current pathname matches the nav href
+                // exactly, OR when the pathname is a child route under
+                // it (e.g. `/work/black-diamond` lights up `/work`).
+                // Home (`/`) is excluded from the prefix rule because
+                // every path starts with `/` — would otherwise mark
+                // Home active on every page.
+                const active =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname === item.href ||
+                      pathname.startsWith(item.href + "/");
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative py-1 transition-colors ${
+                      active ? "text-forest" : "hover:text-forest"
+                    }`}
+                  >
+                    {item.label}
+                    {active && (
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px w-3 rounded-full opacity-80"
+                        style={{ backgroundImage: "var(--gold-grad)" }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="flex items-center gap-3">
