@@ -48,7 +48,7 @@ const ITEM_ANGLE_DEG = 30; // 12 items × 30° = 360° → complete ring at the
                             // tightest comfortable spacing for R=1200
                             // (chord ≈ 621px ≈ 45px gap from card width 576).
 const AUTO_ROTATION_PERIOD_MS = 240_000; // 4 min per revolution — half-speed drift
-const DEGREES_PER_PIXEL = 0.06; // drag rotation — even slower so the user feels each card "settle" rather than fly past.
+const DEGREES_PER_PIXEL = 0.02; // drag rotation — 1/3 of the prior 0.06 so each card feels like a deliberate pull, not a flick.
 const DEGREES_PER_WHEEL_PX = 0.1; // sideways wheel/trackpad → rotation. Much slower per-tick to match drag.
 const RESUME_DELAY_MS = 0; // resume auto-rotate the moment the cursor leaves
 // Hover-pause removed — carousel keeps drifting even with cursor over it.
