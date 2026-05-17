@@ -106,13 +106,13 @@ export default function PricingPage() {
           {pricingTiers.length === 0 ? (
             <Reveal>
               <div className="rounded-xl border border-line bg-surface-calm px-6 md:px-8 py-10 md:py-14 flex flex-col gap-5 items-start max-w-3xl">
-                <Eyebrow color="ink-muted">TIERS · TODO</Eyebrow>
+                <Eyebrow color="forest">ENGAGEMENT MODEL</Eyebrow>
                 <p
                   className="font-display text-[22px] md:text-[28px] leading-tight text-ink"
                   style={{ fontWeight: 500 }}
                 >
-                  Tiered pricing finalized for May 2026 launch — get in touch
-                  for a tailored quote.
+                  Pricing is scoped per engagement — Starter, Standard,
+                  Bespoke. Get in touch for a tailored quote.
                 </p>
                 <p className="text-ink-muted text-[15px] max-w-xl leading-relaxed">
                   Every project is scoped honestly — what it costs, what it
@@ -240,9 +240,10 @@ export default function PricingPage() {
               {faqs.length === 0 ? (
                 <Reveal>
                   <div className="rounded-xl border border-line bg-surface-calm px-6 py-8 max-w-xl flex flex-col gap-2">
-                    <Eyebrow color="ink-muted">FAQ · TODO</Eyebrow>
+                    <Eyebrow color="forest">QUESTIONS</Eyebrow>
                     <p className="font-mono text-[13px] text-ink-muted">
-                      FAQ coming with launch.
+                      Specific question? Reach out below — usually answered
+                      within 24 hours.
                     </p>
                     {/* TODO_PRICING_FAQS: fill lib/content/pricing.ts > faqs. */}
                   </div>

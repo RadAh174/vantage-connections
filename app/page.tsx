@@ -312,13 +312,12 @@ export default function HomePage() {
             {home.featuredWork.length === 0 ? (
               <Reveal>
                 <div className="rounded-xl border border-line bg-surface-calm px-8 py-14 flex flex-col gap-4 items-start max-w-2xl">
-                  <Eyebrow color="ink-muted">EMPTY · TODO</Eyebrow>
+                  <Eyebrow color="forest">SELECTED WORK</Eyebrow>
                   <p
                     className="font-display text-[24px] leading-tight text-ink"
                     style={{ fontWeight: 500 }}
                   >
-                    Selected work coming soon — we&apos;re shipping the first
-                    cohort May 2026.
+                    Curated quarterly. Reach out to see the current portfolio.
                   </p>
                   <p className="text-ink-muted text-[14px] font-mono">
                     {/* TODO_FEATURED_WORK: fill home.ts > featuredWork with
@@ -326,7 +325,7 @@ export default function HomePage() {
                     Real projects only. No stock screenshots, no fake brands.
                   </p>
                   <Button href="/contact" variant="secondary" size="md">
-                    Be the first
+                    Start a project
                   </Button>
                 </div>
               </Reveal>

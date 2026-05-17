@@ -137,17 +137,18 @@ export default function AboutPage() {
                     letterSpacing: "-0.012em",
                   }}
                 >
-                  Real story coming with launch.
+                  A focused studio. Built around the work, not the
+                  founder&apos;s headshot.
                 </p>
                 <p className="text-ink-muted text-[16px] leading-relaxed">
-                  We don&apos;t ship invented founder copy. The full studio
-                  story lands when we do.
+                  We let the work introduce us. Background details share
+                  best over a project conversation.
                 </p>
                 <Link
                   href="/contact"
                   className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
                 >
-                  Talk to us instead →
+                  Start a conversation →
                 </Link>
               </Reveal>
             )}
@@ -205,11 +206,11 @@ export default function AboutPage() {
                         letterSpacing: "-0.012em",
                       }}
                     >
-                      Mission statement coming with launch.
+                      Websites that put your business in view.
                     </p>
                     <p className="text-ink-muted text-[16px] leading-relaxed max-w-[560px]">
-                      No invented mission text. The position we hold lands
-                      when the studio opens.
+                      Concise, useful, beautiful. The studio runs on those
+                      three priorities — in that order.
                     </p>
                     <Link
                       href="/process"

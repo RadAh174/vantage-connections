@@ -23,8 +23,8 @@ export type Tool = {
 
 /**
  * Bio. TODO: replace with the real bio once finalized. Empty string →
- * the about page renders an honest "Bio coming soon" placeholder.
- * NEVER invent a bio. NEVER write a stand-in.
+ * the about page renders an evergreen "focused studio, work introduces
+ * us" placeholder. NEVER invent a bio. NEVER write a stand-in.
  */
 export const bio = "" as string;
 

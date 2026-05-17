@@ -28,64 +28,45 @@ import type { FeaturedWork } from "@/lib/content/home";
  * cells reads as a wall of squares; chapters let the eye rest and
  * give it something to read between rows.
  *
- * Chapter 1 — 12-card pattern (4 cols × 6 rows):
+ * Chapter 1 — 5-card pattern (4 cols × 3 rows):
  *   ┌───┬───┬───┬───┐
  *   │ B │ B │ W │ W │   row 1
  *   │ B │ B │ s │ s │   row 2
- *   │ B │ B │ s │ s │   row 3
- *   │ B │ B │ W │ W │   row 4
- *   │ W │ W │ W │ W │   row 5 — 2×2 real-estate grid (rows 5-6)
- *   │ W │ W │ W │ W │   row 6
+ *   │ F │ F │ F │ F │   row 3 — full-width banner
  *   └───┴───┴───┴───┘
- *   Top block (rows 1-4): two BIG anchors on the left, asymmetric
- *   satellites on the right (WIDE → 2 SMALL → 2 SMALL → WIDE).
- *   Bottom block (rows 5-6): a clean 2×2 grid of four WIDE cells
- *   holding the luxury real-estate portfolio reference set.
+ *   BIG anchor on the left, asymmetric WIDE + 2 SMALL satellites on
+ *   the right, full-width WIDE banner closing the chapter.
  *
- * Chapter 2 — 6-card pattern (4 cols × 3 rows):
+ * Chapter 2 — 2-card pattern (4 cols × 2 rows):
  *   ┌───┬───┬───┬───┐
- *   │ B │ B │ s │ s │   row 1
- *   │ B │ B │ W │ W │   row 2
- *   │ W │ W │ W │ W │   row 3
+ *   │ B │ B │ B │ B │   row 1
+ *   │ B │ B │ B │ B │   row 2
  *   └───┴───┴───┴───┘
+ *   Two BIG anchors side by side — the two PredictBase versions as a
+ *   matched pair.
  *
- * BIG = col-span 2 / row-span 2  |  W = col-span 2  |  s = col-span 1
+ * BIG = col-span 2 / row-span 2  |  W = col-span 2  |  s = col-span 1  |  F = col-span 4
  *
  * Click → opens the same fullscreen `WorkModal` the home carousel
  * uses (FLIP from the originating card → 96vw × 96dvh viewer with the
  * live site in an iframe).
  */
 
-// 6-card pattern: 1 BIG + 2 SMALL + 3 WIDE = 12 cells, 3 rows.
-const PATTERN_6: readonly string[] = [
-  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor
-  "lg:col-span-1 lg:row-span-1", // 1 — SMALL
-  "lg:col-span-1 lg:row-span-1", // 2 — SMALL
-  "lg:col-span-2 lg:row-span-1", // 3 — WIDE
-  "lg:col-span-2 lg:row-span-1", // 4 — WIDE
-  "lg:col-span-2 lg:row-span-1", // 5 — WIDE
+// 5-card pattern for chapter 1 (4 cols × 3 rows): BIG anchor + WIDE +
+// 2 SMALL satellites + full-width banner closer.
+const PATTERN_5: readonly string[] = [
+  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor (rows 1-2, cols 1-2)
+  "lg:col-span-2 lg:row-span-1", // 1 — WIDE (row 1, cols 3-4)
+  "lg:col-span-1 lg:row-span-1", // 2 — SMALL (row 2, col 3)
+  "lg:col-span-1 lg:row-span-1", // 3 — SMALL (row 2, col 4)
+  "lg:col-span-4 lg:row-span-1", // 4 — Full-width banner (row 3)
 ];
 
-// 12-card pattern: 8-card top block + 2×2 grid of 4 WIDE cells.
-// Top block (slots 0-7) is the same shape as the prior PATTERN_8.
-// Bottom block (slots 8-11) is a clean 2×2 of WIDE cells holding the
-// luxury real-estate portfolio reference set — WIDE cells keep the
-// chapter from getting comically tall AND pair with the 16:10
-// screenshot capture used for wide cells, which fits real-estate
-// hero imagery well.
-const PATTERN_12: readonly string[] = [
-  "lg:col-span-2 lg:row-span-2", // 0  — BIG anchor
-  "lg:col-span-2 lg:row-span-1", // 1  — WIDE
-  "lg:col-span-1 lg:row-span-1", // 2  — SMALL
-  "lg:col-span-1 lg:row-span-1", // 3  — SMALL
-  "lg:col-span-2 lg:row-span-2", // 4  — BIG anchor
-  "lg:col-span-1 lg:row-span-1", // 5  — SMALL
-  "lg:col-span-1 lg:row-span-1", // 6  — SMALL
-  "lg:col-span-2 lg:row-span-1", // 7  — WIDE
-  "lg:col-span-2 lg:row-span-1", // 8  — WIDE (2×2 grid)
-  "lg:col-span-2 lg:row-span-1", // 9  — WIDE (2×2 grid)
-  "lg:col-span-2 lg:row-span-1", // 10 — WIDE (2×2 grid)
-  "lg:col-span-2 lg:row-span-1", // 11 — WIDE (2×2 grid)
+// 2-card pattern for chapter 2 (4 cols × 2 rows): two BIG anchors
+// side by side — the two PredictBase versions as a matched pair.
+const PATTERN_2: readonly string[] = [
+  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor (cols 1-2)
+  "lg:col-span-2 lg:row-span-2", // 1 — BIG anchor (cols 3-4)
 ];
 
 type Chapter = {
@@ -105,21 +86,13 @@ const CHAPTERS: readonly Chapter[] = [
     eyebrow: "MARKETING SURFACES",
     title: "Where clients meet you for the first time.",
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
-    pattern: PATTERN_12,
+    pattern: PATTERN_5,
     slugs: [
-      "test-kumara-wilcoxon",     // BIG  (replaces juliette as the anchor)
-      "jenny-smith",              // WIDE (real)
-      "pacific-family-dental",    // SMALL (real)
-      "test-studio-mcgee",        // SMALL
-      "black-diamond",            // BIG  (real)
-      "test-daylight",            // SMALL
-      "test-amber-interior",      // SMALL
-      "pioneer-engineer",         // WIDE (real)
-      // 2×2 luxury real-estate portfolio grid:
-      "test-aaron-kirman",        // WIDE
-      "test-saslove-warwick",     // WIDE
-      "test-ginger-martin",       // WIDE
-      "test-eklund-gomes",        // WIDE
+      "black-diamond",            // BIG anchor — most photographed
+      "pioneer-engineer",         // WIDE — industrial banner energy
+      "pacific-family-dental",    // SMALL
+      "jenny-smith",              // SMALL
+      "patriot-plumbing",         // Full-width banner closer
     ],
   },
   {
@@ -127,14 +100,10 @@ const CHAPTERS: readonly Chapter[] = [
     eyebrow: "PRODUCT SURFACES",
     title: "Where users live, day after day.",
     body: "Dashboards, SaaS UIs, and product interfaces — the work that has to actually function. Not flashy for a screenshot; readable on the 200th visit.",
-    pattern: PATTERN_6,
+    pattern: PATTERN_2,
     slugs: [
-      "predictbase",              // BIG (real)
-      "test-shadcn",              // SMALL
-      "test-cal",                 // SMALL
-      "test-supabase",            // WIDE
-      "predictbase-v2",           // WIDE (real)
-      "test-retool",              // WIDE
+      "predictbase",              // BIG — v1
+      "predictbase-v2",           // BIG — v2
     ],
   },
 ];
@@ -168,24 +137,49 @@ function CollageCard({
   onOpen: (project: FeaturedProject, rect: DOMRect) => void;
 }) {
   const liveUrl = project.metadata.liveUrl;
-  // Cell-aware screenshot aspect via mShots:
-  //   - WIDE cells (col-span-2 row-span-1, ~2.5:1) get a 16:10 capture.
-  //     The flatter image matches the flatter container, so object-cover
-  //     shows the full width with only a small slice of bottom cropped.
-  //   - BIG / SMALL cells (~1.15:1) get a 1:1 capture. Squarer image
-  //     into squarer container means object-cover keeps the full width
-  //     and a tall slice of the page top — no "zoomed-in middle" feel
-  //     that a 16:10 image produced in these cells.
-  // mShots `w`/`h` set the output dimensions; `vpw`/`vph` set the
-  // browser viewport at capture time (forces desktop layout regardless
-  // of UA-sniff).
+  // Fallback chain (primary → fallback → text):
+  //   1. thum.io — streams a real screenshot immediately (no
+  //      placeholder-while-generating phase). Free tier (1000/mo, no
+  //      signup). Primary because mShots' silent-placeholder behavior
+  //      caused "thumbnails are random on refresh" — its generated
+  //      image isn't ready on first request and it returns a blank
+  //      placeholder that the browser treats as a successful load.
+  //   2. mShots (s.wordpress.com/mshots) — fallback when thum.io errors
+  //      out (e.g. quota exhausted). Output dims match capture viewport
+  //      so mShots isn't asked to upscale.
+  //   3. Typographic text fallback — if both services fail, show the
+  //      client name + "preview unavailable" so the cell never reads
+  //      as empty.
+  // Cell-aware capture aspect:
+  //   - WIDE cells (~2.5:1) get a 16:9 capture for mShots; thum.io
+  //     defaults to a wide capture too.
+  //   - BIG / SMALL cells (~1.15:1) get a 1:1 capture for mShots.
   const isWideCell = span === "lg:col-span-2 lg:row-span-1";
-  const captureParams = isWideCell
-    ? "w=2000&h=1250&vpw=1440&vph=900"
-    : "w=2000&h=2000&vpw=1440&vph=1440";
-  const screenshotUrl = liveUrl
-    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?${captureParams}`
+  const mshotsParams = isWideCell
+    ? "w=1440&h=900&vpw=1440&vph=900"
+    : "w=1440&h=1440&vpw=1440&vph=1440";
+  const thumioUrl = liveUrl
+    ? `https://image.thum.io/get/width/1440/noanimate/${liveUrl}`
     : null;
+  const mshotsUrl = liveUrl
+    ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?${mshotsParams}`
+    : null;
+
+  const [imgState, setImgState] = useState<"primary" | "fallback" | "failed">(
+    "primary",
+  );
+  const screenshotUrl =
+    imgState === "primary"
+      ? thumioUrl
+      : imgState === "fallback"
+        ? mshotsUrl
+        : null;
+
+  // Advance the fallback chain — used by both onError (HTTP failure)
+  // and onLoad (when the image loaded but is suspiciously small,
+  // suggesting it's a placeholder rather than a real screenshot).
+  const advanceFallback = () =>
+    setImgState((prev) => (prev === "primary" ? "fallback" : "failed"));
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!liveUrl) return;
@@ -204,16 +198,36 @@ function CollageCard({
         {screenshotUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            // `key` forces React to remount the <img> when src changes
+            // so the new request actually fires (some browsers won't
+            // re-fetch on src swap of the same element).
+            key={screenshotUrl}
             src={screenshotUrl}
             alt={`${project.client} — preview`}
             loading="lazy"
             referrerPolicy="no-referrer"
             draggable={false}
+            onError={advanceFallback}
+            onLoad={(e) => {
+              // Placeholder detection — if the image loaded but its
+              // natural dimensions are much smaller than what we
+              // requested, the service likely returned a placeholder
+              // instead of a real screenshot. Step to the next service.
+              const img = e.currentTarget;
+              if (img.naturalWidth < 600 || img.naturalHeight < 300) {
+                advanceFallback();
+              }
+            }}
             className="absolute inset-0 block h-full w-full object-cover object-top select-none"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-surface-calm text-ink-muted text-[12px] font-mono uppercase tracking-[0.18em]">
-            no preview
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-surface-calm px-4 text-center">
+            <span className="font-display text-ink text-[18px] leading-tight">
+              {project.client}
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
+              {liveUrl ? "preview unavailable" : "no preview"}
+            </span>
           </div>
         )}
 
@@ -467,20 +481,20 @@ export default function WorkPage() {
           <div className="mx-auto max-w-3xl">
             <Reveal>
               <div className="rounded-xl border border-line bg-surface-calm px-8 py-16 flex flex-col gap-5 items-start">
-                <Eyebrow color="ink-muted">EMPTY · TODO</Eyebrow>
+                <Eyebrow color="forest">SELECTED WORK</Eyebrow>
                 <p
                   className="font-display text-[28px] leading-tight text-ink"
                   style={{ fontWeight: 500 }}
                 >
-                  Case studies launch with the first cohort.
+                  Curated quarterly. Reach out to see the current portfolio.
                 </p>
                 <p className="text-ink-muted text-[15px] max-w-xl leading-relaxed">
-                  We don&apos;t fill this page with placeholder projects, stock
-                  imagery, or work we didn&apos;t finish. When real case
-                  studies ship, they&apos;ll live here.
+                  Every case study is built from a real engagement — no
+                  placeholder projects, no stock imagery, no work we
+                  didn&apos;t finish.
                 </p>
                 <Button href="/contact" variant="primary" size="lg">
-                  Be the first
+                  Start a project
                 </Button>
               </div>
             </Reveal>

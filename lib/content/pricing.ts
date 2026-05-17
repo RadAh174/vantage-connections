@@ -39,7 +39,8 @@ export const pricingTiers: PricingTier[] = [];
 
 /**
  * TODO_PRICING_FAQS: user fills with real FAQ content.
- * Empty array → FAQ section renders an honest "FAQ coming with launch" line.
+ * Empty array → FAQ section renders an evergreen "reach out for
+ * specific questions" line.
  */
 export const faqs: PricingFAQ[] = [];
 

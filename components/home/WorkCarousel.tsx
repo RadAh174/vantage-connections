@@ -11,8 +11,8 @@ import { WorkModal } from "@/components/home/WorkModal";
  * never spin a lone card (looks like a bug); we never invent extras to fill
  * a ring (forbidden by content rules).
  *
- *   1 item    → centered single card, auto-rotation off, honest tagline
- *               below ("First of more, shipping through 2026").
+ *   1 item    → centered single card, auto-rotation off, tagline
+ *               below ("Selected work · curated quarterly").
  *   2 items   → static side-by-side with a gentle ±10° rotateY tilt for
  *               subtle dimensionality, no auto-rotation.
  *   3+ items  → full 3D rotating ring:
@@ -318,7 +318,7 @@ function SingleCard({
         <WorkCard item={item} onOpen={onOpen} isLifted={isLifted} />
       </div>
       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted text-center">
-        First of more, shipping through 2026
+        Selected work · curated quarterly
       </p>
     </div>
   );
@@ -725,20 +725,31 @@ function WorkCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Awwwards-style static screenshot via WordPress mShots — much lighter
-  // than embedding 12 simultaneous live iframes (page weight + extension
-  // triggers). The modal still uses a live iframe for the expanded
-  // interactive view; the carousel just needs a faithful preview image.
-  // mShots lazily generates + caches; first visit may show a placeholder
-  // for ~1 frame while the screenshot is being captured.
-  // mShots `w`/`h` are output dimensions, not capture viewport. Pass
-  // `vpw`/`vph` explicitly so the page is always rendered at desktop
-  // width before screenshotting — otherwise mShots' default viewport
-  // can serve a site's mobile breakpoint and produce a phone-shaped
-  // thumbnail (Black Diamond did this on bare `w`/`h`).
-  const screenshotUrl = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(
+  // Static screenshot via a fallback chain — see app/work/page.tsx
+  // CollageCard for the rationale. thum.io is primary because mShots'
+  // silent-placeholder behavior caused "thumbnails randomly missing
+  // on refresh" — it returns a blank placeholder before the real
+  // screenshot is generated, and the browser treats that as a
+  // successful load (so onError doesn't fire). thum.io streams the
+  // real screenshot immediately; mShots is the fallback when thum.io
+  // 4xx's or quota-exhausts.
+  const thumioUrl = `https://image.thum.io/get/width/1440/noanimate/${item.liveUrl}`;
+  const mshotsUrl = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(
     item.liveUrl,
   )}?w=1440&h=900&vpw=1440&vph=900`;
+
+  const [imgState, setImgState] = useState<"primary" | "fallback" | "failed">(
+    "primary",
+  );
+  const screenshotUrl =
+    imgState === "primary"
+      ? thumioUrl
+      : imgState === "fallback"
+        ? mshotsUrl
+        : null;
+
+  const advanceFallback = () =>
+    setImgState((prev) => (prev === "primary" ? "fallback" : "failed"));
 
   const handleClick = () => {
     if (!cardRef.current) return;
@@ -783,15 +794,36 @@ function WorkCard({
           pointerEvents: isLifted ? "none" : undefined,
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={screenshotUrl}
-          alt={`${item.client} — preview`}
-          loading="lazy"
-          referrerPolicy="no-referrer"
-          className="absolute inset-0 block h-full w-full object-cover object-top select-none"
-          draggable={false}
-        />
+        {screenshotUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            // `key` forces a fresh request when src changes (some
+            // browsers skip re-fetch on plain src swap).
+            key={screenshotUrl}
+            src={screenshotUrl}
+            alt={`${item.client} — preview`}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            draggable={false}
+            onError={advanceFallback}
+            onLoad={(e) => {
+              const img = e.currentTarget;
+              if (img.naturalWidth < 600 || img.naturalHeight < 300) {
+                advanceFallback();
+              }
+            }}
+            className="absolute inset-0 block h-full w-full object-cover object-top select-none"
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-surface-calm px-4 text-center">
+            <span className="font-display text-ink text-[20px] leading-tight">
+              {item.client}
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-muted">
+              preview unavailable
+            </span>
+          </div>
+        )}
 
         <button
           type="button"
