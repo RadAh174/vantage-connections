@@ -70,22 +70,31 @@ export const filters: WorkFilter[] = [
 /**
  * Real shipped projects + carousel test entries.
  *
- * All entries are real client work. brief / approach / results stay
- * as empty strings with TODO markers until the user supplies copy.
- * Empty strings render as visible blank paragraphs in the case-study
- * route — that is intentional and surfaces the gap rather than
- * masking it with filler.
+ * Black Diamond Pavers and PredictBase (v1, v2) are real client work
+ * — brief / approach / results stay empty strings with TODO markers
+ * until the user supplies copy. Empty strings render as visible blank
+ * paragraphs in the case-study route — that is intentional and surfaces
+ * the gap rather than masking it with filler.
+ *
+ * TEST_GALLERY_ENTRIES: every entry tagged "TEST" below is a public
+ * design-quality reference site mirrored from the home carousel — they
+ * exercise the asymmetric grid layout and are NOT real Vantage client
+ * work. Each is marked `// TEST: REMOVE BEFORE LAUNCH`. Strip them
+ * before any public push.
  */
 // The work-page renders projects in chapter groups (see
 // app/work/page.tsx CHAPTERS) — each chapter looks projects up by
 // slug, so the order of this array no longer matters for layout.
-// Real shipped client projects only:
+// Real shipped client projects:
 //   - Black Diamond Pavers
 //   - PredictBase (v1, v2)
 //   - Pacific Family Dental
 //   - Jenny Smith
 //   - Patriot Plumbing
 //   - Pioneer Engineer
+// Reference entries (`tags: ["TEST"]`) are public reference sites
+// included to exercise the gallery layout — strip the TEST tag once
+// real work fills the chapter.
 export const featuredProjects: FeaturedProject[] = [
   // Real client.
   {
@@ -111,6 +120,86 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "shadcn",
+    client: "shadcn/ui",
+    title: "Component library + docs",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "shadcn/ui",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://ui.shadcn.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "supabase",
+    client: "Supabase",
+    title: "Modern marketing site",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Supabase",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://supabase.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "compass",
+    client: "Compass",
+    title: "Modern real-estate brokerage",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Service",
+    metadata: {
+      client: "Compass",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://www.compass.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "studio-mcgee",
+    client: "Studio McGee",
+    title: "Interior-design portfolio",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Studio McGee",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://studio-mcgee.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
   // Real client.
   {
     slug: "predictbase",
@@ -132,6 +221,66 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "cal",
+    client: "Cal.com",
+    title: "Modern booking SaaS",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Cal.com",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://cal.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "daylight",
+    client: "Daylight Computer",
+    title: "Premium hardware product",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "E-commerce",
+    metadata: {
+      client: "Daylight Computer",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://daylight.computer",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "amber-interior",
+    client: "Amber Interior Design",
+    title: "Boutique interior-design firm",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Amber Interior Design",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://amberinteriordesign.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
   // Real client.
   {
     slug: "predictbase-v2",
@@ -152,6 +301,26 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "",
     results: "",
     pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH
+  {
+    slug: "retool",
+    client: "Retool",
+    title: "Enterprise SaaS dashboard",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "Retool",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://retool.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
   },
   // Real client.
   {
@@ -236,6 +405,112 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "",
     results: "",
     pullQuote: undefined,
+  },
+  // TEST: REMOVE BEFORE LAUNCH — Austin luxury real estate
+  // (Kuper Sotheby's, $1B+ sales). Replaces the earlier juliette-hohnen
+  // entry as the BIG anchor in chapter 1.
+  {
+    slug: "juliette-hohnen",
+    client: "Juliette Hohnen",
+    title: "Luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Juliette Hohnen",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://juliettehohnen.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — LA luxury real estate
+  // (Christie's International, #1 luxury agent in LA).
+  {
+    slug: "aaron-kirman",
+    client: "Aaron Kirman",
+    title: "LA luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Aaron Kirman",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://aaronkirman.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — Aspen luxury real estate
+  // (Douglas Elliman, $5B+ team sales).
+  {
+    slug: "saslove-warwick",
+    client: "Saslove & Warwick",
+    title: "Aspen luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Saslove & Warwick",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://saslovewarwick.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — Napa/Sonoma wine-country luxury
+  // (Sotheby's International, $3B+ sales).
+  {
+    slug: "ginger-martin",
+    client: "Ginger Martin + Co",
+    title: "Napa Valley luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Ginger Martin + Co",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://gingermartin.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+  },
+  // TEST: REMOVE BEFORE LAUNCH — NYC/LA/Miami luxury real estate
+  // (Douglas Elliman, $10B+ in last decade).
+  {
+    slug: "eklund-gomes",
+    client: "Eklund | Gomes",
+    title: "NYC luxury real-estate brand",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "Editorial",
+    metadata: {
+      client: "Eklund | Gomes",
+      year: "2025",
+      role: "",
+      scope: "",
+      services: [],
+      liveUrl: "https://eklundgomes.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
   },
 ];
 

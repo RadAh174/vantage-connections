@@ -28,45 +28,61 @@ import type { FeaturedWork } from "@/lib/content/home";
  * cells reads as a wall of squares; chapters let the eye rest and
  * give it something to read between rows.
  *
- * Chapter 1 — 5-card pattern (4 cols × 3 rows):
+ * Chapter 1 — 12-card pattern (4 cols × 6 rows):
  *   ┌───┬───┬───┬───┐
  *   │ B │ B │ W │ W │   row 1
  *   │ B │ B │ s │ s │   row 2
- *   │ F │ F │ F │ F │   row 3 — full-width banner
+ *   │ B │ B │ s │ s │   row 3
+ *   │ B │ B │ W │ W │   row 4
+ *   │ W │ W │ W │ W │   row 5 — 2×2 real-estate grid (rows 5-6)
+ *   │ W │ W │ W │ W │   row 6
  *   └───┴───┴───┴───┘
- *   BIG anchor on the left, asymmetric WIDE + 2 SMALL satellites on
- *   the right, full-width WIDE banner closing the chapter.
+ *   Top block (rows 1-4): two BIG anchors on the left, asymmetric
+ *   satellites on the right (WIDE → 2 SMALL → 2 SMALL → WIDE).
+ *   Bottom block (rows 5-6): a clean 2×2 grid of four WIDE cells
+ *   holding the luxury real-estate portfolio reference set.
  *
- * Chapter 2 — 2-card pattern (4 cols × 2 rows):
+ * Chapter 2 — 6-card pattern (4 cols × 3 rows):
  *   ┌───┬───┬───┬───┐
- *   │ B │ B │ B │ B │   row 1
- *   │ B │ B │ B │ B │   row 2
+ *   │ B │ B │ s │ s │   row 1
+ *   │ B │ B │ W │ W │   row 2
+ *   │ W │ W │ W │ W │   row 3
  *   └───┴───┴───┴───┘
- *   Two BIG anchors side by side — the two PredictBase versions as a
- *   matched pair.
  *
- * BIG = col-span 2 / row-span 2  |  W = col-span 2  |  s = col-span 1  |  F = col-span 4
+ * BIG = col-span 2 / row-span 2  |  W = col-span 2  |  s = col-span 1
  *
  * Click → opens the same fullscreen `WorkModal` the home carousel
  * uses (FLIP from the originating card → 96vw × 96dvh viewer with the
  * live site in an iframe).
  */
 
-// 5-card pattern for chapter 1 (4 cols × 3 rows): BIG anchor + WIDE +
-// 2 SMALL satellites + full-width banner closer.
-const PATTERN_5: readonly string[] = [
-  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor (rows 1-2, cols 1-2)
-  "lg:col-span-2 lg:row-span-1", // 1 — WIDE (row 1, cols 3-4)
-  "lg:col-span-1 lg:row-span-1", // 2 — SMALL (row 2, col 3)
-  "lg:col-span-1 lg:row-span-1", // 3 — SMALL (row 2, col 4)
-  "lg:col-span-4 lg:row-span-1", // 4 — Full-width banner (row 3)
+// 6-card pattern: 1 BIG + 2 SMALL + 3 WIDE = 12 cells, 3 rows.
+const PATTERN_6: readonly string[] = [
+  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor
+  "lg:col-span-1 lg:row-span-1", // 1 — SMALL
+  "lg:col-span-1 lg:row-span-1", // 2 — SMALL
+  "lg:col-span-2 lg:row-span-1", // 3 — WIDE
+  "lg:col-span-2 lg:row-span-1", // 4 — WIDE
+  "lg:col-span-2 lg:row-span-1", // 5 — WIDE
 ];
 
-// 2-card pattern for chapter 2 (4 cols × 2 rows): two BIG anchors
-// side by side — the two PredictBase versions as a matched pair.
-const PATTERN_2: readonly string[] = [
-  "lg:col-span-2 lg:row-span-2", // 0 — BIG anchor (cols 1-2)
-  "lg:col-span-2 lg:row-span-2", // 1 — BIG anchor (cols 3-4)
+// 12-card pattern: 8-card top block + 2×2 grid of 4 WIDE cells.
+// Top block (slots 0-7) is the same shape as the prior PATTERN_8.
+// Bottom block (slots 8-11) is a clean 2×2 of WIDE cells holding the
+// luxury real-estate portfolio reference set.
+const PATTERN_12: readonly string[] = [
+  "lg:col-span-2 lg:row-span-2", // 0  — BIG anchor
+  "lg:col-span-2 lg:row-span-1", // 1  — WIDE
+  "lg:col-span-1 lg:row-span-1", // 2  — SMALL
+  "lg:col-span-1 lg:row-span-1", // 3  — SMALL
+  "lg:col-span-2 lg:row-span-2", // 4  — BIG anchor
+  "lg:col-span-1 lg:row-span-1", // 5  — SMALL
+  "lg:col-span-1 lg:row-span-1", // 6  — SMALL
+  "lg:col-span-2 lg:row-span-1", // 7  — WIDE
+  "lg:col-span-2 lg:row-span-1", // 8  — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 9  — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 10 — WIDE (2×2 grid)
+  "lg:col-span-2 lg:row-span-1", // 11 — WIDE (2×2 grid)
 ];
 
 type Chapter = {
@@ -86,13 +102,21 @@ const CHAPTERS: readonly Chapter[] = [
     eyebrow: "MARKETING SURFACES",
     title: "Where clients meet you for the first time.",
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
-    pattern: PATTERN_5,
+    pattern: PATTERN_12,
     slugs: [
-      "black-diamond",            // BIG anchor — most photographed
-      "pioneer-engineer",         // WIDE — industrial banner energy
-      "pacific-family-dental",    // SMALL
-      "jenny-smith",              // SMALL
-      "patriot-plumbing",         // Full-width banner closer
+      "juliette-hohnen",     // BIG  (replaces juliette as the anchor)
+      "jenny-smith",              // WIDE (real)
+      "pacific-family-dental",    // SMALL (real)
+      "studio-mcgee",        // SMALL
+      "black-diamond",            // BIG  (real)
+      "daylight",            // SMALL
+      "amber-interior",      // SMALL
+      "pioneer-engineer",         // WIDE (real)
+      // 2×2 luxury real-estate portfolio grid:
+      "aaron-kirman",        // WIDE
+      "saslove-warwick",     // WIDE
+      "ginger-martin",       // WIDE
+      "eklund-gomes",        // WIDE
     ],
   },
   {
@@ -100,10 +124,14 @@ const CHAPTERS: readonly Chapter[] = [
     eyebrow: "PRODUCT SURFACES",
     title: "Where users live, day after day.",
     body: "Dashboards, SaaS UIs, and product interfaces — the work that has to actually function. Not flashy for a screenshot; readable on the 200th visit.",
-    pattern: PATTERN_2,
+    pattern: PATTERN_6,
     slugs: [
-      "predictbase",              // BIG — v1
-      "predictbase-v2",           // BIG — v2
+      "predictbase",              // BIG (real)
+      "shadcn",              // SMALL
+      "cal",                 // SMALL
+      "supabase",            // WIDE
+      "predictbase-v2",           // WIDE (real)
+      "retool",              // WIDE
     ],
   },
 ];
@@ -158,8 +186,22 @@ function CollageCard({
   const mshotsParams = isWideCell
     ? "w=1440&h=900&vpw=1440&vph=900"
     : "w=1440&h=1440&vpw=1440&vph=1440";
+  // Per-project pre-capture wait (thum.io `wait/N` option). Use when the
+  // target site has a JS-driven load animation that's still playing
+  // during the default capture moment, so the screenshot would catch a
+  // half-faded splash. The fallback (mShots) has no wait param, so this
+  // only kicks in on the thum.io primary path.
+  const captureWaitSeconds: Record<string, number> = {
+    "jenny-smith": 4,
+    "supabase": 4,
+    "cal": 4,
+  };
+  const waitSec = captureWaitSeconds[project.slug] ?? 0;
+  const thumioPath = waitSec > 0
+    ? `width/1440/noanimate/wait/${waitSec}`
+    : "width/1440/noanimate";
   const thumioUrl = liveUrl
-    ? `https://image.thum.io/get/width/1440/noanimate/${liveUrl}`
+    ? `https://image.thum.io/get/${thumioPath}/${liveUrl}`
     : null;
   const mshotsUrl = liveUrl
     ? `https://s.wordpress.com/mshots/v1/${encodeURIComponent(liveUrl)}?${mshotsParams}`
