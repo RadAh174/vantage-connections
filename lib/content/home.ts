@@ -5,6 +5,7 @@
  */
 
 import type { ReactNode } from "react";
+import { featuredProjects } from "./work";
 
 export type FeaturedWork = {
   slug: string;
@@ -49,127 +50,20 @@ export const mission = {
 };
 
 // Featured work shown in the home Selected Work carousel.
-// Real projects only — never invent client names.
-// Black Diamond Pavers is the first shipped project; future entries land
-// here as they go live.
-//
-// TEST_CAROUSEL_ENTRIES: the four entries below the Black Diamond one are
-// public test sites used to exercise the 3D carousel mechanic with > 1
-// item. They are NOT real client work and must be removed before any
-// public launch. Each is marked with `// TEST: REMOVE BEFORE LAUNCH`.
-export const featuredWork: FeaturedWork[] = [
-  {
-    slug: "black-diamond",
-    client: "Black Diamond Pavers",
-    title: "Premium hardscaping site, end-to-end",
-    liveUrl: "https://vantageconnections-blackdiamond.vercel.app/",
-    tags: ["Marketing site", "Service"],
-  },
-  // Real client — industrial automation services, Mission Viejo CA.
-  // Sits next to black-diamond so the two real services entries cluster
-  // visibly on the ring.
-  {
-    slug: "pioneer-engineer",
-    client: "Pioneer Engineer",
-    title: "Industrial automation services",
-    liveUrl: "https://pioneer-engineer.vercel.app/",
-    tags: ["Marketing site", "Service"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — verified iframe-allowed via curl headers.
-  // Iana / Vercel / Next.js / Clerk / Resend all set X-Frame-Options DENY
-  // and were swapped out. The four below allow embedding (no X-Frame-Options,
-  // no restrictive frame-ancestors).
-  {
-    slug: "tailwind",
-    client: "Tailwind CSS",
-    title: "Design-quality docs site",
-    liveUrl: "https://tailwindcss.com",
-    tags: ["TEST"],
-  },
-  // Real client — PredictBase v1 (predictbase.app). Spread to opposite
-  // side of the ring from the v2 entry below.
-  {
-    slug: "predictbase",
-    client: "PredictBase",
-    title: "Live site",
-    liveUrl: "https://predictbase.app",
-    tags: [],
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "shadcn",
-    client: "shadcn/ui",
-    title: "Design-quality docs site",
-    liveUrl: "https://ui.shadcn.com",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "supabase",
-    client: "Supabase",
-    title: "Design-quality landing site",
-    liveUrl: "https://supabase.com",
-    tags: ["TEST"],
-  },
-  // Reference site — Beverly Hills luxury real-estate brand.
-  {
-    slug: "juliette-hohnen",
-    client: "Juliette Hohnen",
-    title: "Luxury real-estate brand",
-    liveUrl: "https://juliettehohnen.com",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — interior design firm (editorial-grade)
-  {
-    slug: "studio-mcgee",
-    client: "Studio McGee",
-    title: "Interior design firm",
-    liveUrl: "https://studio-mcgee.com",
-    tags: ["TEST"],
-  },
-  // Real client — PredictBase v2 (v2.predictbase.app). Sits at index 8
-  // while v1 sits at index 3 → ~5 indices apart on a 13-item ring,
-  // so the two PredictBase cards are visibly spread, not adjacent.
-  {
-    slug: "predictbase-v2",
-    client: "PredictBase",
-    title: "Live site (v2)",
-    liveUrl: "https://v2.predictbase.app",
-    tags: [],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — modern booking SaaS
-  {
-    slug: "cal",
-    client: "Cal.com",
-    title: "Modern booking SaaS",
-    liveUrl: "https://cal.com",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — premium hardware product site
-  {
-    slug: "daylight",
-    client: "Daylight Computer",
-    title: "Premium hardware product",
-    liveUrl: "https://daylight.computer",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — boutique interior design firm
-  {
-    slug: "amber-interior",
-    client: "Amber Interior Design",
-    title: "Boutique interior design firm",
-    liveUrl: "https://amberinteriordesign.com",
-    tags: ["TEST"],
-  },
-  // TEST: REMOVE BEFORE LAUNCH — enterprise SaaS dashboard
-  {
-    slug: "retool",
-    client: "Retool",
-    title: "Enterprise SaaS dashboard",
-    liveUrl: "https://retool.com",
-    tags: ["TEST"],
-  },
-];
+// Derived from `lib/content/work.ts > featuredProjects` so the carousel
+// and the works page show the same set of entries. Patriot Plumbing is
+// excluded because its `.vercel.app` preview has deployment protection
+// that breaks the iframe modal — keep it in work.ts data (we may move
+// it to a real domain later) but skip it from the carousel for now.
+export const featuredWork: FeaturedWork[] = featuredProjects
+  .filter((p) => p.slug !== "patriot-plumbing")
+  .map((p) => ({
+    slug: p.slug,
+    client: p.client,
+    title: p.title,
+    liveUrl: p.metadata.liveUrl ?? "",
+    tags: p.tags,
+  }));
 
 // Real, generic — phases of the process do not need real client data.
 export const phases: Phase[] = [

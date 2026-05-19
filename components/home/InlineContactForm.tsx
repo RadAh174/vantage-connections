@@ -132,6 +132,7 @@ export function InlineContactForm() {
               as="button"
               active={projectType === t}
               onClick={() => setProjectType(t)}
+              className="mobile-tap-scale"
             >
               {t}
             </Chip>

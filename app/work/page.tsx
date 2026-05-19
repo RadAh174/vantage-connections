@@ -235,7 +235,7 @@ function CollageCard({
         type="button"
         onClick={handleClick}
         aria-label={`Open ${project.client} preview`}
-        className="group relative block h-full w-full overflow-hidden rounded-lg border border-line/40 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5),_0_2px_8px_rgba(0,0,0,0.08)] aspect-[16/10] lg:aspect-auto bg-surface-calm transition-transform duration-500 ease-out hover:scale-[1.04] hover:z-10 will-change-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-bg text-left"
+        className="group mobile-tap-scale relative block h-full w-full overflow-hidden rounded-lg border border-line/40 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.5),_0_2px_8px_rgba(0,0,0,0.08)] aspect-[16/10] lg:aspect-auto bg-surface-calm transition-transform duration-500 ease-out hover:scale-[1.04] hover:z-10 will-change-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-bg text-left"
       >
         {screenshotUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -310,9 +310,16 @@ function CollageCard({
 }
 
 function ChapterHeader({ chapter }: { chapter: Chapter }) {
+  // Per-piece reveals so the header cascades in (number/eyebrow row,
+  // title, body) instead of all four landing at once. On mobile this
+  // pairs with the bigger reveal-up-mobile keyframe to give the section
+  // header a deliberate "set the stage" rhythm. Desktop sees the same
+  // cascade but it's gentler against the 600ms desktop keyframe — the
+  // staggered delays (90/180ms) are smaller than the per-tile grid
+  // cadence (60ms) and read as part of the established motion language.
   return (
-    <Reveal>
-      <div className="flex flex-col gap-5 md:gap-6">
+    <div className="flex flex-col gap-5 md:gap-6">
+      <Reveal>
         <div className="flex items-center gap-4">
           <span className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.22em] text-forest">
             {chapter.num}
@@ -323,10 +330,12 @@ function ChapterHeader({ chapter }: { chapter: Chapter }) {
           />
           <Eyebrow color="forest">{chapter.eyebrow}</Eyebrow>
         </div>
+      </Reveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
+        <Reveal delay={90} className="lg:col-span-7">
           <h2
-            className="lg:col-span-7 font-display text-ink"
+            className="font-display text-ink"
             style={{
               fontSize: "clamp(1.875rem, 3.6vw, 3rem)",
               fontWeight: 500,
@@ -336,12 +345,14 @@ function ChapterHeader({ chapter }: { chapter: Chapter }) {
           >
             {chapter.title}
           </h2>
-          <p className="lg:col-span-5 text-[15px] md:text-[16px] leading-[1.6] text-ink-muted lg:pt-3 max-w-[480px]">
+        </Reveal>
+        <Reveal delay={180} className="lg:col-span-5 lg:pt-3">
+          <p className="text-[15px] md:text-[16px] leading-[1.6] text-ink-muted max-w-[480px]">
             {chapter.body}
           </p>
-        </div>
+        </Reveal>
       </div>
-    </Reveal>
+    </div>
   );
 }
 
@@ -426,7 +437,11 @@ export default function WorkPage() {
             <h1
               className="font-display text-headline"
               style={{
-                fontSize: "clamp(3rem, 6.5vw, 6rem)",
+                // Mobile floor bumped from 3rem → 3.5rem so the headline
+                // has more presence on phone widths. Upper bound (6rem)
+                // and vw scaling untouched — desktop unaffected (vw value
+                // beats the floor above ~860px width).
+                fontSize: "clamp(3.5rem, 6.5vw, 6rem)",
                 fontWeight: 500,
                 lineHeight: 1.04,
                 letterSpacing: "-0.022em",
@@ -581,7 +596,16 @@ export default function WorkPage() {
       <main className="mx-auto max-w-[1320px] px-6 md:px-10">
         <section className="py-20 md:py-24">
           <AuroraHairline />
-          <Reveal className="pt-14 md:pt-16 flex flex-col gap-6 items-start max-w-2xl">
+          {/* Stagger mode: eyebrow → headline → CTA cascade in sequence
+              rather than landing as one block. On mobile this pairs with
+              the bigger reveal-up-mobile keyframe for a more deliberate
+              closing moment; on desktop the 120ms step reads as a soft
+              continuation of the studio's general motion language. */}
+          <Reveal
+            stagger
+            staggerStep={120}
+            className="pt-14 md:pt-16 flex flex-col gap-6 items-start max-w-2xl"
+          >
             <Eyebrow color="forest">START A PROJECT</Eyebrow>
             <h2
               className="font-display text-ink"
@@ -594,7 +618,15 @@ export default function WorkPage() {
             >
               Have a project in mind? Let&apos;s <ColorWord>talk</ColorWord>.
             </h2>
-            <Button href="/contact" variant="primary" size="lg">
+            {/* mobile-tap-scale: 0.97 :active scale on touch devices so the
+                CTA feels physically pressable on phones. No-op on desktop
+                (the utility is gated by `@media (hover: none)`). */}
+            <Button
+              href="/contact"
+              variant="primary"
+              size="lg"
+              className="mobile-tap-scale"
+            >
               Start a project
             </Button>
           </Reveal>

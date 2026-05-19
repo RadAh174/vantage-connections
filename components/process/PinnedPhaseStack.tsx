@@ -69,19 +69,26 @@ export function PinnedPhaseStack() {
 
   useEffect(() => {
     const outer = outerRef.current;
-    const pin = pinRef.current;
-    if (!outer || !pin) return;
+    if (!outer) return;
 
-    const mql = window.matchMedia(
-      "(max-width: 767px), (prefers-reduced-motion: reduce)",
-    );
-    if (mql.matches) return;
+    // Skip only on reduced-motion. Mobile uses the same scroll-driven
+    // activeIndex as desktop — the mobile UI is a scroll-driven
+    // accordion timeline (see the `.process-pinned__mobile` block in
+    // JSX + globals.css) which reads `activeIndex` to expand/collapse.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
 
     let raf = 0;
     const update = () => {
       raf = 0;
       const rect = outer.getBoundingClientRect();
-      const scrollable = outer.offsetHeight - pin.offsetHeight;
+      // Use the viewport height as the pin height. The desktop `pinRef`
+      // and the mobile `.process-pinned__mobile` are both `100vh` sticky
+      // pins, but one of them is `display: none` at any given breakpoint
+      // (their `offsetHeight` would be 0). `window.innerHeight` works
+      // for both.
+      const pinHeight = window.innerHeight;
+      const scrollable = outer.offsetHeight - pinHeight;
       if (scrollable <= 0) return;
       const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
       const progress = scrolled / scrollable;
@@ -94,8 +101,11 @@ export function PinnedPhaseStack() {
       );
       setActiveIndex((prev) => (prev === next ? prev : next));
 
-      // Per-layer translateY. Layer 0 stays at rest; layers 1..N-1
-      // slide up from below within their `slideRange` window.
+      // Per-layer translateY (desktop card stack). Layer 0 stays at
+      // rest; layers 1..N-1 slide up from below within their
+      // `slideRange` window. Layers don't exist on mobile (display:
+      // none on .process-pinned__pin) so the refs are null on the
+      // mobile-only DOM tree — the null check below is the guard.
       const phaseLength = scrollable / N;
       const slideRange = phaseLength * SLIDE_FRACTION;
       for (let i = 0; i < N; i++) {
@@ -250,13 +260,88 @@ export function PinnedPhaseStack() {
         </div>
       </div>
 
-      {/* MOBILE FALLBACK: every panel as a stacked section. */}
+      {/* MOBILE: scroll-driven accordion timeline. The outer
+          `.process-pinned__mobile` is `position: sticky; top: 0;
+          h:100vh` (display: block on mobile, display: none on
+          desktop). All N phases are rendered as accordion items in a
+          vertical stack with a gold-gradient timeline rail down the
+          left side. The active phase (driven by the same `activeIndex`
+          state the desktop pin uses, set by the scroll handler above)
+          is expanded — its eyebrow, name, week range, and step list
+          are visible. The others collapse to a compact header row
+          (number + name + dot). As the user scrolls, the active
+          changes; the previous active collapses smoothly, the new one
+          expands. Net effect: each phase rises into the prominent
+          slot in turn. */}
       <div className="process-pinned__mobile">
-        {panels.map((phase) => (
-          <article key={phase.number} className="process-pinned__mobile-panel">
-            <PhasePanelContent phase={phase} />
-          </article>
-        ))}
+        <div className="process-pinned__mobile-stack">
+          {panels.map((phase, i) => {
+            const isActive = i === activeIndex;
+            const isPast = i < activeIndex;
+            return (
+              <article
+                key={phase.number}
+                className="process-pinned__mobile-item"
+                data-active={isActive}
+                data-past={isPast}
+                aria-expanded={isActive}
+              >
+                {/* Compact header — always visible. Dot on the left
+                    sits on the timeline rail. */}
+                <header className="process-pinned__mobile-item-header">
+                  <span
+                    aria-hidden
+                    className="process-pinned__mobile-dot"
+                  />
+                  <span className="process-pinned__mobile-number">
+                    {phase.number}
+                  </span>
+                  <span className="process-pinned__mobile-name">
+                    {phase.name}
+                  </span>
+                  <span className="process-pinned__mobile-week">
+                    {phase.weekRange}
+                  </span>
+                </header>
+
+                {/* Expanded content — animates max-height + opacity
+                    on the active state. The grid keeps the same
+                    structure as the desktop panel content, just
+                    stacked single-column. */}
+                <div className="process-pinned__mobile-item-body">
+                  <Eyebrow color="forest">
+                    PHASE {phase.number} — {phase.name.toUpperCase()}
+                  </Eyebrow>
+                  <ol className="process-pinned__mobile-item-steps">
+                    {phase.steps.map((step, j, arr) => (
+                      <li
+                        key={j}
+                        style={{
+                          borderBottom:
+                            j < arr.length - 1
+                              ? "1px solid var(--color-line)"
+                              : "none",
+                        }}
+                      >
+                        <span className="process-pinned__mobile-item-step-num">
+                          {String(j + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <span className="process-pinned__mobile-item-step-title">
+                            {step.title}
+                          </span>
+                          <span className="process-pinned__mobile-item-step-body">
+                            {step.body}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

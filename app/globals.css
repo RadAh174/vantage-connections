@@ -282,12 +282,26 @@ body {
   to   { transform: translateY(0);    opacity: 1; }
 }
 
+/* Mobile gets a more deliberate motion language — bigger displacement
+   plus a subtle scale so reveals read as motion, not just fade. Desktop
+   keeps the gentler 12px lift. */
+@keyframes reveal-up-mobile {
+  from { transform: translateY(28px) scale(0.985); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);     opacity: 1; }
+}
+
 .reveal-on-scroll {
   opacity: 0;
 }
 
 .reveal-on-scroll.is-visible {
   animation: reveal-up 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@media (max-width: 767px) {
+  .reveal-on-scroll.is-visible {
+    animation: reveal-up-mobile 820ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
 }
 
 /* ---- Hero word-by-word reveal ----
@@ -304,6 +318,25 @@ body {
     transform: translateY(0);
   }
 }
+/* Mobile: a touch more displacement + a tiny scale on the hero-word
+   reveal so the headline reads as a deliberate "land" instead of a
+   subtle fade. Desktop hero-word keeps its existing soft cadence. */
+@media (max-width: 767px) {
+  @keyframes hero-word-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+    }
+    50% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
 .hero-word {
   display: inline-block;
   /* `inline-block` collapses trailing whitespace inside the element, so
@@ -695,24 +728,42 @@ html.light { --shine-band: var(--color-headline); }
   opacity: 1;
 }
 
-/* Mobile fallback container. Hidden on desktop; takes over on mobile.
-   Has its own horizontal padding because the parent section is
-   full-bleed (`w-screen` + negative margin escape from main's padding),
-   so the mobile panels need to re-establish gutter space themselves. */
+/* Mobile container. Hidden on desktop. Mobile shows a scroll-driven
+   accordion timeline: all phases rendered as vertically-stacked
+   accordion items, the active one (per JS `activeIndex`) expanded,
+   the rest collapsed to a header row. As the user scrolls through the
+   outer runway (N * 100vh tall), `activeIndex` advances; CSS smoothly
+   expands the new active phase and collapses the previous. */
 .process-pinned__mobile {
   display: none;
 }
-.process-pinned__mobile-panel {
-  padding: 3rem 1.5rem;
-  border-bottom: 1px solid var(--color-line);
-}
-.process-pinned__mobile-panel:last-child {
-  border-bottom: none;
+
+/* MOBILE — keep the outer runway tracking but compress it dramatically
+   for a quicker traversal: 40vh per phase (was 100vh) so the total
+   section is 260vh on mobile vs 500vh on desktop. Hide the desktop
+   pinned-card stack; show the mobile container as a sticky-pinned
+   timeline that holds all the accordion items at once. */
+@media (max-width: 767px) {
+  .process-pinned {
+    --dwell-vh: 40;
+  }
+  .process-pinned__pin {
+    display: none;
+  }
+  .process-pinned__mobile {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    padding: clamp(3.5rem, 8vh, 5.5rem) 1.25rem 2rem;
+  }
 }
 
-/* Mobile / reduced-motion: collapse the pin runway, hide the desktop
-   stage, render every phase as a normal stacked section. */
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+/* Reduced-motion: collapse everything to a normal static stack so
+   nothing pins or animates. The accordion bodies are forced expanded
+   below so all content stays visible. */
+@media (prefers-reduced-motion: reduce) {
   .process-pinned {
     height: auto;
   }
@@ -725,6 +776,259 @@ html.light { --shine-band: var(--color-headline); }
   }
   .process-pinned__mobile {
     display: block;
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ---- Mobile accordion-timeline content ----
+   The mobile `.process-pinned__mobile` holds a vertical stack of
+   accordion items inside a sticky-pinned 100vh frame (see above).
+   Each item: compact header always visible; body expands when the
+   item is `[data-active="true"]`. A gold-gradient vertical rail runs
+   down the left edge tying items together as a timeline; per-item
+   dots sit on the rail. As `activeIndex` advances with scroll, items
+   transition between expanded and collapsed in place — net effect:
+   each phase rises into the prominent slot as the user scrolls. */
+
+.process-pinned__mobile-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+/* Vertical gold-tinted timeline rail behind the dots. */
+.process-pinned__mobile-stack::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-forest) 55%, transparent),
+    var(--color-gold),
+    color-mix(in oklab, var(--color-forest) 55%, transparent)
+  );
+  border-radius: 999px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.process-pinned__mobile-item {
+  position: relative;
+  padding: 0 0.25rem 0 2.25rem;
+  /* `isolation: isolate` creates a new stacking context so the
+     active-state ::before background (z-index: -1) is contained within
+     the item — it can't escape behind the parent or the timeline
+     rail. */
+  isolation: isolate;
+  transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.process-pinned__mobile-item[data-active="false"][data-past="false"] {
+  opacity: 0.42;
+}
+.process-pinned__mobile-item[data-past="true"] {
+  opacity: 0.55;
+}
+.process-pinned__mobile-item[data-active="true"] {
+  opacity: 1;
+}
+
+/* Active-phase background — full-bleed via negative left/right that
+   cancels the mobile container's 1.25rem horizontal padding,
+   extending edge-to-edge across the viewport. Subtle vertical gold
+   gradient (8% top → 2.5% bottom) reads as a quietly lit chapter
+   band rather than a flat card. Hairline gold top/bottom borders
+   give it editorial definition. Sits behind item content via
+   `z-index: -1` within the item's stacking context. */
+.process-pinned__mobile-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1.25rem;
+  right: -1.25rem;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-gold) 7%, transparent) 0%,
+    color-mix(in oklab, var(--color-gold) 2%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--color-gold) 22%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, var(--color-gold) 16%, transparent);
+  opacity: 0;
+  transition: opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+.process-pinned__mobile-item[data-active="true"]::before {
+  opacity: 1;
+}
+
+.process-pinned__mobile-item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.75rem 0;
+}
+
+.process-pinned__mobile-dot {
+  position: absolute;
+  left: 4px;
+  top: 1.05rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  border: 1.5px solid color-mix(in oklab, var(--color-forest) 35%, var(--color-line));
+  transition:
+    background-image 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.process-pinned__mobile-item[data-active="true"] .process-pinned__mobile-dot {
+  background-image: var(--gold-grad);
+  background-color: transparent;
+  border-color: transparent;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--color-gold) 20%, transparent);
+}
+.process-pinned__mobile-item[data-past="true"] .process-pinned__mobile-dot {
+  background-color: var(--color-forest);
+  border-color: var(--color-forest);
+}
+
+/* Header number: small mono "01" tag — forest accent, larger in active. */
+.process-pinned__mobile-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-forest);
+  transition:
+    font-size 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.process-pinned__mobile-item[data-active="true"] .process-pinned__mobile-number {
+  font-size: 12px;
+  color: var(--color-ink);
+}
+
+/* Phase name: display italic, sized up dramatically when active so
+   the focal phase reads as the editorial headline. */
+.process-pinned__mobile-name {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  letter-spacing: -0.014em;
+  text-transform: none;
+  color: var(--color-ink);
+  margin-left: 0.1rem;
+  font-weight: 500;
+  line-height: 1.1;
+  transition: font-size 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.process-pinned__mobile-item[data-active="true"] .process-pinned__mobile-name {
+  font-size: 22px;
+}
+
+.process-pinned__mobile-week {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  flex-shrink: 0;
+}
+
+/* Body collapses to 0 height when inactive, expands when active.
+   Using `max-height` + `overflow: hidden` for reliable cross-browser
+   collapse (the `grid-template-rows: 0fr → 1fr` trick was flaky in
+   some viewports — content bled through). */
+.process-pinned__mobile-item-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-left: 0.1rem;
+  transition:
+    max-height 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease-out,
+    padding-bottom 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  padding-bottom: 0;
+}
+.process-pinned__mobile-item[data-active="true"] .process-pinned__mobile-item-body {
+  max-height: 520px;
+  opacity: 1;
+  padding-bottom: 0.85rem;
+}
+
+/* Eyebrow inside the body. */
+.process-pinned__mobile-item-body > :first-child {
+  margin-top: 0.1rem;
+}
+
+.process-pinned__mobile-item-steps {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.85rem;
+}
+.process-pinned__mobile-item-steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.55rem 0;
+}
+.process-pinned__mobile-item-step-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-forest);
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 0.3rem;
+}
+.process-pinned__mobile-item-step-num + div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.process-pinned__mobile-item-step-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+.process-pinned__mobile-item-step-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Show every item expanded; static stack — no transitions. */
+  .process-pinned__mobile-item-body {
+    max-height: none;
+    opacity: 1;
+    padding-bottom: 0.85rem;
+    transition: none;
+  }
+  .process-pinned__mobile-item {
+    opacity: 1 !important;
+  }
+  .process-pinned__mobile-item::before {
+    opacity: 0 !important;
   }
 }
 
@@ -864,5 +1168,49 @@ html.light { --shine-band: var(--color-headline); }
     /* Park layer 1 (highlight) off-canvas so only the solid gold
        base shows — no static highlight band sitting on the text. */
     background-position: 200% 50%, 0% 50%;
+  }
+}
+
+/* ---------------- Mobile-only premium polish ----------------
+   The classes below are scoped via the `(hover: none)` and
+   `(max-width: 767px)` media queries so they ONLY apply on touch /
+   phone-sized screens. Desktop is intentionally untouched — these
+   exist to bring the mobile experience closer to the desktop's
+   level of motion + feedback without changing the desktop. */
+
+/* Tap-feedback scale for interactive cards / pseudo-buttons on touch
+   devices. Apply via `className="mobile-tap-scale"`. On desktop with a
+   mouse `(hover: hover)` the rule never fires, so this is a no-op for
+   non-touch users. */
+.mobile-tap-scale {
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center center;
+  will-change: transform;
+}
+@media (hover: none) {
+  .mobile-tap-scale:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Mobile-only horizontal marquee strip. Auto-scrolls continuously via
+   a CSS keyframe — no JS. Used on the home page between sections to
+   add motion + density on a viewport where vertical space is precious.
+   The track contains the same content twice; `-50%` translate at 100%
+   keyframe lands the second copy where the first started → seamless. */
+@keyframes mobile-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.mobile-marquee {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: mobile-marquee 30s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-marquee {
+    animation: none;
   }
 }

@@ -303,6 +303,7 @@ export default function ContactPage() {
                         as="button"
                         active={projectType === t}
                         onClick={() => setProjectType(t)}
+                        className="mobile-tap-scale"
                       >
                         {t}
                       </Chip>
@@ -321,6 +322,7 @@ export default function ContactPage() {
                         as="button"
                         active={budget === b}
                         onClick={() => setBudget(b)}
+                        className="mobile-tap-scale"
                       >
                         {b}
                       </Chip>
@@ -414,7 +416,10 @@ function inputClass(invalid: boolean) {
     "border-0 border-b-[1.5px]",
     invalid ? "border-[#C04A2D]" : "border-line",
     "rounded-xl",
-    "px-3.5 py-2.5",
+    // Mobile gets ~48px tap target (py-3 = 12px each side + 16px text);
+    // `md:py-2.5` restores the prior desktop padding so the form rhythm
+    // is unchanged at md+ breakpoints.
+    "px-3.5 py-3 md:py-2.5",
     "text-ink text-[16px]",
     "placeholder:text-ink-muted",
     "focus:outline-none focus:border-forest focus:bg-surface-calm/80",

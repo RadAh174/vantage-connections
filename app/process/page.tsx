@@ -141,50 +141,58 @@ export default function ProcessPage() {
             </p>
           </Reveal>
 
-          <Reveal>
-            {/* 4 floating cards at staggered top offsets (lg+) so each
-                sits at its own vertical position. Bottom-only gold
-                drop shadow under each. Hover bobs the card up and
-                down slowly via JS; mouse-leave smoothly glides back
-                to rest over 700ms. See TimelineCard for the
-                animation logic. */}
-            <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-7 items-start lg:pb-20">
-              <TimelineCard
-                num="1"
-                phase="Discover"
-                milestone="Kickoff"
-                tasks={["Scope", "Audit", "Documentation"]}
-                staggerClass="lg:mt-0"
-              />
-              <TimelineCard
-                num="2"
-                phase="Design"
-                milestone="Review"
-                tasks={["System", "Hero", "Tokens"]}
-                staggerClass="lg:mt-12"
-              />
-              <TimelineCard
-                num="3"
-                phase="Build"
-                milestone="Polish"
-                tasks={["Pages", "Accessibility", "Vitals"]}
-                staggerClass="lg:mt-4"
-              />
-              <TimelineCard
-                num="4"
-                phase="Launch"
-                milestone="Ship"
-                tasks={["Migrate", "Monitor", "Handover"]}
-                staggerClass="lg:mt-16"
-              />
-            </div>
+          {/* 4 floating cards at staggered top offsets (lg+) so each
+              sits at its own vertical position. Bottom-only gold
+              drop shadow under each. Hover bobs the card up and
+              down slowly via JS; mouse-leave smoothly glides back
+              to rest over 700ms. See TimelineCard for the
+              animation logic.
+
+              `<Reveal stagger>` cascades each direct child (each
+              TimelineCard) in with an 80ms step so on mobile (where
+              the grid is single-column) each card lands one after
+              the next. `mobile-tap-scale` adds touch-feedback. */}
+          <Reveal stagger staggerStep={110} className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-7 items-start lg:pb-20">
+            <TimelineCard
+              num="1"
+              phase="Discover"
+              milestone="Kickoff"
+              tasks={["Scope", "Audit", "Documentation"]}
+              staggerClass="lg:mt-0 mobile-tap-scale"
+            />
+            <TimelineCard
+              num="2"
+              phase="Design"
+              milestone="Review"
+              tasks={["System", "Hero", "Tokens"]}
+              staggerClass="lg:mt-12 mobile-tap-scale"
+            />
+            <TimelineCard
+              num="3"
+              phase="Build"
+              milestone="Polish"
+              tasks={["Pages", "Accessibility", "Vitals"]}
+              staggerClass="lg:mt-4 mobile-tap-scale"
+            />
+            <TimelineCard
+              num="4"
+              phase="Launch"
+              milestone="Ship"
+              tasks={["Migrate", "Monitor", "Handover"]}
+              staggerClass="lg:mt-16 mobile-tap-scale"
+            />
           </Reveal>
         </section>
 
-        {/* ---------------- Closing ---------------- */}
+        {/* ---------------- Closing ----------------
+            `<Reveal stagger>` cascades the heading and the button
+            cluster in sequence (heading first, then buttons). The
+            inner button cluster is a separate `<Reveal stagger>` so
+            the two buttons themselves also cascade in one after the
+            other once the cluster comes into view. */}
         <section className="py-16 md:py-24">
           <AuroraHairline />
-          <Reveal className="pt-12 md:pt-16 flex flex-col gap-6 md:gap-7 items-start">
+          <Reveal stagger staggerStep={140} className="pt-12 md:pt-16 flex flex-col gap-6 md:gap-7 items-start">
             <h2
               className="font-display text-ink"
               style={{

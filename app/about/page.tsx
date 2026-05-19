@@ -128,7 +128,7 @@ export default function AboutPage() {
                 </div>
               </Reveal>
             ) : (
-              <Reveal className="flex flex-col gap-5 max-w-[640px]">
+              <Reveal stagger className="flex flex-col gap-5 max-w-[640px]">
                 <p
                   className="font-display italic text-ink leading-[1.1]"
                   style={{
@@ -146,7 +146,7 @@ export default function AboutPage() {
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                  className="mobile-tap-scale mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
                 >
                   Start a conversation →
                 </Link>
@@ -192,35 +192,35 @@ export default function AboutPage() {
                 </figure>
               </Reveal>
             ) : (
-              <Reveal>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-5xl">
-                  <div className="lg:col-span-4">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-5xl">
+                <div className="lg:col-span-4">
+                  <Reveal>
                     <Eyebrow color="forest">MISSION</Eyebrow>
-                  </div>
-                  <div className="lg:col-span-8 flex flex-col gap-5">
-                    <p
-                      className="font-display italic text-ink leading-[1.1]"
-                      style={{
-                        fontWeight: 500,
-                        fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
-                        letterSpacing: "-0.012em",
-                      }}
-                    >
-                      Websites that put your business in view.
-                    </p>
-                    <p className="text-ink-muted text-[16px] leading-relaxed max-w-[560px]">
-                      Concise, useful, beautiful. The studio runs on those
-                      three priorities — in that order.
-                    </p>
-                    <Link
-                      href="/process"
-                      className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
-                    >
-                      Read the process →
-                    </Link>
-                  </div>
+                  </Reveal>
                 </div>
-              </Reveal>
+                <Reveal stagger className="lg:col-span-8 flex flex-col gap-5">
+                  <p
+                    className="font-display italic text-ink leading-[1.1]"
+                    style={{
+                      fontWeight: 500,
+                      fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                      letterSpacing: "-0.012em",
+                    }}
+                  >
+                    Websites that put your business in view.
+                  </p>
+                  <p className="text-ink-muted text-[16px] leading-relaxed max-w-[560px]">
+                    Concise, useful, beautiful. The studio runs on those
+                    three priorities — in that order.
+                  </p>
+                  <Link
+                    href="/process"
+                    className="mobile-tap-scale mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                  >
+                    Read the process →
+                  </Link>
+                </Reveal>
+              </div>
             )}
           </div>
         </section>
@@ -247,7 +247,7 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-8">
               {about.values.length === 0 ? (
-                <Reveal className="flex flex-col gap-5 max-w-[640px]">
+                <Reveal stagger className="flex flex-col gap-5 max-w-[640px]">
                   <p
                     className="font-display italic text-ink leading-[1.1]"
                     style={{
@@ -264,7 +264,7 @@ export default function AboutPage() {
                   </p>
                   <Link
                     href="/contact"
-                    className="mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
+                    className="mobile-tap-scale mt-2 self-start text-forest text-[15px] inline-flex items-center gap-1.5 border-b border-current pb-0.5 hover:text-ink transition-colors"
                   >
                     Get in touch →
                   </Link>
@@ -317,40 +317,43 @@ export default function AboutPage() {
               <Marginalia>chosen for resilience, not novelty</Marginalia>
             </Reveal>
 
-            <Reveal>
-              <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                {about.tools.map((t) => (
-                  <li key={t.name}>
-                    {t.href ? (
-                      <a
-                        href={t.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="group block rounded-xl border border-line bg-surface px-5 py-6 transition-all hover:border-forest/40 hover:shadow-[0_8px_30px_-15px_rgba(212,158,15,0.35)] relative overflow-hidden"
+            <Reveal
+              as="ul"
+              stagger
+              staggerStep={60}
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"
+            >
+              {about.tools.map((t) => (
+                <li key={t.name}>
+                  {t.href ? (
+                    <a
+                      href={t.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="mobile-tap-scale group block rounded-xl border border-line bg-surface px-5 py-6 transition-all hover:border-forest/40 hover:shadow-[0_8px_30px_-15px_rgba(212,158,15,0.35)] relative overflow-hidden"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, rgba(26,77,51,0.08), rgba(224,180,66,0.10))",
+                        }}
+                      />
+                      <span
+                        className="font-display relative text-[20px] text-ink group-hover:text-forest transition-colors"
+                        style={{ fontWeight: 500 }}
                       >
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, rgba(26,77,51,0.08), rgba(224,180,66,0.10))",
-                          }}
-                        />
-                        <span
-                          className="font-display relative text-[20px] text-ink group-hover:text-forest transition-colors"
-                          style={{ fontWeight: 500 }}
-                        >
-                          {t.name}
-                        </span>
-                      </a>
-                    ) : (
-                      <span className="block rounded-xl border border-line bg-surface px-5 py-6 font-display text-[20px] text-ink">
                         {t.name}
                       </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                    </a>
+                  ) : (
+                    <span className="block rounded-xl border border-line bg-surface px-5 py-6 font-display text-[20px] text-ink">
+                      {t.name}
+                    </span>
+                  )}
+                </li>
+              ))}
             </Reveal>
           </div>
         </section>
@@ -414,7 +417,7 @@ export default function AboutPage() {
               </Button>
               <Link
                 href="/contact"
-                className="text-forest text-[15px] inline-flex items-center gap-1.5 self-center border-b border-current pb-0.5"
+                className="mobile-tap-scale text-forest text-[15px] inline-flex items-center gap-1.5 self-center border-b border-current pb-0.5"
               >
                 Or get in touch →
               </Link>

@@ -104,8 +104,13 @@ export default function PricingPage() {
         {/* ---------------- Tiers ---------------- */}
         <section className="pt-12 md:pt-16 pb-16 md:pb-20">
           {pricingTiers.length === 0 ? (
-            <Reveal>
-              <div className="rounded-xl border border-line bg-surface-calm px-6 md:px-8 py-10 md:py-14 flex flex-col gap-5 items-start max-w-3xl">
+            <div className="mobile-tap-scale rounded-xl border border-line bg-surface-calm px-6 md:px-8 py-10 md:py-14 max-w-3xl">
+              {/* `stagger` mode cascades each direct child of the
+                  Reveal wrapper with an incremental animation-delay so
+                  the eyebrow → headline → body → footnote → CTA land in
+                  rhythm on mobile (and remain harmless on desktop, where
+                  the same one-shot fade still reads cleanly). */}
+              <Reveal stagger staggerStep={90} className="flex flex-col gap-5 items-start">
                 <Eyebrow color="forest">ENGAGEMENT MODEL</Eyebrow>
                 <p
                   className="font-display text-[22px] md:text-[28px] leading-tight text-ink"
@@ -127,8 +132,8 @@ export default function PricingPage() {
                 <Button href="/contact" variant="secondary" size="lg">
                   Get a quote
                 </Button>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5">
               {pricingTiers.map((t, i) => (
@@ -238,16 +243,18 @@ export default function PricingPage() {
             </div>
             <div className="lg:col-span-8">
               {faqs.length === 0 ? (
-                <Reveal>
-                  <div className="rounded-xl border border-line bg-surface-calm px-6 py-8 max-w-xl flex flex-col gap-2">
+                <div className="rounded-xl border border-line bg-surface-calm px-6 py-8 max-w-xl">
+                  {/* Stagger eyebrow → body so the empty state lands in
+                      sequence on mobile rather than as one block. */}
+                  <Reveal stagger staggerStep={100} className="flex flex-col gap-2">
                     <Eyebrow color="forest">QUESTIONS</Eyebrow>
                     <p className="font-mono text-[13px] text-ink-muted">
                       Specific question? Reach out below — usually answered
                       within 24 hours.
                     </p>
                     {/* TODO_PRICING_FAQS: fill lib/content/pricing.ts > faqs. */}
-                  </div>
-                </Reveal>
+                  </Reveal>
+                </div>
               ) : (
                 <ul className="flex flex-col">
                   {faqs.map((item, i) => (
@@ -281,10 +288,18 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* ---------------- Closing ---------------- */}
+        {/* ---------------- Closing ----------------
+            `stagger` cascades the headline and the CTA pill in
+            sequence on scroll-into-view. `mobile-tap-scale` lifts the
+            whole cluster on touch so the CTA reads as the live target
+            without changing desktop hover semantics. */}
         <section className="py-16 md:py-20">
           <AuroraHairline />
-          <Reveal className="pt-12 md:pt-14 flex flex-col gap-5 md:gap-6 items-start">
+          <Reveal
+            stagger
+            staggerStep={120}
+            className="mobile-tap-scale pt-12 md:pt-14 flex flex-col gap-5 md:gap-6 items-start"
+          >
             <h2
               className="font-display text-ink"
               style={{

@@ -288,6 +288,50 @@ export default function HomePage() {
           <PullQuote />
         </div>
 
+        {/* ---------------- Mobile-only service marquee ----------------
+            Thin auto-scrolling band between the quote and work sections.
+            Adds horizontal motion on a viewport where vertical space is
+            precious. Full-bleed via the `100vw / marginLeft` escape so
+            the strip reaches edge-to-edge. Pure CSS animation (see
+            `.mobile-marquee` in globals.css) — no JS, no library, honors
+            `prefers-reduced-motion`. Hidden on desktop where the
+            PullQuote already carries the section break. */}
+        <div
+          aria-hidden="true"
+          className="md:hidden relative my-2 overflow-hidden border-y border-line py-3.5"
+          style={{
+            width: "100vw",
+            marginLeft: "calc(50% - 50vw)",
+          }}
+        >
+          <div className="mobile-marquee font-mono text-[11px] uppercase tracking-[0.22em] text-ink-muted">
+            {/* Content rendered TWICE so the `-50%` translate at the
+                keyframe end lands the second copy where the first
+                started — seamless infinite loop. */}
+            {[0, 1].map((rep) => (
+              <div key={rep} className="flex items-center shrink-0">
+                {[
+                  "Marketing sites",
+                  "Portfolios",
+                  "SaaS surfaces",
+                  "Brand systems",
+                  "Performance-first",
+                  "California",
+                ].map((label) => (
+                  <span key={label} className="flex items-center">
+                    <span className="px-5">{label}</span>
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-1 w-1 rounded-full"
+                      style={{ backgroundImage: "var(--gold-grad)" }}
+                    />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ---------------- Selected Work teaser ---------------- */}
         <section className="py-12 md:py-20">
           <AuroraHairline />
@@ -356,7 +400,7 @@ export default function HomePage() {
         {/* MOBILE PROCESS */}
         <section className="md:hidden py-12">
           <AuroraHairline />
-          <div className="pt-10 flex flex-col gap-3">
+          <Reveal className="pt-10 flex flex-col gap-3">
             <Eyebrow color="forest">PROCESS · ~14 DAYS</Eyebrow>
             <h2
               className="font-display"
@@ -369,18 +413,18 @@ export default function HomePage() {
             >
               How we <ColorWord>build</ColorWord>.
             </h2>
-          </div>
+          </Reveal>
 
           {/* Editorial row list — no card chrome, no border boxes. Each
               phase is a row with a small mono kicker (gold-gradient
               clipped), display-weight name, and a muted brief. Hairline
               divider between, no border on the last row. Reads like a
               list in a magazine, not a stack of widgets. */}
-          <ol className="mt-8 flex flex-col">
+          <Reveal as="ol" stagger staggerStep={100} className="mt-8 flex flex-col">
             {home.phases.map((phase) => (
               <li
                 key={phase.number}
-                className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 py-5 border-b border-line/40 last:border-b-0"
+                className="mobile-tap-scale grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 py-5 border-b border-line/40 last:border-b-0"
               >
                 <span
                   className="font-mono text-[11px] uppercase tracking-[0.22em] mt-[6px] self-start"
@@ -410,16 +454,16 @@ export default function HomePage() {
                 </p>
               </li>
             ))}
-          </ol>
+          </Reveal>
 
-          <div className="mt-8">
+          <Reveal className="mt-8">
             <Link
               href="/process"
-              className="text-forest text-[14px] inline-flex items-center gap-1.5 border-b border-current pb-0.5"
+              className="mobile-tap-scale inline-block text-forest text-[14px] border-b border-current pb-0.5"
             >
               Read the full process →
             </Link>
-          </div>
+          </Reveal>
         </section>
 
         {/* DESKTOP PROCESS (full-bleed horizontal scroll) */}
@@ -478,24 +522,28 @@ export default function HomePage() {
       <div className="md:hidden">
         <section className="mx-auto max-w-[1320px] px-6 pt-12 pb-10">
           <AuroraHairline />
-          <Reveal className="pt-10 flex flex-col gap-5 items-start">
-            <h2
-              className="font-display text-ink"
-              style={{
-                fontSize: "clamp(2rem, 7vw, 3rem)",
-                fontWeight: 600,
-                lineHeight: 1.05,
-                letterSpacing: "-0.015em",
-              }}
-            >
-              {home.closing.headline}{" "}
-              <ColorWord>{home.closing.accent}</ColorWord>
-              {home.closing.trailing}
-            </h2>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted">
-              {site.availability.bookingNote}
-            </p>
-          </Reveal>
+          <div className="pt-10 flex flex-col gap-5 items-start">
+            <Reveal>
+              <h2
+                className="font-display text-ink"
+                style={{
+                  fontSize: "clamp(2rem, 7vw, 3rem)",
+                  fontWeight: 600,
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                {home.closing.headline}{" "}
+                <ColorWord>{home.closing.accent}</ColorWord>
+                {home.closing.trailing}
+              </h2>
+            </Reveal>
+            <Reveal delay={180}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted">
+                {site.availability.bookingNote}
+              </p>
+            </Reveal>
+          </div>
         </section>
 
         <section className="mx-auto max-w-[1320px] px-6 pt-2 pb-16">
@@ -503,6 +551,8 @@ export default function HomePage() {
             <div className="flex items-center gap-3 mb-6">
               <Eyebrow color="forest">CONTACT · 24H REPLY</Eyebrow>
             </div>
+          </Reveal>
+          <Reveal delay={160}>
             <InlineContactForm />
           </Reveal>
         </section>

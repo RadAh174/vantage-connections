@@ -403,9 +403,16 @@ function RingCarousel({
   // Use a fixed angle per item (smaller than 360/count) so cards cluster
   // tightly on the visible front arc instead of spreading evenly across
   // the whole 360°. The cluster is centered on angle 0 by offsetting each
-  // card by `(count-1)*ITEM_ANGLE_DEG/2`. The empty arc rotates around
-  // the back over the 2-minute auto-rotation cycle.
-  const itemAngle = ITEM_ANGLE_DEG;
+  // card by `(count-1)*itemAngle/2`. The empty arc rotates around the
+  // back over the 2-minute auto-rotation cycle.
+  //
+  // For larger sets (>12 items, e.g. when the carousel and works page
+  // share the same data source), 30° per item would overflow past 360°
+  // and items would overlap on the back of the ring. Adaptive: keep the
+  // total visible cluster span under 340° by tightening the angle for
+  // larger counts. 12 or fewer keeps the proven 30° spacing.
+  const itemAngle =
+    count > 12 ? Math.max(12, 340 / Math.max(1, count - 1)) : ITEM_ANGLE_DEG;
   const angleOffset = ((count - 1) * itemAngle) / 2;
 
   // Apply transform from current angle.
@@ -770,7 +777,7 @@ function WorkCard({
     <div
       ref={cardRef}
       data-card-slug={item.slug}
-      className="relative aspect-[16/10] w-full shadow-[0_30px_60px_-30px_rgba(26,26,26,0.25),_0_2px_8px_rgba(26,26,26,0.06)]"
+      className="mobile-tap-scale relative aspect-[16/10] w-full shadow-[0_30px_60px_-30px_rgba(26,26,26,0.25),_0_2px_8px_rgba(26,26,26,0.06)]"
       style={{
         // Stronger border gradient — wider stop range (#8B6914 dark gold
         // → #FFE49A pale champagne) gives more contrast than the standard

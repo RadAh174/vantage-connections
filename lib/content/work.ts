@@ -160,21 +160,22 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "",
     results: "",
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // Reference site — Tailwind CSS docs (preserved as a reference entry
+  // alongside other public design-quality sites). Iframe-safe.
   {
-    slug: "compass",
-    client: "Compass",
-    title: "Modern real-estate brokerage",
+    slug: "tailwind",
+    client: "Tailwind CSS",
+    title: "Design-quality docs site",
     tagline: undefined,
     tags: ["TEST"],
-    category: "Service",
+    category: "SaaS",
     metadata: {
-      client: "Compass",
+      client: "Tailwind CSS",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://www.compass.com",
+      liveUrl: "https://tailwindcss.com",
     },
     brief: "",
     approach: "",
