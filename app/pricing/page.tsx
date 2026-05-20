@@ -8,12 +8,34 @@ import { Marginalia } from "@/components/ui/Marginalia";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
-import { pricingTiers, faqs } from "@/lib/content/pricing";
+import { pricingTiers, faqs, type PricingTier } from "@/lib/content/pricing";
+import { FAQSchema } from "@/components/seo/StructuredData";
+import { FaqItem } from "@/components/ui/FaqItem";
+
+/**
+ * Accent → box-shadow ring. Inline so the CSS-var + color-mix syntax
+ * doesn't fight Tailwind's arbitrary-value escaping. All three tiers
+ * carry a visible ring; Growth's is the brightest (the recommended
+ * "primary" pick), Premium adds an outer glow to feel elevated, Basic
+ * uses a subtle forest hairline to read as the entry tier.
+ */
+function accentBoxShadow(accent: PricingTier["accent"]): string | undefined {
+  switch (accent) {
+    case "forest":
+      return "0 0 0 1px color-mix(in oklab, var(--color-forest) 45%, transparent)";
+    case "gold":
+      return "0 0 0 1.5px var(--color-gold)";
+    case "premium":
+      return "0 0 0 1.5px var(--color-gold), 0 0 28px -6px color-mix(in oklab, var(--color-gold) 50%, transparent)";
+    default:
+      return undefined;
+  }
+}
 
 export const metadata = {
   title: "Pricing",
   description:
-    "Simple pricing. Honest scope. Three tiers — Starter, Standard, Bespoke.",
+    "Managed-monthly pricing. Three tiers — Basic, Growth, Premium. Bespoke design, hosting, and premium support included.",
 };
 
 // ---------------- Hero word-cascade setup ----------------
@@ -41,6 +63,7 @@ export default function PricingPage() {
     <>
       <ScrollProgress />
       <Header />
+      <FAQSchema items={faqs} />
 
       <main className="mx-auto max-w-[1320px] px-6 md:px-10">
         {/* ---------------- Hero ----------------
@@ -93,8 +116,9 @@ export default function PricingPage() {
 
           <Reveal delay={ledeDelayMs}>
             <p className="max-w-[540px] text-[16px] md:text-[18px] leading-[1.55] text-ink-muted">
-              Three tiers. Fixed scope, fixed timeline, fixed price. No
-              hourly. No retainers. Every project ships and we move on.
+              Three tiers. Bespoke design, hosting, and premium support —
+              under one monthly fee. Pause or end with thirty days&apos;
+              notice. No long contracts. No hidden costs.
             </p>
           </Reveal>
         </section>
@@ -142,11 +166,8 @@ export default function PricingPage() {
                       a normal surface card. The inner contents stay legible
                       against bg-surface in both light and dark mode. */}
                   <article
-                    className={`relative rounded-2xl p-5 md:p-7 flex flex-col gap-4 md:gap-5 border h-full bg-surface text-ink ${
-                      t.highlighted
-                        ? "border-transparent shadow-[0_0_0_1.5px_var(--color-gold)]"
-                        : "border-line"
-                    }`}
+                    className="relative rounded-2xl p-5 md:p-7 flex flex-col gap-4 md:gap-5 h-full bg-surface text-ink border border-transparent"
+                    style={{ boxShadow: accentBoxShadow(t.accent) }}
                   >
                     <header className="flex flex-col gap-1.5 md:gap-2">
                       <h3
@@ -216,8 +237,8 @@ export default function PricingPage() {
         {/* ---------------- Marginalia row ---------------- */}
         <section className="pb-16 flex justify-end">
           <Marginalia className="max-w-sm">
-            we don&apos;t do hourly. we don&apos;t do retainers. we ship and
-            we move on.
+            one monthly fee. design, build, host, and care — together. no
+            surprise invoices.
           </Marginalia>
         </section>
 
@@ -258,28 +279,13 @@ export default function PricingPage() {
               ) : (
                 <ul className="flex flex-col">
                   {faqs.map((item, i) => (
-                    <Reveal key={item.q} delay={i * 60}>
-                      <li className="border-b border-line last:border-b-0">
-                        <details className="group py-5 md:py-6">
-                          <summary className="flex items-start justify-between gap-4 md:gap-6 cursor-pointer list-none">
-                            <span
-                              className="font-display text-[17px] md:text-[20px] text-ink leading-snug min-w-0"
-                              style={{ fontWeight: 500 }}
-                            >
-                              {item.q}
-                            </span>
-                            <span
-                              aria-hidden="true"
-                              className="font-mono text-ink-muted text-[14px] group-open:rotate-45 transition-transform shrink-0 mt-1"
-                            >
-                              +
-                            </span>
-                          </summary>
-                          <p className="mt-3 text-ink-muted text-[15px] md:text-[16px] leading-relaxed max-w-[640px]">
-                            {item.a}
-                          </p>
-                        </details>
-                      </li>
+                    <Reveal
+                      key={item.q}
+                      delay={i * 60}
+                      as="li"
+                      className="border-b border-line last:border-b-0"
+                    >
+                      <FaqItem q={item.q} a={item.a} />
                     </Reveal>
                   ))}
                 </ul>

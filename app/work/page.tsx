@@ -106,7 +106,7 @@ const CHAPTERS: readonly Chapter[] = [
     slugs: [
       "juliette-hohnen",     // BIG  (replaces juliette as the anchor)
       "jenny-smith",              // WIDE (real)
-      "pacific-family-dental",    // SMALL (real)
+      "aesop",                    // SMALL (luxury botanicals)
       "studio-mcgee",        // SMALL
       "black-diamond",            // BIG  (real)
       "daylight",            // SMALL

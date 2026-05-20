@@ -650,14 +650,14 @@ export function ContactDrawer({ zoneRef }: Props) {
                   </a>
                 )}
                 <a
-                  href="tel:+19499669075"
+                  href={`tel:${site.phoneE164}`}
                   className="group inline-flex items-baseline gap-4 text-ink text-[17px] hover:text-forest transition-colors"
                 >
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted w-12">
                     Phone
                   </span>
                   <span className="border-b border-line group-hover:border-forest transition-colors pb-px">
-                    +1.949.966.9075
+                    {site.phone}
                   </span>
                 </a>
                 {site.schedulingUrl && (

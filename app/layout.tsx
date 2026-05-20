@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { site } from "@/lib/content/site";
 import { RouteFade } from "@/components/layout/RouteFade";
 import { AtmosphericBackground } from "@/components/layout/AtmosphericBackground";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { OrganizationSchemaGraph } from "@/components/seo/StructuredData";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -89,6 +91,7 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
+        <OrganizationSchemaGraph />
       </head>
       {/* The atmospheric glow stack lives in <AtmosphericBackground />
           (fixed, -z-10) so the body itself can stay transparent and the
@@ -99,6 +102,25 @@ export default function RootLayout({
         <AtmosphericBackground />
         <RouteFade>{children}</RouteFade>
         <Analytics />
+        {/* Google Analytics 4 — fires after page becomes interactive so it
+            never blocks LCP. Measurement ID lives in site.ts; empty string
+            disables the script entirely. */}
+        {site.gaMeasurementId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${site.gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${site.gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

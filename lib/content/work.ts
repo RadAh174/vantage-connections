@@ -88,7 +88,6 @@ export const filters: WorkFilter[] = [
 // Real shipped client projects:
 //   - Black Diamond Pavers
 //   - PredictBase (v1, v2)
-//   - Pacific Family Dental
 //   - Jenny Smith
 //   - Patriot Plumbing
 //   - Pioneer Engineer
@@ -323,26 +322,27 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "",
     results: "",
   },
-  // Real client.
+  // TEST: REMOVE BEFORE LAUNCH — Aesop, luxury botanicals brand
+  // (typographic restraint, premium artisan reference for the ecom
+  // vertical). Replaces the earlier Pacific Family Dental entry.
   {
-    slug: "pacific-family-dental",
-    client: "Pacific Family Dental",
-    title: "Family-practice dental site",
+    slug: "aesop",
+    client: "Aesop",
+    title: "Luxury botanicals brand",
     tagline: undefined,
-    tags: ["Marketing site", "Service"],
-    category: "Service",
+    tags: ["TEST"],
+    category: "E-commerce",
     metadata: {
-      client: "Pacific Family Dental",
-      year: "2026",
+      client: "Aesop",
+      year: "2025",
       role: "",
       scope: "",
-      services: ["Marketing site"],
-      liveUrl: "https://pacific-family-dental.vercel.app/",
+      services: [],
+      liveUrl: "https://aesop.com",
     },
     brief: "",
     approach: "",
     results: "",
-    pullQuote: undefined,
   },
   // Real client.
   {

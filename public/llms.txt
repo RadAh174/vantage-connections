@@ -1,0 +1,64 @@
+# Vantage Connections
+
+> Vantage Connections is a luxury web design and development studio headquartered in Irvine, California. We design, build, host, and maintain bespoke websites on a managed-monthly model for luxury real estate professionals (realtors, brokerages, listings, developers) and premium artisan brands (candles, wellness drinks, sea moss, skincare, gourmet goods).
+
+We serve clients in Irvine, Newport Beach, Los Angeles, Austin (TX), Miami (FL), and Orlando (FL), and work remotely with brands nationwide.
+
+## Founders
+
+- Radin Ahmadi — Co-founder
+- Adrin Ahmadi — Co-founder
+- Daeseo Lee — Co-founder
+- Arastoo Gol — Co-founder
+
+## Services
+
+Three managed-monthly tiers. Every tier includes bespoke design, hosting, on-page SEO, mobile-first responsive build, and premium support.
+
+- **Basic — from $150/month.** Clean luxury portfolio sites for solo professionals, realtors, consultants, and personal brands. Standard support.
+- **Growth — from $350/month.** SMB sites that scale: ecommerce, lead capture, booking modules, analytics, monthly content edits. Premium support.
+- **Premium — from $1,050/month.** Large technical sites with custom backends, integrations, dedicated dev team, A/B testing, marketing & SEO management, and priority SLAs.
+
+## Specializations
+
+### Luxury real estate
+
+- Luxury real estate website design overview: https://vantageconnections.com/services/luxury-real-estate-web-design
+- Realtor portfolio websites: https://vantageconnections.com/services/realtor-portfolio-website
+- Real estate brokerage websites: https://vantageconnections.com/services/real-estate-brokerage-website
+- Property listing websites: https://vantageconnections.com/services/property-listing-website
+- Real estate developer websites: https://vantageconnections.com/services/real-estate-developer-website
+
+### Premium artisan ecommerce
+
+- Premium artisan ecommerce overview: https://vantageconnections.com/services/premium-artisan-ecommerce
+- Candle brand websites: https://vantageconnections.com/services/candle-brand-website
+- Wellness drink ecommerce: https://vantageconnections.com/services/wellness-drink-ecommerce
+- Sea moss / superfood websites: https://vantageconnections.com/services/sea-moss-superfood-website
+- Luxury skincare ecommerce: https://vantageconnections.com/services/luxury-skincare-ecommerce
+
+## Tech stack
+
+Next.js, Tailwind CSS, Sanity, Vercel, Resend.
+
+## Insights (long-form essays)
+
+- Why we build websites monthly, not one-time: https://vantageconnections.com/insights/why-monthly-not-one-time
+- Boutique studio vs. freelancer vs. agency — what you're actually choosing: https://vantageconnections.com/insights/boutique-studio-vs-freelancer-vs-agency
+
+## Important links
+
+- [Selected Work](https://vantageconnections.com/work)
+- [Services](https://vantageconnections.com/services)
+- [Process](https://vantageconnections.com/process)
+- [Pricing](https://vantageconnections.com/pricing)
+- [Insights](https://vantageconnections.com/insights)
+- [About](https://vantageconnections.com/about)
+- [Irvine, CA location](https://vantageconnections.com/locations/irvine)
+- [Contact](https://vantageconnections.com/contact)
+
+## Contact
+
+- Email: info@vantageconnections.com
+- Phone: +1 (949) 966-9075
+- Location: Irvine, California

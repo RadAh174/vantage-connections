@@ -10,6 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 import { about } from "@/lib/content/about";
+import { site } from "@/lib/content/site";
 
 export const metadata = {
   title: "About",
@@ -154,6 +155,64 @@ export default function AboutPage() {
             )}
           </div>
         </section>
+
+        {/* ---------------- Founders ----------------
+            Real people, named. Anchors the studio as a 4-person team
+            for E-E-A-T + Person-entity tracking. No headshots yet — the
+            typographic list pattern matches Hartman Baldwin / Falcon
+            Builders luxury-SMB reference set. */}
+        {site.founders.length > 0 && (
+          <section className="py-20">
+            <AuroraHairline />
+            <div className="pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10">
+              <div className="lg:col-span-4">
+                <Reveal className="flex flex-col gap-3">
+                  <Eyebrow color="forest">FOUNDERS</Eyebrow>
+                  <h2
+                    className="font-display"
+                    style={{
+                      fontSize: "clamp(2.25rem, 4vw, 3.5rem)",
+                      fontWeight: 600,
+                      lineHeight: 1.05,
+                      letterSpacing: "-0.015em",
+                    }}
+                  >
+                    The four <ColorWord>behind</ColorWord> the studio.
+                  </h2>
+                  <p className="text-ink-muted text-[15px] leading-relaxed max-w-xs">
+                    Based in Irvine, California. Working with clients
+                    across Newport Beach, Los Angeles, Austin, Miami, and
+                    Orlando.
+                  </p>
+                </Reveal>
+              </div>
+              <div className="lg:col-span-8">
+                <ol className="flex flex-col">
+                  {site.founders.map((f, i) => (
+                    <Reveal key={f.name} delay={i * 60}>
+                      <li className="flex items-baseline gap-6 py-7 border-b border-line last:border-b-0">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-forest w-8 shrink-0">
+                          0{i + 1}
+                        </span>
+                        <div className="flex flex-col gap-1">
+                          <h3
+                            className="font-display text-[26px] md:text-[30px] text-ink"
+                            style={{ fontWeight: 500 }}
+                          >
+                            {f.name}
+                          </h3>
+                          <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-ink-muted">
+                            {f.role}
+                          </span>
+                        </div>
+                      </li>
+                    </Reveal>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ---------------- Mission ---------------- */}
         <section className="py-20">

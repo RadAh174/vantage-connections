@@ -27,10 +27,10 @@ export function Footer() {
             </a>
           )}
           <a
-            href="tel:+19499669075"
+            href={`tel:${site.phoneE164}`}
             className="text-[14px] text-ink-muted hover:text-forest transition-colors self-start"
           >
-            +1.949.966.9075
+            {site.phone}
           </a>
         </div>
 
@@ -46,6 +46,19 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+            {/* Quiet About link — kept out of primary nav but indexable
+                and reachable, which preserves E-E-A-T + the Person entity
+                signal LLMs use to verify founders are real. */}
+            <li>
+              <Link href="/about" className="hover:text-forest transition-colors">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/pricing" className="hover:text-forest transition-colors">
+                Pricing
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

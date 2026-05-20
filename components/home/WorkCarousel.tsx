@@ -381,6 +381,10 @@ function RingCarousel({
 }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  // One ref per card div — used by the RAF tick to set per-card opacity
+  // so only the front-most card stays visible while others fade to 0 as
+  // they rotate away from the front. Implements the "1-layer" feel.
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Mutable state lives in refs so RAF can read/write without React rerenders.
   const angleRef = useRef(0);
@@ -400,20 +404,19 @@ function RingCarousel({
   }, [paused]);
 
   const count = items.length;
-  // Use a fixed angle per item (smaller than 360/count) so cards cluster
-  // tightly on the visible front arc instead of spreading evenly across
-  // the whole 360°. The cluster is centered on angle 0 by offsetting each
-  // card by `(count-1)*itemAngle/2`. The empty arc rotates around the
-  // back over the 2-minute auto-rotation cycle.
+  // "1-layer" mode — only the front-most card is visible at any moment;
+  // every other card fades to opacity 0 as it rotates away. The 3D ring
+  // still rotates (preserves drag + wheel + inertia + auto-drift), but
+  // visually it behaves like a single-card crossfade carousel.
   //
-  // For larger sets (>12 items, e.g. when the carousel and works page
-  // share the same data source), 30° per item would overflow past 360°
-  // and items would overlap on the back of the ring. Adaptive: keep the
-  // total visible cluster span under 340° by tightening the angle for
-  // larger counts. 12 or fewer keeps the proven 30° spacing.
+  // Cards are spaced at ITEM_ANGLE_DEG (30°) — large gap so adjacent
+  // cards exit the visible window cleanly. With more than 12 items the
+  // spacing tightens to keep the cluster under 340°. The card at the
+  // arithmetic middle starts dead-centered at angle 0 so the carousel
+  // opens with a single sharp card, not two half-faded ones.
   const itemAngle =
     count > 12 ? Math.max(12, 340 / Math.max(1, count - 1)) : ITEM_ANGLE_DEG;
-  const angleOffset = ((count - 1) * itemAngle) / 2;
+  const angleOffset = itemAngle * Math.floor(count / 2);
 
   // Apply transform from current angle.
   const applyTransform = useCallback(() => {
@@ -422,6 +425,51 @@ function RingCarousel({
       ring.style.transform = `rotateY(${angleRef.current}deg)`;
     }
   }, []);
+
+  // Per-card visibility for the "3-card arc" feel. Binary opacity —
+  // the front card plus its two immediate neighbors (one on each side)
+  // are fully visible; every other card is hidden. Cards enter and
+  // leave at full opacity, no fade-in/out. A short CSS transition
+  // (declared on each card's style) smooths the swap moment so the
+  // hand-off between neighbors doesn't pixel-pop.
+  //
+  // The opacity-write is gated on a value change so the same "1" or "0"
+  // isn't re-written every frame (would re-trigger the CSS transition).
+  const applyCardOpacities = useCallback(() => {
+    const ringAngle = angleRef.current;
+    const cards = cardRefs.current;
+
+    // Find the card closest to angle 0 (front).
+    let closestIdx = 0;
+    let closestDist = Infinity;
+    for (let i = 0; i < count; i++) {
+      const sa = itemAngle * i - angleOffset;
+      const total = sa + ringAngle;
+      const n = (((total + 180) % 360) + 360) % 360 - 180;
+      const d = Math.abs(n);
+      if (d < closestDist) {
+        closestDist = d;
+        closestIdx = i;
+      }
+    }
+
+    // The visible 3-card arc: closest + one on each side, wrapping
+    // around the ring (mod count) so we never index out of range.
+    const leftIdx = (closestIdx - 1 + count) % count;
+    const rightIdx = (closestIdx + 1) % count;
+
+    for (let i = 0; i < cards.length; i++) {
+      const el = cards[i];
+      if (!el) continue;
+      const isVisible =
+        i === closestIdx || i === leftIdx || i === rightIdx;
+      const target = isVisible ? "1" : "0";
+      if (el.style.opacity !== target) {
+        el.style.opacity = target;
+        el.style.pointerEvents = isVisible ? "auto" : "none";
+      }
+    }
+  }, [itemAngle, angleOffset, count]);
 
   useEffect(() => {
     const reducedMotionMQ = window.matchMedia(
@@ -457,6 +505,7 @@ function RingCarousel({
       }
 
       applyTransform();
+      applyCardOpacities();
       rafId = requestAnimationFrame(tick);
     }
 
@@ -469,7 +518,7 @@ function RingCarousel({
         window.clearTimeout(resumeTimerRef.current);
       }
     };
-  }, [applyTransform]);
+  }, [applyTransform, applyCardOpacities]);
 
   // Sideways wheel / trackpad → rotation. React's onWheel is passive by
   // default which forbids preventDefault; attach a non-passive listener
@@ -693,23 +742,45 @@ function RingCarousel({
           willChange: "transform",
         }}
       >
-        {items.map((item, i) => (
-          <div
-            key={item.slug}
-            className="absolute inset-0"
-            style={{
-              transform: `rotateY(${itemAngle * i - angleOffset}deg) translateZ(${RADIUS}px)`,
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden",
-            }}
-          >
-            <WorkCard
-              item={item}
-              onOpen={handleCardOpen}
-              isLifted={item.slug === liftedSlug}
-            />
-          </div>
-        ))}
+        {items.map((item, i) => {
+          // Initial opacity: the middle 3 cards (front + one on each
+          // side) are visible. Matches what the RAF tick will compute
+          // on the first frame — prevents a flash of all cards (or all
+          // hidden) during hydration before tick runs.
+          const staticAngle = itemAngle * i - angleOffset;
+          const initialFront = Math.floor(count / 2);
+          const initialLeft = (initialFront - 1 + count) % count;
+          const initialRight = (initialFront + 1) % count;
+          const isInitiallyFront =
+            i === initialFront || i === initialLeft || i === initialRight;
+          return (
+            <div
+              key={item.slug}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
+              className="absolute inset-0"
+              style={{
+                transform: `rotateY(${staticAngle}deg) translateZ(${RADIUS}px)`,
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                opacity: isInitiallyFront ? 1 : 0,
+                // Short CSS transition smooths the binary swap so the
+                // pixel change doesn't pop. Short enough that the
+                // perceived feel is "instant swap" with no visible
+                // low-opacity moment.
+                transition: "opacity 120ms cubic-bezier(0.4, 0, 0.2, 1)",
+                pointerEvents: isInitiallyFront ? undefined : "none",
+              }}
+            >
+              <WorkCard
+                item={item}
+                onOpen={handleCardOpen}
+                isLifted={item.slug === liftedSlug}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
