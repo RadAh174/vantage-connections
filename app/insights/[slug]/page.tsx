@@ -91,8 +91,16 @@ export default async function InsightPage({ params }: Props) {
       <BreadcrumbSchema items={crumbs} />
 
       <article className="mx-auto max-w-[1320px] px-6 md:px-10">
+        {/* Editorial centered column for the essay itself. Hero + body
+            both render inside `.essay-column` so the page reads like a
+            single magazine spread — title on the same axis as the prose
+            below it, with breathing room on both sides instead of an
+            orphaned narrow column flush-left in a wide container.
+            "Keep reading" and CTA below close the wrapper and stretch
+            back to the full 1320px container width. */}
+        <div className="mx-auto max-w-[720px]">
         {/* Hero */}
-        <section className="relative min-h-[55dvh] flex flex-col justify-center pt-20 md:pt-28 pb-12 max-w-4xl">
+        <section className="relative min-h-[55dvh] flex flex-col justify-center pt-20 md:pt-28 pb-12">
           <span
             className="hero-word block mb-6"
             style={{ animationDelay: "0ms" }}
@@ -138,7 +146,7 @@ export default async function InsightPage({ params }: Props) {
         <AuroraHairline />
 
         {/* Body — block renderer */}
-        <section className="py-12 md:py-16 max-w-[720px]">
+        <section className="py-12 md:py-16">
           {insight.blocks.map((block, i) => {
             switch (block.type) {
               case "h2":
@@ -265,6 +273,9 @@ export default async function InsightPage({ params }: Props) {
             }
           })}
         </section>
+        </div>
+        {/* /.essay-column — body content ends; the sections below stretch
+            back to the full 1320px container width. */}
 
         <AuroraHairline />
 

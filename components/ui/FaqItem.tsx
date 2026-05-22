@@ -79,8 +79,14 @@ export function FaqItem({ q, a }: Props) {
           overflow: "hidden",
         }}
       >
-        <div ref={measureRef}>
-          <p className="mt-3 text-ink-muted text-[15px] md:text-[16px] leading-relaxed max-w-[640px]">
+        {/* Spacing must live as padding on the measureRef wrapper, NOT
+            as margin on the <p>. Margins on a first child can collapse
+            through a parent that has no padding/border, which would
+            make scrollHeight under-report by the margin amount and clip
+            the bottom of the answer. Padding is included in scrollHeight
+            and doesn't collapse — measurement matches rendered height. */}
+        <div ref={measureRef} className="pt-3">
+          <p className="text-ink-muted text-[15px] md:text-[16px] leading-relaxed max-w-[640px]">
             {a}
           </p>
         </div>
