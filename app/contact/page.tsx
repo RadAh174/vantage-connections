@@ -48,7 +48,7 @@ const CONTACT_FAQS = [
   },
   {
     q: "Do you ever turn down projects?",
-    a: "Yes. If the scope doesn't fit our tiers, the timeline isn't realistic, or the work isn't a fit for the studio's specialties — luxury real estate and premium artisan ecommerce — we'll say so on the call and recommend someone better suited. Honest no's save everyone time.",
+    a: "Yes, occasionally. If the scope or timeline isn't realistic for the quality bar we want to hit, we'll say so on the call and recommend someone better suited. Honest no's save everyone time.",
   },
 ];
 
