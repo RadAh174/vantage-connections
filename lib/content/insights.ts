@@ -54,11 +54,11 @@ export const insights: Insight[] = [
     blocks: [
       {
         type: "p",
-        text: "A managed-monthly web design engagement charges a recurring fee that covers design, build, hosting, and ongoing care under one number — typically $250 to $1,500 per month for premium service businesses. It replaces the older one-time project fee (often $8,000 to $80,000 upfront) plus separate hosting, maintenance, and update invoices. The monthly model is better for both sides in almost every case where the business depends on its website to generate revenue.",
+        text: "A managed-monthly web design engagement charges a recurring fee that covers design, build, hosting, and ongoing care under one number. It replaces the older one-time project fee (often $8,000 to $80,000 upfront) plus separate hosting, maintenance, and update invoices. The monthly model is better for both sides in almost every case where the business depends on its website to generate revenue.",
       },
       {
         type: "p",
-        text: "Vantage Connections runs three monthly tiers: Basic from $250, Growth from $450, Premium from $1,050. We did not start with this model. We started, like everyone else, with one-time project quotes. We switched because the project model produced worse outcomes for clients and worse economics for us, in roughly that order.",
+        text: "Vantage Connections runs three monthly tiers — Basic, Growth, and Premium. We did not start with this model. We started, like everyone else, with one-time project quotes. We switched because the project model produced worse outcomes for clients and worse economics for us, in roughly that order. Contact us for a quote scoped to your project.",
       },
 
       { type: "h2", text: "The economics of one-time builds are quietly broken" },
@@ -105,7 +105,7 @@ export const insights: Insight[] = [
       { type: "h2", text: "The cash-flow math works better for both sides" },
       {
         type: "p",
-        text: "From the client's side: a $25,000 one-time build is a cash-flow event that requires either a chunk of working capital or financing. A $450/month engagement is operating expense — same accounting treatment as office rent or software subscriptions, much easier to budget for. The total spend over three years is roughly comparable ($25,000 one-time vs. $16,200 over 36 months at $450), but the client gets continuous service across that period instead of a single artifact and silence.",
+        text: "From the client's side: a $25,000 one-time build is a cash-flow event that requires either a chunk of working capital or financing. A monthly engagement is operating expense — same accounting treatment as office rent or software subscriptions, much easier to budget for. Total spend across a multi-year horizon is roughly comparable to an upfront build of similar scope, but the client gets continuous service across that period instead of a single artifact and silence.",
       },
       {
         type: "p",
@@ -152,7 +152,7 @@ export const insights: Insight[] = [
       },
       {
         type: "p",
-        text: "If your business has decided it does not need a website — many service businesses still run on referrals and a Google Business Profile alone — the monthly model is not for you either. Save the $250 and double down on what is working.",
+        text: "If your business has decided it does not need a website — many service businesses still run on referrals and a Google Business Profile alone — the monthly model is not for you either. Save the recurring spend and double down on what is working.",
       },
       {
         type: "p",
@@ -242,7 +242,7 @@ export const insights: Insight[] = [
       { type: "h2", text: "Boutique studios: the option most decision frameworks skip" },
       {
         type: "p",
-        text: "A boutique studio is a 2-to-12-person team operating without traditional agency overhead — no sales department, no account managers, no offshore production tier. The founders typically do the work directly. Pricing for boutique studio engagements runs $15,000 to $100,000 for project-based work, or $250 to $2,500 per month for managed-monthly models like ours.",
+        text: "A boutique studio is a 2-to-12-person team operating without traditional agency overhead — no sales department, no account managers, no offshore production tier. The founders typically do the work directly. Boutique studios run a wide spread of engagement models — some project-based at $15,000 to $100,000 per engagement, some on managed-monthly retainers; Vantage Connections is in the latter camp. Either way the math is similar over a multi-year horizon.",
       },
       {
         type: "p",

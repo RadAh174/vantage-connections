@@ -116,7 +116,7 @@ export const services: Service[] = [
       },
       {
         q: "What does luxury web design cost?",
-        a: "Vantage Connections runs a managed-monthly model — Basic from $250/month, Growth from $450/month, Premium from $1,050/month. That covers design, build, hosting, and ongoing care under one fee. See the full pricing breakdown for what each tier includes.",
+        a: "Vantage Connections runs a managed-monthly model with three tiers — Basic, Growth, and Premium. Each covers design, build, hosting, and ongoing care under one fee. Pricing depends on scope, integrations, and engagement length, so we scope every project before quoting. Contact us for a tailored quote — we'll match the right tier to your business and put a number in writing before kickoff.",
       },
     ],
     relatedSlugs: [

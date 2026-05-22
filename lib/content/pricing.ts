@@ -43,7 +43,7 @@ export const pricingTiers: PricingTier[] = [
   {
     name: "Basic",
     tagline: "A clean, luxury portfolio site to share with clients.",
-    range: "From $150 / month",
+    range: "Contact for pricing",
     bestFor:
       "Solo professionals, realtors, consultants, and personal brands who need a credible presence — not a storefront.",
     included: [
@@ -55,14 +55,14 @@ export const pricingTiers: PricingTier[] = [
       "Quarterly content edits",
       "Standard support",
     ],
-    ctaLabel: "Start with Basic",
+    ctaLabel: "Get a quote",
     ctaHref: "/contact",
     accent: "forest",
   },
   {
     name: "Growth",
     tagline: "For businesses scaling up and bringing product to clients.",
-    range: "From $350 / month",
+    range: "Contact for pricing",
     bestFor:
       "SMBs ready to sell, list inventory, capture leads, and grow — with a site that keeps up.",
     included: [
@@ -75,7 +75,7 @@ export const pricingTiers: PricingTier[] = [
       "Quarterly performance review",
       "Premium support",
     ],
-    ctaLabel: "Start with Growth",
+    ctaLabel: "Get a quote",
     ctaHref: "/contact",
     accent: "gold",
     highlighted: true,
@@ -83,7 +83,7 @@ export const pricingTiers: PricingTier[] = [
   {
     name: "Premium",
     tagline: "Large, technical websites with dedicated dev team.",
-    range: "From $1,050 / month",
+    range: "Contact for pricing",
     bestFor:
       "Established businesses running complex backends, integrations, or content operations that need real engineering capacity.",
     included: [
