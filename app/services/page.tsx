@@ -41,7 +41,7 @@ export default function ServicesHubPage() {
             className="hero-word block mb-6"
             style={{ animationDelay: "0ms" }}
           >
-            <Eyebrow color="forest">SERVICES · TWO VERTICALS, DONE WELL</Eyebrow>
+            <Eyebrow color="forest">SERVICES · WHAT WE BUILD</Eyebrow>
           </span>
 
           <h1
@@ -92,10 +92,10 @@ export default function ServicesHubPage() {
               animationDelay: `${(totalHeroWords + 1) * HERO_STEP_MS}ms`,
             }}
           >
-            Bespoke websites for two narrowly chosen markets: luxury real
-            estate and premium artisan brands. Each engagement runs on a
-            managed-monthly model — design, build, host, and care, under
-            one fee.
+            Bespoke websites with deep focus on luxury real estate and
+            premium artisan brands — and a track record across adjacent
+            verticals. Every engagement runs on a managed-monthly model:
+            design, build, host, and care, under one fee.
           </p>
         </section>
 
