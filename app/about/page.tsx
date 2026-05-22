@@ -16,6 +16,7 @@ export const metadata = {
   title: "About",
   description:
     "Real people, real work. Vantage Connections is a freelance web studio building modern, conversion-focused websites.",
+  alternates: { canonical: "/about" },
 };
 
 /* Hero per-word reveal cadence — matches the home page (240ms step). */

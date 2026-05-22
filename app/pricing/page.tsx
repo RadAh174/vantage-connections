@@ -36,6 +36,7 @@ export const metadata = {
   title: "Pricing",
   description:
     "Managed-monthly pricing. Three tiers — Basic, Growth, Premium. Bespoke design, hosting, and premium support included.",
+  alternates: { canonical: "/pricing" },
 };
 
 // ---------------- Hero word-cascade setup ----------------

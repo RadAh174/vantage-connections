@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${project.title} — ${project.client}`,
     description: project.tagline ?? project.brief.slice(0, 160),
+    alternates: { canonical: `/work/${project.slug}` },
   };
 }
 

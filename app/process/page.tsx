@@ -13,6 +13,7 @@ export const metadata = {
   title: "Process",
   description:
     "How we build. Four phases. Honest scope, honest timeline, no surprises.",
+  alternates: { canonical: "/process" },
 };
 
 /* Hero per-word reveal cadence — matches the home page (240ms step). */

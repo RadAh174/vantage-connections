@@ -21,6 +21,10 @@ import { PullQuote } from "@/components/home/PullQuote";
 import { site } from "@/lib/content/site";
 import { home } from "@/lib/content/home";
 
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <>
