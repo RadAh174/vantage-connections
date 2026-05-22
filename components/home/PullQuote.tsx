@@ -130,10 +130,13 @@ export function PullQuote() {
       style={{ marginLeft: "calc(50% - 50vw)" }}
     >
       {/* Image — natural aspect, no crop. Mask fades top + bottom edges
-          so the section blends into the page bg above and below. */}
+          so the section blends into the page bg above and below.
+          Meaningful alt rather than alt="" + aria-hidden: some SEO
+          auditors don't recognize the W3C decorative-image pattern and
+          flag the page. Describing the editorial scene satisfies both
+          interpretations and gives screen-reader users context. */}
       <img
-        aria-hidden="true"
-        alt=""
+        alt="Editorial backdrop accompanying the Saint-Exupéry quote on perfection — quiet, considered space."
         // Local 4800px WebP, migrated from the original Unsplash
         // hot-link via the image-upscale-pipeline skill (skipped the
         // AI upscale step since the Unsplash source is already

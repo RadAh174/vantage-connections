@@ -10,11 +10,70 @@ import { Chip } from "@/components/ui/Chip";
 import { ColorWord } from "@/components/ui/ColorWord";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { FaqItem } from "@/components/ui/FaqItem";
+import { FAQSchema } from "@/components/seo/StructuredData";
 import { LiveMockupViewport } from "@/components/contact/LiveMockupViewport";
 import type { ProjectType as MockupProjectType } from "@/components/contact/mockups/types";
 
 import { sendLead } from "@/app/actions/contact";
 import { site } from "@/lib/content/site";
+
+/**
+ * Answerable content for /contact — feeds the FAQPage schema below and
+ * also renders visibly so AI/search surfaces (Google AI Overviews,
+ * ChatGPT, Perplexity) have direct-answer text to extract. Without this
+ * block the contact page is just a form, which is hard to surface in
+ * answer-style results.
+ */
+const CONTACT_FAQS = [
+  {
+    q: "How quickly will I hear back?",
+    a: "Within 24 hours Monday through Friday — often the same day. We sometimes reply on weekends but don't promise it. If you haven't heard from us by the next business day, check your spam folder and feel free to nudge.",
+  },
+  {
+    q: "What should I include in the form?",
+    a: "Your name and email are the only required fields. Useful extras: your business URL so we can read up before the call, what the website needs to do, rough timeline, and whether you're starting from scratch or replacing something existing. If you don't have a budget figured out, pick \"Not sure\" — we'll work through scope before pricing.",
+  },
+  {
+    q: "What happens after I submit?",
+    a: "We read your note, look at your business, and reply within 24 hours with a few clarifying questions or a calendar link for a 30-minute scoping call. The call is free, no pressure. After the call, we send a written scope, timeline, and quote within 48 hours. If you say yes, we kick off the project.",
+  },
+  {
+    q: "Do you work with international clients?",
+    a: "Yes. We're remote-first and have clients across the US, EU, and Asia. We sync schedules to find call times that work for both sides — the work itself is async-friendly so time-zone differences don't slow projects down.",
+  },
+  {
+    q: "Can I skip the form and just talk?",
+    a: "Yes. Email info@vantageconnections.com or call +1 (949) 966-9075 directly. The form helps us prep before the conversation, but it's not required.",
+  },
+  {
+    q: "Do you ever turn down projects?",
+    a: "Yes. If the scope doesn't fit our tiers, the timeline isn't realistic, or the work isn't a fit for the studio's specialties — luxury real estate and premium artisan ecommerce — we'll say so on the call and recommend someone better suited. Honest no's save everyone time.",
+  },
+];
+
+const NEXT_STEPS = [
+  {
+    num: "01",
+    title: "We reply",
+    body: "Within 24 hours Monday through Friday — usually the same day. You'll get a few clarifying questions or a calendar link for the next step.",
+  },
+  {
+    num: "02",
+    title: "30-minute scoping call",
+    body: "Free, no pressure. We talk through what you need, what you're starting with, and what success looks like for the launch.",
+  },
+  {
+    num: "03",
+    title: "Written quote and ship date",
+    body: "Within 48 hours of the call. Scope, timeline, and fee — all in writing before anything starts. No hidden line items.",
+  },
+  {
+    num: "04",
+    title: "Project kickoff",
+    body: "You sign off, we kick off. From there it's our cadence — Discover, Design, Build, Launch — with weekly check-ins and a written ship date you can hold us to.",
+  },
+];
 
 const PROJECT_TYPES = [
   "SaaS",
@@ -398,6 +457,111 @@ export default function ContactPage() {
           </div>
         </section>
 
+        {/* ---------------- What happens next ----------------
+            Adds answerable content the form alone doesn't provide —
+            tells the prospect what the next ~3-day window looks like
+            after they hit submit. Also gives Google AI Overviews +
+            ChatGPT/Perplexity a clean direct-answer block to extract
+            for "what happens when you contact a web studio" prompts. */}
+        <section className="py-16 md:py-24">
+          <AuroraHairline />
+          <div className="pt-12 md:pt-16 grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-4">
+              <Reveal className="flex flex-col gap-3 lg:sticky lg:top-28">
+                <Eyebrow color="forest">WHAT HAPPENS NEXT</Eyebrow>
+                <h2
+                  className="font-display"
+                  style={{
+                    fontSize: "clamp(2rem, 4vw, 3.25rem)",
+                    fontWeight: 600,
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  From form to <ColorWord>kickoff</ColorWord>.
+                </h2>
+                <p className="text-ink-muted text-[15px] leading-relaxed max-w-xs">
+                  Most projects move from initial form to signed quote in
+                  under a week.
+                </p>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-8">
+              <ol className="flex flex-col">
+                {NEXT_STEPS.map((step, i) => (
+                  <Reveal
+                    key={step.num}
+                    delay={i * 80}
+                    as="li"
+                    className="border-b border-line last:border-b-0"
+                  >
+                    <div className="flex items-start gap-5 py-6">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-forest pt-1 w-10 shrink-0">
+                        {step.num}
+                      </span>
+                      <div className="flex flex-col gap-2">
+                        <h3
+                          className="font-display text-[20px] md:text-[22px] text-ink"
+                          style={{ fontWeight: 500 }}
+                        >
+                          {step.title}
+                        </h3>
+                        <p className="text-ink-muted text-[15px] md:text-[16px] leading-relaxed max-w-[640px]">
+                          {step.body}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- FAQ ----------------
+            Direct-answer Q&A for the most common pre-contact questions.
+            Rendered visibly + emitted as FAQPage JSON-LD via FAQSchema
+            below so Google can surface as rich results and LLM
+            crawlers can extract Q&A pairs. */}
+        <section className="py-16 md:py-20">
+          <AuroraHairline />
+          <div className="pt-12 md:pt-14 grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-4">
+              <Reveal className="flex flex-col gap-3 lg:sticky lg:top-28">
+                <Eyebrow color="forest">FAQ</Eyebrow>
+                <h2
+                  className="font-display"
+                  style={{
+                    fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)",
+                    fontWeight: 600,
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.015em",
+                  }}
+                >
+                  Common <ColorWord>questions</ColorWord>.
+                </h2>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-8">
+              <ul className="flex flex-col">
+                {CONTACT_FAQS.map((item, i) => (
+                  <Reveal
+                    key={item.q}
+                    delay={i * 60}
+                    as="li"
+                    className="border-b border-line last:border-b-0"
+                  >
+                    <FaqItem q={item.q} a={item.a} />
+                  </Reveal>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQPage schema — emits a JSON-LD <script> with Q&A pairs
+            for Google rich results + LLM citation extraction. */}
+        <FAQSchema items={CONTACT_FAQS} />
       </main>
 
       <Footer />
