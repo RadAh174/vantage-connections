@@ -104,19 +104,19 @@ const CHAPTERS: readonly Chapter[] = [
     body: "Marketing sites, editorial portfolios, brand surfaces — the front door of the business. Built to convert and to look like you actually run something.",
     pattern: PATTERN_12,
     slugs: [
-      "juliette-hohnen",     // BIG  (replaces juliette as the anchor)
-      "jenny-smith",              // WIDE (real)
-      "aesop",                    // SMALL (luxury botanicals)
-      "studio-mcgee",        // SMALL
-      "black-diamond",            // BIG  (real)
-      "daylight",            // SMALL
-      "amber-interior",      // SMALL
-      "pioneer-engineer",         // WIDE (real)
-      // 2×2 luxury real-estate portfolio grid:
-      "aaron-kirman",        // WIDE
-      "saslove-warwick",     // WIDE
-      "ginger-martin",       // WIDE
-      "eklund-gomes",        // WIDE
+      "homes-in-santa-barbara",   // BIG  (anchor — luxury Santa Barbara RE brand)
+      "jenny-smith",              // WIDE (personal brand)
+      "milkbarstore",             // SMALL (E-commerce — DTC bakery)
+      "pepe-calderin-design",     // SMALL (interior designer portfolio)
+      "black-diamond",            // BIG  (hardscaping service)
+      "studio-790",               // SMALL (design studio portfolio)
+      "jessica-nelson-design",    // SMALL (interior designer portfolio)
+      "pioneer-engineer",         // WIDE (industrial automation)
+      // 2×2 luxury real-estate / personal-brand grid:
+      "torsx",                    // WIDE (real-estate brand)
+      "john-igean",               // WIDE (personal brand)
+      "barbara-vandyke",          // WIDE (personal brand)
+      "cynthia-lopez",            // WIDE (personal brand)
     ],
   },
   {

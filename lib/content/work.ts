@@ -68,34 +68,38 @@ export const filters: WorkFilter[] = [
 ];
 
 /**
- * Real shipped projects + carousel test entries.
+ * Featured projects — 15 real shipped Vantage client engagements plus
+ * 4 design-quality reference sites (tagged ["TEST"]) that fill the
+ * Chapter 02 "Product surfaces" slots until Vantage's own SaaS / product
+ * surfaces are publishable as case studies.
  *
- * Black Diamond Pavers and PredictBase (v1, v2) are real client work
- * — brief / approach / results stay empty strings with TODO markers
- * until the user supplies copy. Empty strings render as visible blank
- * paragraphs in the case-study route — that is intentional and surfaces
- * the gap rather than masking it with filler.
+ * Order matters — the home carousel takes the first 12 entries (after
+ * filtering Patriot Plumbing, which has Vercel deployment protection
+ * that breaks the iframe modal). Real projects are intentionally
+ * front-loaded so the carousel is 100% real Vantage work.
  *
- * TEST_GALLERY_ENTRIES: every entry tagged "TEST" below is a public
- * design-quality reference site mirrored from the home carousel — they
- * exercise the asymmetric grid layout and are NOT real Vantage client
- * work. Each is marked `// TEST: REMOVE BEFORE LAUNCH`. Strip them
- * before any public push.
+ * Real shipped Vantage client projects (15):
+ *   - Black Diamond Pavers
+ *   - Homes in Santa Barbara
+ *   - PredictBase (v1 + v2)
+ *   - Milk Bar
+ *   - Jenny Smith
+ *   - Patriot Plumbing (excluded from carousel)
+ *   - Pioneer Engineer
+ *   - TORSX
+ *   - Cynthia Lopez
+ *   - John Igean
+ *   - Barbara Van Dyke
+ *   - Studio 790
+ *   - Pepe Calderin Design
+ *   - Jessica Nelson Design
+ *
+ * Reference sites — tagged ["TEST"] — fill Chapter 02 slots until
+ * Vantage's own product-surface work can replace them:
+ *   - shadcn/ui, Supabase, Cal.com, Retool
  */
-// The work-page renders projects in chapter groups (see
-// app/work/page.tsx CHAPTERS) — each chapter looks projects up by
-// slug, so the order of this array no longer matters for layout.
-// Real shipped client projects:
-//   - Black Diamond Pavers
-//   - PredictBase (v1, v2)
-//   - Jenny Smith
-//   - Patriot Plumbing
-//   - Pioneer Engineer
-// Reference entries (`tags: ["TEST"]`) are public reference sites
-// included to exercise the gallery layout — strip the TEST tag once
-// real work fills the chapter.
 export const featuredProjects: FeaturedProject[] = [
-  // Real client.
+  // Real client — Vantage flagship.
   {
     slug: "black-diamond",
     client: "Black Diamond Pavers",
@@ -106,101 +110,40 @@ export const featuredProjects: FeaturedProject[] = [
     featured: true,
     metadata: {
       client: "Black Diamond Pavers",
-      // TODO_BLACKDIAMOND_META: user to confirm year / role / scope.
       year: "2026",
       role: "",
       scope: "",
       services: ["Marketing site"],
       liveUrl: "https://vantageconnections-blackdiamond.vercel.app/",
     },
-    // TODO_BLACKDIAMOND_COPY: user to supply brief / approach / results prose.
     brief: "",
     approach: "",
     results: "",
     pullQuote: undefined,
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // Real client — luxury Santa Barbara real estate brand. BIG anchor of
+  // Chapter 01 in the works gallery.
   {
-    slug: "shadcn",
-    client: "shadcn/ui",
-    title: "Component library + docs",
+    slug: "homes-in-santa-barbara",
+    client: "Homes in Santa Barbara",
+    title: "Luxury Santa Barbara real-estate brand",
     tagline: undefined,
-    tags: ["TEST"],
-    category: "SaaS",
-    metadata: {
-      client: "shadcn/ui",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://ui.shadcn.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "supabase",
-    client: "Supabase",
-    title: "Modern marketing site",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "SaaS",
-    metadata: {
-      client: "Supabase",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://supabase.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // Reference site — Tailwind CSS docs (preserved as a reference entry
-  // alongside other public design-quality sites). Iframe-safe.
-  {
-    slug: "tailwind",
-    client: "Tailwind CSS",
-    title: "Design-quality docs site",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "SaaS",
-    metadata: {
-      client: "Tailwind CSS",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://tailwindcss.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "studio-mcgee",
-    client: "Studio McGee",
-    title: "Interior-design portfolio",
-    tagline: undefined,
-    tags: ["TEST"],
+    tags: ["Marketing site", "Editorial"],
     category: "Editorial",
     metadata: {
-      client: "Studio McGee",
-      year: "2025",
+      client: "Homes in Santa Barbara",
+      year: "2026",
       role: "",
       scope: "",
-      services: [],
-      liveUrl: "https://studio-mcgee.com",
+      services: ["Marketing site"],
+      liveUrl: "https://homesinsantabarbara.com",
     },
     brief: "",
     approach: "",
     results: "",
+    pullQuote: undefined,
   },
-  // Real client.
+  // Real client — forecasting product, v1.
   {
     slug: "predictbase",
     client: "PredictBase",
@@ -221,128 +164,27 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
-  // TEST: REMOVE BEFORE LAUNCH
+  // Real client — Milk Bar, DTC bakery & dessert brand. E-commerce slot
+  // in Chapter 01.
   {
-    slug: "cal",
-    client: "Cal.com",
-    title: "Modern booking SaaS",
+    slug: "milkbarstore",
+    client: "Milk Bar",
+    title: "DTC bakery & dessert brand",
     tagline: undefined,
-    tags: ["TEST"],
-    category: "SaaS",
-    metadata: {
-      client: "Cal.com",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://cal.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "daylight",
-    client: "Daylight Computer",
-    title: "Premium hardware product",
-    tagline: undefined,
-    tags: ["TEST"],
+    tags: ["E-commerce", "Marketing site"],
     category: "E-commerce",
     metadata: {
-      client: "Daylight Computer",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://daylight.computer",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "amber-interior",
-    client: "Amber Interior Design",
-    title: "Boutique interior-design firm",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "Editorial",
-    metadata: {
-      client: "Amber Interior Design",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://amberinteriordesign.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // Real client.
-  {
-    slug: "predictbase-v2",
-    client: "PredictBase",
-    title: "Forecasting product, v2",
-    tagline: undefined,
-    tags: ["Product surface", "SaaS"],
-    category: "SaaS",
-    metadata: {
-      client: "PredictBase",
+      client: "Milk Bar",
       year: "2026",
       role: "",
       scope: "",
-      services: ["Product surface"],
-      liveUrl: "https://v2.predictbase.app",
+      services: ["E-commerce"],
+      liveUrl: "https://milkbarstore.com",
     },
     brief: "",
     approach: "",
     results: "",
     pullQuote: undefined,
-  },
-  // TEST: REMOVE BEFORE LAUNCH
-  {
-    slug: "retool",
-    client: "Retool",
-    title: "Enterprise SaaS dashboard",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "SaaS",
-    metadata: {
-      client: "Retool",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://retool.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH — Aesop, luxury botanicals brand
-  // (typographic restraint, premium artisan reference for the ecom
-  // vertical). Replaces the earlier Pacific Family Dental entry.
-  {
-    slug: "aesop",
-    client: "Aesop",
-    title: "Luxury botanicals brand",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "E-commerce",
-    metadata: {
-      client: "Aesop",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://aesop.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
   },
   // Real client.
   {
@@ -350,7 +192,7 @@ export const featuredProjects: FeaturedProject[] = [
     client: "Jenny Smith",
     title: "Personal brand site",
     tagline: undefined,
-    tags: ["Marketing site", "Service"],
+    tags: ["Marketing site", "Editorial"],
     category: "Editorial",
     metadata: {
       client: "Jenny Smith",
@@ -365,7 +207,10 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
-  // Real client.
+  // Real client — excluded from the home carousel because the
+  // `.vercel.app` preview has deployment protection that breaks the
+  // iframe modal. Kept in work.ts so the case study page still resolves;
+  // home.ts filters this slug out before slicing for the carousel.
   {
     slug: "patriot-plumbing",
     client: "Patriot Plumbing",
@@ -407,107 +252,250 @@ export const featuredProjects: FeaturedProject[] = [
     results: "",
     pullQuote: undefined,
   },
-  // TEST: REMOVE BEFORE LAUNCH — Austin luxury real estate
-  // (Kuper Sotheby's, $1B+ sales). Replaces the earlier juliette-hohnen
-  // entry as the BIG anchor in chapter 1.
+  // Real client — TORSX real-estate brand. WIDE slot in Chapter 01's
+  // 2×2 luxury real-estate grid.
   {
-    slug: "juliette-hohnen",
-    client: "Juliette Hohnen",
-    title: "Luxury real-estate brand",
+    slug: "torsx",
+    client: "TORSX",
+    title: "Real-estate brand",
     tagline: undefined,
-    tags: ["TEST"],
+    tags: ["Marketing site", "Editorial"],
     category: "Editorial",
     metadata: {
-      client: "Juliette Hohnen",
+      client: "TORSX",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://torsx.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — Cynthia Lopez personal brand.
+  {
+    slug: "cynthia-lopez",
+    client: "Cynthia Lopez",
+    title: "Personal brand site",
+    tagline: undefined,
+    tags: ["Marketing site", "Editorial"],
+    category: "Editorial",
+    metadata: {
+      client: "Cynthia Lopez",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://cynthialopez.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — forecasting product, v2.
+  {
+    slug: "predictbase-v2",
+    client: "PredictBase",
+    title: "Forecasting product, v2",
+    tagline: undefined,
+    tags: ["Product surface", "SaaS"],
+    category: "SaaS",
+    metadata: {
+      client: "PredictBase",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Product surface"],
+      liveUrl: "https://v2.predictbase.app",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — John Igean personal brand.
+  {
+    slug: "john-igean",
+    client: "John Igean",
+    title: "Personal brand site",
+    tagline: undefined,
+    tags: ["Marketing site", "Editorial"],
+    category: "Editorial",
+    metadata: {
+      client: "John Igean",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://johnigean.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — Barbara Van Dyke personal brand.
+  {
+    slug: "barbara-vandyke",
+    client: "Barbara Van Dyke",
+    title: "Personal brand site",
+    tagline: undefined,
+    tags: ["Marketing site", "Editorial"],
+    category: "Editorial",
+    metadata: {
+      client: "Barbara Van Dyke",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://barbaravandyke.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — Studio 790 design studio.
+  {
+    slug: "studio-790",
+    client: "Studio 790",
+    title: "Design studio portfolio",
+    tagline: undefined,
+    tags: ["Agency", "Marketing site"],
+    category: "Agency",
+    metadata: {
+      client: "Studio 790",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://studio790.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — Pepe Calderin Design, interior designer portfolio.
+  {
+    slug: "pepe-calderin-design",
+    client: "Pepe Calderin Design",
+    title: "Interior designer portfolio",
+    tagline: undefined,
+    tags: ["Marketing site", "Editorial"],
+    category: "Editorial",
+    metadata: {
+      client: "Pepe Calderin Design",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://pepecalderindesign.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // Real client — Jessica Nelson Design, interior designer portfolio.
+  {
+    slug: "jessica-nelson-design",
+    client: "Jessica Nelson Design",
+    title: "Interior designer portfolio",
+    tagline: undefined,
+    tags: ["Marketing site", "Editorial"],
+    category: "Editorial",
+    metadata: {
+      client: "Jessica Nelson Design",
+      year: "2026",
+      role: "",
+      scope: "",
+      services: ["Marketing site"],
+      liveUrl: "https://jessicanelsondesign.com",
+    },
+    brief: "",
+    approach: "",
+    results: "",
+    pullQuote: undefined,
+  },
+  // TEST: design-quality reference site — fills a Chapter 02 SaaS slot.
+  {
+    slug: "shadcn",
+    client: "shadcn/ui",
+    title: "Component library + docs",
+    tagline: undefined,
+    tags: ["TEST"],
+    category: "SaaS",
+    metadata: {
+      client: "shadcn/ui",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://juliettehohnen.com",
+      liveUrl: "https://ui.shadcn.com",
     },
     brief: "",
     approach: "",
     results: "",
   },
-  // TEST: REMOVE BEFORE LAUNCH — LA luxury real estate
-  // (Christie's International, #1 luxury agent in LA).
+  // TEST: design-quality reference site — fills a Chapter 02 SaaS slot.
   {
-    slug: "aaron-kirman",
-    client: "Aaron Kirman",
-    title: "LA luxury real-estate brand",
+    slug: "supabase",
+    client: "Supabase",
+    title: "Modern marketing site",
     tagline: undefined,
     tags: ["TEST"],
-    category: "Editorial",
+    category: "SaaS",
     metadata: {
-      client: "Aaron Kirman",
+      client: "Supabase",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://aaronkirman.com",
+      liveUrl: "https://supabase.com",
     },
     brief: "",
     approach: "",
     results: "",
   },
-  // TEST: REMOVE BEFORE LAUNCH — Aspen luxury real estate
-  // (Douglas Elliman, $5B+ team sales).
+  // TEST: design-quality reference site — fills a Chapter 02 SaaS slot.
   {
-    slug: "saslove-warwick",
-    client: "Saslove & Warwick",
-    title: "Aspen luxury real-estate brand",
+    slug: "cal",
+    client: "Cal.com",
+    title: "Modern booking SaaS",
     tagline: undefined,
     tags: ["TEST"],
-    category: "Editorial",
+    category: "SaaS",
     metadata: {
-      client: "Saslove & Warwick",
+      client: "Cal.com",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://saslovewarwick.com",
+      liveUrl: "https://cal.com",
     },
     brief: "",
     approach: "",
     results: "",
   },
-  // TEST: REMOVE BEFORE LAUNCH — Napa/Sonoma wine-country luxury
-  // (Sotheby's International, $3B+ sales).
+  // TEST: design-quality reference site — fills a Chapter 02 SaaS slot.
   {
-    slug: "ginger-martin",
-    client: "Ginger Martin + Co",
-    title: "Napa Valley luxury real-estate brand",
+    slug: "retool",
+    client: "Retool",
+    title: "Enterprise SaaS dashboard",
     tagline: undefined,
     tags: ["TEST"],
-    category: "Editorial",
+    category: "SaaS",
     metadata: {
-      client: "Ginger Martin + Co",
+      client: "Retool",
       year: "2025",
       role: "",
       scope: "",
       services: [],
-      liveUrl: "https://gingermartin.com",
-    },
-    brief: "",
-    approach: "",
-    results: "",
-  },
-  // TEST: REMOVE BEFORE LAUNCH — NYC/LA/Miami luxury real estate
-  // (Douglas Elliman, $10B+ in last decade).
-  {
-    slug: "eklund-gomes",
-    client: "Eklund | Gomes",
-    title: "NYC luxury real-estate brand",
-    tagline: undefined,
-    tags: ["TEST"],
-    category: "Editorial",
-    metadata: {
-      client: "Eklund | Gomes",
-      year: "2025",
-      role: "",
-      scope: "",
-      services: [],
-      liveUrl: "https://eklundgomes.com",
+      liveUrl: "https://retool.com",
     },
     brief: "",
     approach: "",
