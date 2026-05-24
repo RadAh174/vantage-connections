@@ -6,7 +6,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ColorWord } from "@/components/ui/ColorWord";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
-import { insights } from "@/lib/content/insights";
+import { insights, recommendedReading } from "@/lib/content/insights";
 
 export const metadata = {
   title: "Insights",
@@ -137,6 +137,83 @@ export default function InsightsHubPage() {
             ))}
           </ul>
         </section>
+
+        {/* ---------------- Recommended Reading ----------------
+            Curated external articles from voices we trust. Renders
+            below the studio's own essays as a separate "what we're
+            reading" rail. Each card links OUT in a new tab and credits
+            author + publication. We deliberately don't emit BlogPosting
+            schema for these — they aren't ours. */}
+        {recommendedReading.length > 0 && (
+          <section className="py-16 md:py-24">
+            <AuroraHairline />
+            <Reveal className="pt-12 md:pt-14 flex flex-col gap-3 max-w-2xl">
+              <Eyebrow color="forest">RECOMMENDED READING</Eyebrow>
+              <h2
+                className="font-display"
+                style={{
+                  fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)",
+                  fontWeight: 600,
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                What we&apos;re <ColorWord>reading</ColorWord>.
+              </h2>
+              <p className="text-ink-muted text-[15px] md:text-[16px] leading-relaxed">
+                Outside perspectives on web design, AI search, and luxury
+                brand digital strategy — pieces we recommend to clients
+                and read ourselves.
+              </p>
+            </Reveal>
+
+            <Reveal
+              stagger
+              staggerStep={60}
+              className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
+            >
+              {recommendedReading.map((article) => (
+                <a
+                  key={article.url}
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-tap-scale group block rounded-2xl border border-line bg-surface p-5 md:p-6 hover:border-forest/40 hover:shadow-[0_8px_30px_-15px_rgba(212,158,15,0.35)] transition-all h-full"
+                >
+                  <div className="flex flex-col gap-3 h-full">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <Eyebrow color="forest">{article.topic}</Eyebrow>
+                      <span
+                        aria-hidden="true"
+                        className="font-mono text-[14px] text-ink-muted group-hover:text-forest transition-colors"
+                      >
+                        ↗
+                      </span>
+                    </div>
+                    <h3
+                      className="font-display text-[18px] md:text-[19px] text-ink group-hover:text-forest transition-colors leading-snug"
+                      style={{ fontWeight: 500 }}
+                    >
+                      {article.title}
+                    </h3>
+                    <p className="text-ink-muted text-[14px] leading-relaxed flex-1">
+                      {article.excerpt}
+                    </p>
+                    <div className="pt-3 mt-1 border-t border-line flex flex-col gap-0.5">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
+                        {article.author}
+                      </span>
+                      <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted">
+                        {article.publication} ·{" "}
+                        {new Date(article.publishedAt).getFullYear()}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </Reveal>
+          </section>
+        )}
       </main>
 
       <Footer />

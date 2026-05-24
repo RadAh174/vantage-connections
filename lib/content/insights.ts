@@ -328,3 +328,91 @@ export const insights: Insight[] = [
 
 export const insightBySlug = (slug: string): Insight | undefined =>
   insights.find((i) => i.slug === slug);
+
+/**
+ * Recommended reading — curated external articles from voices we trust
+ * on web design, AI search, and luxury brand strategy. Rendered below
+ * the studio's original essays on /insights as a separate "what we're
+ * reading" rail.
+ *
+ * Each entry links OUT (target="_blank") and credits the author +
+ * publication. We deliberately do NOT emit BlogPosting schema for these
+ * — they belong to other publications, not ours.
+ *
+ * Curation rule: never add anything we wouldn't actually send to a
+ * client. Swap freely as the landscape changes.
+ */
+export type RecommendedArticle = {
+  title: string;
+  url: string;
+  author: string;
+  publication: string;
+  publishedAt: string; // ISO date
+  /** Short label rendered as the eyebrow on each card. */
+  topic: string;
+  /** 1–2 sentences on why we recommend it. */
+  excerpt: string;
+};
+
+export const recommendedReading: RecommendedArticle[] = [
+  {
+    title: "GEO: Generative Engine Optimization",
+    url: "https://arxiv.org/abs/2311.09735",
+    author: "Pranjal Aggarwal et al.",
+    publication: "Princeton · arXiv",
+    publishedAt: "2024-08-25",
+    topic: "Research",
+    excerpt:
+      "The first rigorous academic study of what makes LLMs cite a source. Quantifies the content-level levers that actually move the needle — quoted authorities, named statistics, and outbound citations top the list.",
+  },
+  {
+    title: "A reflection on SEO, GEO & AI search",
+    url: "https://lilyraynyc.substack.com/p/a-reflection-on-seo-and-ai-search",
+    author: "Lily Ray",
+    publication: "Amsive · Substack",
+    publishedAt: "2026-01-15",
+    topic: "GEO",
+    excerpt:
+      "Plain-spoken practitioner take from the SEO industry's clearest voice. Argues most 'GEO' tactics are repackaged SEO and the foundational work still matters most.",
+  },
+  {
+    title: "AI search traffic compared to Google",
+    url: "https://www.gsqi.com/marketing-blog/ai-search-traffic-compared-to-google/",
+    author: "Glenn Gabe",
+    publication: "GSQi",
+    publishedAt: "2025-08-20",
+    topic: "AI Search",
+    excerpt:
+      "Honest market sizing from real client data — AI referrals are under 1% of traffic for most sites in 2026. A useful counterweight to the vendor noise.",
+  },
+  {
+    title: "Luxury Goods Worldwide Market Study",
+    url: "https://www.bain.com/insights/luxury-goods-worldwide-market-study/",
+    author: "Bain & Company",
+    publication: "Bain Insights",
+    publishedAt: "2025-11-12",
+    topic: "Luxury Brand",
+    excerpt:
+      "Annual research on how luxury buyers behave online — 63% research the brand digitally before purchase. The data behind why a premium brand's website is now its storefront.",
+  },
+  {
+    title: "AI Search Optimization Checklist",
+    url: "https://www.aleydasolis.com/en/ai-search/ai-search-optimization-checklist/",
+    author: "Aleyda Solis",
+    publication: "Aleyda Solis",
+    publishedAt: "2026-02-08",
+    topic: "Practice",
+    excerpt:
+      "The clearest actionable checklist for making a site AI-searchable. Crawlability, topical clustering, semantic HTML, and entity prominence — what to ship now.",
+  },
+  {
+    title: "Web Credibility Research — guidelines for building credibility",
+    url: "https://credibility.stanford.edu/",
+    author: "B.J. Fogg et al.",
+    publication: "Stanford Persuasive Tech Lab",
+    publishedAt: "2003-01-01",
+    topic: "Research",
+    excerpt:
+      "The foundational research on how users judge website trustworthiness. Twenty-plus years later, the finding that 75% of consumers assess a business's credibility from website design alone still holds.",
+  },
+];
