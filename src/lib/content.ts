@@ -76,7 +76,7 @@ export const featureRows = [
     id: "storefront",
     kicker: "Foundation",
     title: "A storefront that maintains itself.",
-    body: "Vantage builds a fast, on-brand storefront, then keeps it alive. SEO and GEO, fresh content and technical hygiene on a loop. It gains ground every week instead of slipping down the page.",
+    body: "Vantage Connections builds a fast, on-brand storefront, then keeps it alive. SEO and GEO, fresh content and technical hygiene on a loop. It gains ground every week instead of slipping down the page.",
     bullets: [
       "Conversion-minded storefront build",
       "Always-on SEO & generative-engine optimization",
@@ -104,7 +104,7 @@ export const featureRows = [
     id: "studio",
     kicker: "Merchandising",
     title: "Product imagery, made on demand.",
-    body: "New angle, clean background, seasonal set, a PDP video. Vantage produces and edits product imagery that looks studio-shot and on-brand. Fresh shelves, no photographer on retainer.",
+    body: "New angle, clean background, seasonal set, a PDP video. Vantage Connections produces and edits product imagery that looks studio-shot and on-brand. Fresh shelves, no photographer on retainer.",
     bullets: [
       "Studio-grade product images & video",
       "On-brand edits, backgrounds and sets",
@@ -126,7 +126,7 @@ export const capabilityCards = [
   {
     icon: "Sparkles",
     title: "New-product radar",
-    desc: "Vantage watches your category and surfaces the next products worth adding, with the demand signal to back it.",
+    desc: "Vantage Connections watches your category and surfaces the next products worth adding, with the demand signal to back it.",
   },
   {
     icon: "LayoutGrid",
@@ -143,7 +143,7 @@ export const capabilityCards = [
 export const operator = {
   kicker: "The one-brain edge",
   title: "One operator. Not ten disconnected tools.",
-  body: "Every point tool starts from zero. Same assets re-uploaded, same product re-explained, work that doesn’t match. Vantage is one brain. The model that builds your site lists your products, writes your ads and makes your creative. Consistent, because it comes from one place that knows you.",
+  body: "Every point tool starts from zero. Same assets re-uploaded, same product re-explained, work that doesn’t match. Vantage Connections is one brain. The model that builds your site lists your products, writes your ads and makes your creative. Consistent, because it comes from one place that knows you.",
   contrast: {
     them: {
       label: "The stack you have now",
@@ -155,7 +155,7 @@ export const operator = {
       ],
     },
     otto: {
-      label: "Vantage",
+      label: "Vantage Connections",
       items: [
         "One brain across site, ads, pricing & creative",
         "Learns your brand once, applies it everywhere",
@@ -173,7 +173,7 @@ export const how = {
     {
       n: "01",
       title: "Connect your Shopify",
-      desc: "Link your store in a few clicks. Vantage reads your catalog, traffic and history to learn where you stand.",
+      desc: "Link your store in a few clicks. Vantage Connections reads your catalog, traffic and history to learn where you stand.",
     },
     {
       n: "02",
@@ -191,7 +191,7 @@ export const how = {
 export const pricing = {
   kicker: "Pricing",
   title: "Free while we’re in beta.",
-  body: "Vantage is in closed beta. Founding stores get the full operator at no cost while we build it with them — no card, no tiers, no catch.",
+  body: "Vantage Connections is in closed beta. Founding stores get the full operator at no cost while we build it with them — no card, no tiers, no catch.",
   // Small badge above the plan.
   offerBadge: "Free during beta",
   // Replaces the old countdown — a plain "coming soon" note, no ticking clock.
@@ -221,31 +221,31 @@ export const pricing = {
 
 export const faqs = [
   {
-    q: "Is Vantage actually autonomous, or do I babysit it?",
-    a: "Vantage works on its own and brings you decisions, not chores. It plans, drafts and produces continuously. But anything that touches your live store or spends money waits for approval. You stay in control without doing the labor.",
+    q: "Is Vantage Connections actually autonomous, or do I babysit it?",
+    a: "Vantage Connections works on its own and brings you decisions, not chores. It plans, drafts and produces continuously. But anything that touches your live store or spends money waits for approval. You stay in control without doing the labor.",
   },
   {
     q: "Will the creative look like generic AI content?",
-    a: "No. That’s the point. Vantage learns your brand once and applies it across your site, listings, ads and imagery. One brain that knows your product, so the output stays consistent instead of stitched together from disconnected tools.",
+    a: "No. That’s the point. Vantage Connections learns your brand once and applies it across your site, listings, ads and imagery. One brain that knows your product, so the output stays consistent instead of stitched together from disconnected tools.",
   },
   {
     q: "Do I need to be technical?",
-    a: "Not at all. Vantage is built for founders who make physical products, not software. If you can run a Shopify store, you can put Vantage to work.",
+    a: "Not at all. Vantage Connections is built for founders who make physical products, not software. If you can run a Shopify store, you can put Vantage to work.",
   },
   {
     q: "Does it work with my existing store?",
-    a: "Yes. Connect your current Shopify store and Vantage improves what you have: SEO, content, pricing and imagery. It can also build a new storefront from scratch if you want a clean start.",
+    a: "Yes. Connect your current Shopify store and Vantage Connections improves what you have: SEO, content, pricing and imagery. It can also build a new storefront from scratch if you want a clean start.",
   },
   {
     q: "What about my ad spend?",
-    a: "Vantage designs and runs the campaigns through a dedicated AI marketing engine. You set the budget and approve the creative and targeting before anything launches.",
+    a: "Vantage Connections designs and runs the campaigns through a dedicated AI marketing engine. You set the budget and approve the creative and targeting before anything launches.",
   },
 ];
 
 // "Vantage at work" — pinned scroll section; each beat leads with the pain,
 // then the service Vantage delivers. Big, free-form, no fake UI chrome.
 export const atWork = {
-  kicker: "Vantage at work",
+  kicker: "Vantage Connections at work",
   heading: "The whole back office. Handled.",
   scenes: [
     {
@@ -282,16 +282,16 @@ export const atWork = {
 export const finalCta = {
   kicker: "Give your store an operator",
   title: "Stop managing the logistics. Start outgrowing them.",
-  body: "Put Vantage in charge of the work that takes a store from good to great. Get back to the part only you can do.",
+  body: "Put Vantage Connections in charge of the work that takes a store from good to great. Get back to the part only you can do.",
   primary: { label: "Get started" },
   secondary: { label: "See plans", href: "#pricing" },
 };
 
 export const waitlist = {
   kicker: "Founding access",
-  title: "Join the beta and get Vantage free.",
+  title: "Join the beta and get Vantage Connections free.",
   subtitle:
-    "Vantage is onboarding its first group of stores. Reserve your spot to get the full operator free while we’re in beta.",
+    "Vantage Connections is onboarding its first group of stores. Reserve your spot to get the full operator free while we’re in beta.",
   perks: [
     "A storefront built and kept on-brand",
     "Always-on SEO and content upkeep",
@@ -326,10 +326,10 @@ export const enterprise = {
     cta: "Book a demo",
   },
   hero: {
-    kicker: "Vantage for Enterprise",
+    kicker: "Vantage Connections for Enterprise",
     headlineLead: "Brand-safe AI operations,",
     headlineEmph: "at the scale you run.",
-    sub: "Vantage is the autonomous operator for high-volume Shopify brands, multi-store portfolios and agencies. It builds, markets, prices and produces across every store you run — with the guardrails, control and support a brand your size demands.",
+    sub: "Vantage Connections is the autonomous operator for high-volume Shopify brands, multi-store portfolios and agencies. It builds, markets, prices and produces across every store you run — with the guardrails, control and support a brand your size demands.",
     cta: "Book a demo",
     note: "For Shopify Plus brands, multi-store portfolios and agencies.",
     points: [
@@ -341,7 +341,7 @@ export const enterprise = {
   stakes: {
     kicker: "What scale really costs",
     title: "At your volume, quiet decay gets expensive.",
-    body: "The same slow leaks that nag a small store compound into real money across a full catalog and a portfolio of brands. Vantage closes them on every storefront, continuously.",
+    body: "The same slow leaks that nag a small store compound into real money across a full catalog and a portfolio of brands. Vantage Connections closes them on every storefront, continuously.",
     items: [
       {
         title: "Site rot at scale",
@@ -364,7 +364,7 @@ export const enterprise = {
   portfolio: {
     kicker: "One operator, every store",
     title: "One brain across your whole portfolio.",
-    body: "Point tools start from zero on every store. Vantage is one operator that learns each brand once and applies it everywhere — so a ten-store portfolio stays as consistent and on-brand as a single flagship, without ten times the management.",
+    body: "Point tools start from zero on every store. Vantage Connections is one operator that learns each brand once and applies it everywhere — so a ten-store portfolio stays as consistent and on-brand as a single flagship, without ten times the management.",
     nodes: [
       { label: "Flagship store", desc: "Built & maintained" },
       { label: "Second brand", desc: "On the same brain" },
@@ -387,7 +387,7 @@ export const enterprise = {
       id: "control",
       kicker: "Control",
       title: "Nothing goes live without your word.",
-      body: "Vantage works continuously and brings you decisions, not chores. Anything that touches a live store or spends money waits for a human — the bigger the brand, the more that matters, so it’s built in, not bolted on.",
+      body: "Vantage Connections works continuously and brings you decisions, not chores. Anything that touches a live store or spends money waits for a human — the bigger the brand, the more that matters, so it’s built in, not bolted on.",
       bullets: [
         "Approval-gated publishing & spend",
         "Roles & permissions per store",
@@ -402,7 +402,7 @@ export const enterprise = {
       id: "scale",
       kicker: "Throughput",
       title: "Production that keeps pace with your catalog.",
-      body: "High-volume stores starve point tools. Vantage runs a priority pipeline across your whole catalog — creative, imagery, video, pricing and SEO produced at the rate your calendar actually demands.",
+      body: "High-volume stores starve point tools. Vantage Connections runs a priority pipeline across your whole catalog — creative, imagery, video, pricing and SEO produced at the rate your calendar actually demands.",
       bullets: [
         "Priority generation queue",
         "Volume creative & video",
@@ -417,7 +417,7 @@ export const enterprise = {
       id: "team",
       kicker: "Partnership",
       title: "A team that owns your outcomes.",
-      body: "Enterprise isn’t a shared queue. A named operator and CSM learn your brands, onboard your stores hands-on, and meet you on the numbers — what Vantage shipped and what it moved.",
+      body: "Enterprise isn’t a shared queue. A named operator and CSM learn your brands, onboard your stores hands-on, and meet you on the numbers — what Vantage Connections shipped and what it moved.",
       bullets: [
         "Dedicated operator & CSM",
         "White-glove onboarding & migration",
@@ -432,7 +432,7 @@ export const enterprise = {
   security: {
     kicker: "Security & data",
     title: "Your store, your data, handled with care.",
-    body: "Vantage only works because you trust it with the keys to your store. We treat that access the way a brand your size has to.",
+    body: "Vantage Connections only works because you trust it with the keys to your store. We treat that access the way a brand your size has to.",
     principles: [
       {
         title: "Least-privilege by default",
@@ -460,22 +460,22 @@ export const enterprise = {
       a: "Custom and value-based, scoped to your store count and volume. You get everything in Growth plus a dedicated team, priority throughput and hands-on support. Book a demo and we’ll scope it together.",
     },
     {
-      q: "Can Vantage run more than one store?",
-      a: "Yes. Vantage is built to operate a portfolio. One operator learns each brand and runs every storefront, so multi-store and multi-brand stay consistent without multiplying your management.",
+      q: "Can Vantage Connections run more than one store?",
+      a: "Yes. Vantage Connections is built to operate a portfolio. One operator learns each brand and runs every storefront, so multi-store and multi-brand stay consistent without multiplying your management.",
     },
     {
       q: "How do you keep AI from publishing off-brand work?",
-      a: "Two ways. Vantage learns your brand once and applies it everywhere, and nothing it produces goes live or spends without a human approval. Brand safety is the default, not a setting.",
+      a: "Two ways. Vantage Connections learns your brand once and applies it everywhere, and nothing it produces goes live or spends without a human approval. Brand safety is the default, not a setting.",
     },
     {
       q: "What does onboarding look like?",
-      a: "White-glove. A dedicated team connects your stores, migrates what matters and gets Vantage working across your portfolio, so you see output fast instead of running a long setup yourself.",
+      a: "White-glove. A dedicated team connects your stores, migrates what matters and gets Vantage Connections working across your portfolio, so you see output fast instead of running a long setup yourself.",
     },
   ],
   demo: {
     kicker: "Book a demo",
-    title: "See Vantage run your operation.",
-    body: "Walk through Vantage on your own stores. We’ll scope your volume, show the controls and map the ROI before you commit to anything.",
+    title: "See Vantage Connections run your operation.",
+    body: "Walk through Vantage Connections on your own stores. We’ll scope your volume, show the controls and map the ROI before you commit to anything.",
     cta: "Book a demo",
   },
   // The "Book a demo" lead form (modal). Captured to Loops, tagged enterprise.
