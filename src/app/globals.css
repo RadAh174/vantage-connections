@@ -1,0 +1,528 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   OTTO — themeable design system
+   Layout/typography are fixed; hue + neutral temperature are driven by
+   runtime CSS vars (--c-*) so the whole site re-skins via [data-theme].
+   Themes: operator (active, light) · dusk · noir · emerald · lime · sapphire · lavender
+   Display: Fraunces · Body: Hanken Grotesk · Data: JetBrains Mono
+   Wordmark: Italiana (all-caps, wide tracking)
+   ========================================================================= */
+
+@theme inline {
+  /* Surfaces */
+  --color-paper: var(--c-paper);
+  --color-paper-raised: var(--c-paper-raised);
+  --color-paper-sunken: var(--c-paper-sunken);
+  --color-paper-edge: var(--c-paper-edge);
+
+  /* Ink (text) */
+  --color-ink: var(--c-ink);
+  --color-ink-soft: var(--c-ink-soft);
+  --color-ink-muted: var(--c-ink-muted);
+
+  /* Accent */
+  --color-accent: var(--c-accent);
+  --color-accent-deep: var(--c-accent-deep);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-on-accent: var(--c-on-accent);
+
+  /* Dark band ("shade") */
+  --color-shade: var(--c-shade);
+  --color-shade-raised: var(--c-shade-raised);
+
+  /* Functional */
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-signal: var(--c-signal);
+
+  /* Action (CTA) + status — CTA is reserved for primary actions only;
+     success signals "working / approved / done". */
+  --color-cta: var(--c-cta);
+  --color-cta-deep: var(--c-cta-deep);
+  --color-on-cta: var(--c-on-cta);
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+
+  --color-background: var(--c-paper);
+  --color-foreground: var(--c-ink);
+
+  /* Typography */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-wordmark: var(--font-italiana), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system,
+    sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Radii */
+  --radius-sm: 0.375rem;
+  --radius: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Shadows — tinted with the theme's dark color */
+  --shadow-soft: 0 1px 2px rgba(var(--c-shade-rgb), 0.05),
+    0 8px 24px -12px rgba(var(--c-shade-rgb), 0.2);
+  --shadow-lift: 0 2px 4px rgba(var(--c-shade-rgb), 0.06),
+    0 24px 60px -24px rgba(var(--c-shade-rgb), 0.3);
+
+  --breakpoint-3xl: 120rem;
+}
+
+/* ---------------------------------------------------------------- THEMES */
+
+/* LIME (default) */
+:root,
+[data-theme="lime"] {
+  --c-paper: #f4f5ee;
+  --c-paper-raised: #fbfcf6;
+  --c-paper-sunken: #ebede0;
+  --c-paper-edge: #e6e9d8;
+  --c-ink: #18200f;
+  --c-ink-soft: #4a5238;
+  --c-ink-muted: #828a6f;
+  --c-accent: #66a82e;
+  --c-accent-deep: #3c6e1a;
+  --c-accent-soft: #c8e2a0;
+  --c-shade: #131c0c;
+  --c-shade-raised: #1d2a13;
+  --c-line: #dbe0cb;
+  --c-line-strong: #c6cdb0;
+  --c-signal: #6aa24a;
+  --c-on-accent: #ffffff;
+  --c-shade-rgb: 19, 28, 12;
+  --c-accent-rgb: 102, 168, 46;
+  /* CTA + status defaults (inherited by every theme unless overridden) */
+  --c-cta: #3c6e1a;
+  --c-cta-deep: #2f5614;
+  --c-on-cta: #ffffff;
+  --c-success: #3f9d6b;
+  --c-success-soft: #d3ebdd;
+}
+
+/* SAPPHIRE */
+[data-theme="sapphire"] {
+  --c-paper: #eff1f6;
+  --c-paper-raised: #fafbfe;
+  --c-paper-sunken: #e4e8f1;
+  --c-paper-edge: #dee3f0;
+  --c-ink: #16203a;
+  --c-ink-soft: #45506b;
+  --c-ink-muted: #828ba3;
+  --c-accent: #2c56cc;
+  --c-accent-deep: #1b3c99;
+  --c-accent-soft: #b9c8f5;
+  --c-shade: #0e1730;
+  --c-shade-raised: #182343;
+  --c-line: #d3dae8;
+  --c-line-strong: #bcc6dc;
+  --c-signal: #3f9d7a;
+  --c-on-accent: #ffffff;
+  --c-shade-rgb: 14, 23, 48;
+  --c-accent-rgb: 44, 86, 204;
+}
+
+/* EMERALD — saved scheme: GOLD foreground on dark GREEN-tinted black
+   (the "gold on green" luxe look). Switch by setting data-theme="emerald". */
+[data-theme="emerald"] {
+  --c-paper: #eef1ec;
+  --c-paper-raised: #0e1812;
+  --c-paper-sunken: #081109;
+  --c-paper-edge: #1a2a20;
+  --c-ink: #eef1ec;
+  --c-ink-soft: #aeb8ae;
+  --c-ink-muted: #7b857c;
+  --c-accent: #e0b442;
+  --c-accent-deep: #e6bf52;
+  --c-accent-soft: #f1e1b0;
+  --c-shade: #060f0a;
+  --c-shade-raised: #102017;
+  --c-line: #243027;
+  --c-line-strong: #324034;
+  --c-signal: #c79a2e;
+  --c-on-accent: #14130d;
+  --c-shade-rgb: 6, 15, 10;
+  --c-accent-rgb: 224, 180, 66;
+}
+
+/* NOIR (saved) — true dark mode: GOLD foreground on neutral near-black charcoal.
+   NOTE: --c-paper is kept LIGHT on purpose — it is the "on-dark" text and
+   light-pill color (text-paper / border-paper / onDark buttons). The dark
+   canvas comes from the body override + dark paper-raised/sunken surfaces. */
+[data-theme="noir"] {
+  --c-paper: #f1f0e9; /* on-dark text & light pills (NOT the page bg) */
+  --c-paper-raised: #16171b; /* elevated dark surface — neutral charcoal */
+  --c-paper-sunken: #0e0f12; /* recessed dark surface */
+  --c-paper-edge: #23242a; /* neutral hover lift */
+  --c-ink: #f1f0e9; /* primary text — soft ivory on the charcoal */
+  --c-ink-soft: #b8b3a4;
+  --c-ink-muted: #837f6f;
+  --c-accent: #e0b442; /* GOLD foreground — fills, glows, dots, underlines */
+  --c-accent-deep: #e6bf52; /* bright gold — emphasis text + button fills */
+  --c-accent-soft: #f1e1b0; /* pale gold */
+  --c-shade: #0a0a0c; /* immersive bands — neutral near-black */
+  --c-shade-raised: #17171a;
+  --c-line: #2a2a2f; /* neutral hairline on dark */
+  --c-line-strong: #3a3a41;
+  --c-signal: #c79a2e; /* gold signal */
+  --c-on-accent: #14130d; /* dark text on gold buttons */
+  --c-shade-rgb: 6, 6, 8;
+  --c-accent-rgb: 224, 180, 66;
+}
+
+/* LAVENDER */
+[data-theme="lavender"] {
+  --c-paper: #f3f1f8;
+  --c-paper-raised: #fcfbfe;
+  --c-paper-sunken: #eae6f2;
+  --c-paper-edge: #e5e0f0;
+  --c-ink: #241d33;
+  --c-ink-soft: #534a66;
+  --c-ink-muted: #8c84a0;
+  --c-accent: #6e5fc4;
+  --c-accent-deep: #4e3f9e;
+  --c-accent-soft: #cfc6ef;
+  --c-shade: #181225;
+  --c-shade-raised: #241a36;
+  --c-line: #dfd8ec;
+  --c-line-strong: #cabfe0;
+  --c-signal: #6a8a6a;
+  --c-on-accent: #ffffff;
+  --c-shade-rgb: 24, 18, 37;
+  --c-accent-rgb: 110, 95, 196;
+}
+
+/* DUSK (active) — light editorial mode. Warm cream canvas, deep-plum/aubergine
+   ink, mauve + dusty-rose accents, blush highlights. This is LIGHT MODE: dark
+   text on light surfaces. The signature plum -> mauve -> dusty-rose gradient is
+   reserved for the immersive bands (hero + final CTA) via `.band-immersive`.
+   Declared LAST so it wins the specificity tie against :root.
+   Palette: #2B1F3C plum · #6E4666 mauve · #CE8E86 dusty rose ·
+            #F4EADE cream · #F0C9B8 blush. */
+[data-theme="dusk"] {
+  --c-paper: #f6efe5; /* warm cream canvas + on-dark light (cream) text */
+  --c-paper-raised: #fdfaf4; /* elevated card — brighter than canvas */
+  --c-paper-sunken: #eee2d4; /* recessed well / input field */
+  --c-paper-edge: #e6d8c8; /* hover lift / warm edge */
+  --c-ink: #2b1f3c; /* primary text — deep plum / aubergine */
+  --c-ink-soft: #5b4a63; /* secondary text — muted plum */
+  --c-ink-muted: #6f6276; /* tertiary / labels — mauve-grey */
+  --c-accent: #9a5c81; /* mauve-rose — links, kickers, underlines */
+  --c-accent-deep: #6e4666; /* mauve — emphasis text + button fills */
+  --c-accent-soft: #f0c9b8; /* blush — soft fills, the operator dot, glows */
+  --c-shade: #2b1f3c; /* immersive band base — deep plum */
+  --c-shade-raised: #3b2b4e; /* lifted plum surface on dark bands */
+  --c-line: #e7dace; /* warm hairline on light surfaces */
+  --c-line-strong: #d8c7b5; /* stronger warm border (inputs) */
+  --c-signal: #b06a86; /* rose-magenta status accent */
+  --c-on-accent: #f4eade; /* cream text on mauve buttons */
+  --c-shade-rgb: 43, 31, 60; /* plum scrims + shadows */
+  --c-accent-rgb: 206, 142, 134; /* dusty-rose warm atmospheric glows */
+}
+
+/* VANTAGE (active) — green + gold, LIGHT mode. Warm ivory canvas, warm
+   near-black ink, a deep FOREST-GREEN trust anchor (links/kickers/brand/CTA),
+   and GOLD as the luxe accent that lights up the dark immersive bands (the
+   "gold beam over forest" look). Light mode: dark text on warm-light surfaces.
+   Translated to light from the dark reference (gold #E0B442, forest #1A4D33,
+   near-black #0E0E10). Declared LAST so it wins the specificity tie vs :root.
+   Palette: #F5F2E8 ivory · #191C12 ink · #1A4D33 forest · #E6C063 gold
+            · #3F9D6B sage. */
+[data-theme="operator"] {
+  --c-paper: #f1f4e8; /* green-tinted ivory canvas + on-dark light text */
+  --c-paper-raised: #fbfdf6; /* elevated card — clean green-white */
+  --c-paper-sunken: #e9eeda; /* recessed well / input field */
+  --c-paper-edge: #dee5c9; /* hover lift / green-gold edge */
+  --c-ink: #191c12; /* primary text — warm near-black */
+  --c-ink-soft: #454a37; /* secondary text — deep olive-graphite */
+  --c-ink-muted: #7c8168; /* tertiary / labels — muted olive-gray */
+  --c-accent: #2f6a43; /* forest green — links, kickers, brand */
+  --c-accent-deep: #1a4d33; /* deep forest — emphasis text + brand fills */
+  --c-accent-soft: #e6c063; /* GOLD — highlights on dark bands, glows, pills */
+  --c-shade: #10281b; /* immersive band base — deep forest */
+  --c-shade-raised: #1a4331; /* lifted forest surface on dark bands */
+  --c-line: #dfe5cc; /* green-tinted hairline on light surfaces */
+  --c-line-strong: #cad3ae; /* stronger green-gold border (inputs) */
+  --c-signal: #cc9a2e; /* gold-bronze status accent */
+  --c-on-accent: #f1f4e8; /* green-ivory text on forest fills */
+  --c-cta: #1a4d33; /* FOREST — primary actions */
+  --c-cta-deep: #143d29; /* deeper forest (hover) */
+  --c-on-cta: #f1f4e8; /* green-ivory text on forest CTA */
+  --c-success: #3f9d6b; /* SAGE — working / approved / done */
+  --c-success-soft: #d6ecdf; /* pale sage fill */
+  --c-shade-rgb: 16, 40, 27; /* forest scrims + shadows */
+  --c-accent-rgb: 47, 106, 67; /* forest atmospheric glows */
+}
+
+:root {
+  --grain-opacity: 0.5;
+}
+
+/* NOIR runs on a dark canvas. --c-paper stays light (on-dark text), so the
+   page background and grain are set explicitly here for the dark theme. */
+[data-theme="noir"] body {
+  background-color: #0e0e10;
+}
+[data-theme="emerald"] body {
+  background-color: #0a130d;
+}
+[data-theme="noir"] .grain::before,
+[data-theme="emerald"] .grain::before {
+  mix-blend-mode: screen;
+  opacity: 0.16;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  .font-display {
+    font-optical-sizing: auto;
+    letter-spacing: -0.018em;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-deep);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent-soft) transparent;
+  }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 80rem;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-page {
+      padding-inline: 3.5rem;
+    }
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+
+  /* Immersive band — solid theme `shade` by default; in DUSK it renders the
+     signature plum -> mauve -> dusty-rose gradient. Used on the hero + final
+     CTA. The shade color stays as a fallback under the gradient image. */
+  .band-immersive {
+    background-color: var(--c-shade);
+  }
+  [data-theme="dusk"] .band-immersive {
+    background-image: linear-gradient(
+      135deg,
+      #2b1f3c 0%,
+      #6e4666 55%,
+      #ce8e86 100%
+    );
+  }
+  /* Deep forest gradient lit by two soft GOLD beams — the "gold over forest"
+     signature translated straight from the dark reference. */
+  [data-theme="operator"] .band-immersive {
+    background-image: radial-gradient(
+        42% 60% at 14% 6%,
+        rgba(230, 190, 90, 0.22),
+        transparent 62%
+      ),
+      radial-gradient(40% 55% at 88% 26%, rgba(230, 190, 90, 0.16), transparent 60%),
+      linear-gradient(150deg, #0d2418 0%, #1a4d33 56%, #276b48 100%);
+  }
+
+  /* Soft spotlight band — the "feature" sections (operator, at-work, final CTA,
+     footer). In DUSK they are LIGHT: a warm blush canvas washed with faint
+     rose + mauve glows (the gradient as atmosphere, never a flat dark panel),
+     carrying dark plum `ink` text. In the saved dark themes it falls back to
+     the solid `shade` band so those still read correctly. */
+  .band-soft {
+    background-color: var(--c-shade);
+  }
+  [data-theme="dusk"] .band-soft {
+    background-color: #f5ebe3;
+    background-image: radial-gradient(
+        118% 92% at 88% 4%,
+        rgba(206, 142, 134, 0.26),
+        transparent 56%
+      ),
+      radial-gradient(
+        125% 115% at 0% 100%,
+        rgba(110, 70, 102, 0.14),
+        transparent 54%
+      );
+  }
+  /* Green-tinted ivory canvas washed with a faint forest glow + a soft gold glow. */
+  [data-theme="operator"] .band-soft {
+    background-color: #edf1de;
+    background-image: radial-gradient(
+        118% 92% at 88% 4%,
+        rgba(26, 77, 51, 0.1),
+        transparent 56%
+      ),
+      radial-gradient(
+        125% 115% at 0% 100%,
+        rgba(230, 190, 90, 0.12),
+        transparent 54%
+      );
+  }
+
+  /* Primary button — solid accent by default; in DUSK it carries a deep cut of
+     the brand gradient (every stop dark enough to keep cream text legible),
+     so the loved gradient recurs as a jewel across the light site. */
+  .btn-primary {
+    background-color: var(--c-accent-deep);
+    color: var(--c-on-accent);
+  }
+  .btn-primary:hover {
+    opacity: 0.92;
+  }
+  [data-theme="dusk"] .btn-primary {
+    background-image: linear-gradient(118deg, #2b1f3c 0%, #6e4666 52%, #8e4a60 100%);
+    opacity: 1;
+  }
+  [data-theme="dusk"] .btn-primary:hover {
+    filter: brightness(1.08);
+    opacity: 1;
+  }
+  /* The single action color: solid terracotta, no gradient. */
+  [data-theme="operator"] .btn-primary {
+    background-color: var(--c-cta);
+    background-image: none;
+    color: var(--c-on-cta);
+    opacity: 1;
+  }
+  [data-theme="operator"] .btn-primary:hover {
+    background-color: var(--c-cta-deep);
+    filter: none;
+    opacity: 1;
+  }
+
+  /* The "Otto brain" core in the operator diagram — a gradient jewel in DUSK. */
+  .otto-core {
+    background: radial-gradient(
+        70% 70% at 50% 35%,
+        rgba(var(--c-accent-rgb), 0.28),
+        rgba(var(--c-accent-rgb), 0.04) 70%
+      ),
+      var(--c-shade);
+  }
+  [data-theme="dusk"] .otto-core {
+    background: linear-gradient(135deg, #2b1f3c 0%, #6e4666 55%, #ce8e86 100%);
+  }
+  [data-theme="operator"] .otto-core {
+    background: linear-gradient(135deg, #0d2418 0%, #1a4d33 55%, #276b48 100%);
+  }
+
+  .rule-accent {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-accent) 18%,
+      var(--color-accent) 82%,
+      transparent
+    );
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s var(--ease-out-soft),
+      transform 0.8s var(--ease-out-soft);
+    will-change: opacity, transform;
+  }
+  .reveal[data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+@keyframes ottoFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ottoPop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

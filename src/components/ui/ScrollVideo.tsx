@@ -1,0 +1,155 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+type ScrollVideoProps = {
+  src: string;
+  poster?: string;
+  className?: string;
+  /**
+   * scrub: video time is driven by the element's progress through the viewport.
+   * loop: video autoplays on a muted loop while in view.
+   */
+  mode?: "scrub" | "loop";
+  /** how much of the scroll travel maps to the clip (0.2–1). lower = faster scrub */
+  scrubRange?: number;
+};
+
+/**
+ * Premium scroll-driven video.
+ * - scrub mode maps scroll position to currentTime (Apple-style).
+ * - loop mode plays a muted ambient loop while visible.
+ * Falls back to a static poster frame when reduced motion is requested.
+ */
+export function ScrollVideo({
+  src,
+  poster,
+  className = "",
+  mode = "scrub",
+  scrubRange = 0.85,
+}: ScrollVideoProps) {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const video = videoRef.current;
+    if (!wrap || !video) return;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduce) {
+      // Show a single representative frame, no motion.
+      video.removeAttribute("autoplay");
+      video.pause();
+      try {
+        video.currentTime = 0.1;
+      } catch {
+        /* metadata may not be ready; poster covers it */
+      }
+      return;
+    }
+
+    if (mode === "loop") {
+      video.muted = true;
+      video.loop = true;
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) void video.play().catch(() => {});
+            else video.pause();
+          }
+        },
+        { threshold: 0.15 },
+      );
+      io.observe(wrap);
+      return () => io.disconnect();
+    }
+
+    // --- scrub mode ---
+    let duration = 0;
+    let raf = 0;
+    let targetTime = 0;
+    let current = 0;
+    let visible = false;
+
+    const onMeta = () => {
+      duration = video.duration || 0;
+    };
+    if (video.readyState >= 1) onMeta();
+    video.addEventListener("loadedmetadata", onMeta);
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) visible = e.isIntersecting;
+        if (visible && !raf) raf = requestAnimationFrame(tick);
+      },
+      { threshold: 0 },
+    );
+    io.observe(wrap);
+
+    const computeProgress = () => {
+      const rect = wrap.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // progress 0 when the element's top hits the bottom of the viewport,
+      // 1 when its bottom passes a point near the top.
+      const total = rect.height + vh;
+      const travelled = vh - rect.top;
+      const raw = travelled / total;
+      return Math.min(1, Math.max(0, raw));
+    };
+
+    const tick = () => {
+      if (!duration) {
+        duration = video.duration || 0;
+      }
+      if (duration) {
+        const p = computeProgress();
+        // center the active scrub window so the clip plays across mid-scroll
+        const eased = Math.min(1, Math.max(0, (p - (1 - scrubRange) / 2) / scrubRange));
+        targetTime = eased * (duration - 0.05);
+        // smooth toward target to avoid hard seeks
+        current += (targetTime - current) * 0.18;
+        if (Math.abs(targetTime - current) < 0.004) current = targetTime;
+        if (Math.abs(video.currentTime - current) > 0.01) {
+          try {
+            video.currentTime = current;
+          } catch {
+            /* seek not ready */
+          }
+        }
+      }
+      if (visible) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+
+    return () => {
+      io.disconnect();
+      video.removeEventListener("loadedmetadata", onMeta);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [mode, scrubRange]);
+
+  return (
+    <div ref={wrapRef} className={className}>
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        preload="auto"
+        autoPlay={mode === "loop"}
+        loop={mode === "loop"}
+        className="h-full w-full object-cover"
+        aria-hidden="true"
+      />
+    </div>
+  );
+}

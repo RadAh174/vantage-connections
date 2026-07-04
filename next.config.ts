@@ -1,11 +1,10 @@
-import path from "node:path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Lock Turbopack workspace root to this project so a stray lockfile
-  // higher up the tree doesn't get picked up.
+  // Pin the workspace root — a stray lockfile in a parent dir otherwise
+  // makes Next infer the wrong root directory.
   turbopack: {
-    root: path.resolve("."),
+    root: import.meta.dirname,
   },
 };
 
