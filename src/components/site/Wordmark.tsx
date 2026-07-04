@@ -5,16 +5,16 @@ type WordmarkProps = {
 };
 
 /**
- * Vantage Connections wordmark — both words in the Fraunces italic display
- * face. "Vantage" carries the ink (or paper on dark), "Connections" is gold:
- * bright gold over dark surfaces, deeper bronze-gold on light ones so it
- * stays legible. No dot (the dot lives only in the favicon).
+ * Vantage Connections wordmark — one word, both halves in the Fraunces italic
+ * display face: "Vantage" in deep forest (paper on dark), "Connections" in
+ * gold — bright gold over dark surfaces, deeper bronze-gold on light ones so
+ * it stays legible. No dot (the dot lives only in the favicon).
  */
 export function Wordmark({ className = "", tone = "ink" }: WordmarkProps) {
   return (
     <span
-      className={`font-display inline-flex items-baseline gap-[0.4em] italic leading-none ${
-        tone === "paper" ? "text-paper" : "text-ink"
+      className={`font-display inline-flex items-baseline italic leading-none ${
+        tone === "paper" ? "text-paper" : "text-accent-deep"
       } ${className}`}
       style={{ fontWeight: 500, fontSize: "1.1rem" }}
     >

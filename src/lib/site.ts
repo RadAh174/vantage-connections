@@ -35,7 +35,7 @@ export const siteConfig = {
     paper: "#f1f4e8",
     ink: "#191c12",
     accent: "#2f6a43",
-    cta: "#1a4d33",
+    cta: "#e6c063",
     sage: "#3f9d6b",
     peach: "#e6c063",
     cream: "#f1f4e8",

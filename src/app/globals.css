@@ -248,9 +248,9 @@
   --c-line-strong: #cad3ae; /* stronger green-gold border (inputs) */
   --c-signal: #cc9a2e; /* gold-bronze status accent */
   --c-on-accent: #f1f4e8; /* green-ivory text on forest fills */
-  --c-cta: #1a4d33; /* FOREST — primary actions */
-  --c-cta-deep: #143d29; /* deeper forest (hover) */
-  --c-on-cta: #f1f4e8; /* green-ivory text on forest CTA */
+  --c-cta: #e6c063; /* GOLD — primary actions */
+  --c-cta-deep: #d8ac45; /* deeper gold (hover) */
+  --c-on-cta: #191c12; /* dark ink text on gold CTA */
   --c-success: #3f9d6b; /* SAGE — working / approved / done */
   --c-success-soft: #d6ecdf; /* pale sage fill */
   --c-shade-rgb: 16, 40, 27; /* forest scrims + shadows */
