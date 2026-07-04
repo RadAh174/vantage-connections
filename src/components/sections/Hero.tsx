@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="band-immersive grain relative overflow-hidden pb-24 pt-28 text-paper md:pb-28 md:pt-36"
+      className="band-immersive grain relative overflow-hidden pb-36 pt-28 text-paper md:pb-44 md:pt-36"
     >
       {/* soft light bloom lifting the headline off the gradient */}
       <div
@@ -59,9 +59,9 @@ export function Hero() {
 
         {/* Cinematic framed video */}
         <div className="relative mx-auto mt-16 max-w-6xl md:mt-20">
-          <div className="relative rounded-2xl border border-paper/15 bg-paper-raised p-2 shadow-lift md:p-3">
-            {/* accent corner ticks */}
-            <CornerTicks />
+          {/* outer radius = inner radius (0.75rem) + frame padding, so the
+              two corners run concentric */}
+          <div className="relative rounded-[1.25rem] border border-paper/15 bg-paper-raised p-2 shadow-lift md:rounded-[1.5rem] md:p-3">
             <div className="relative overflow-hidden rounded-xl">
               <ScrollVideo
                 src="/media/hero.mp4"
@@ -88,18 +88,5 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-b from-transparent to-paper"
       />
     </section>
-  );
-}
-
-function CornerTicks() {
-  const common =
-    "absolute h-3.5 w-3.5 border-accent-soft/80 transition-opacity";
-  return (
-    <>
-      <span className={`${common} left-1 top-1 border-l border-t`} />
-      <span className={`${common} right-1 top-1 border-r border-t`} />
-      <span className={`${common} bottom-1 left-1 border-b border-l`} />
-      <span className={`${common} bottom-1 right-1 border-b border-r`} />
-    </>
   );
 }
