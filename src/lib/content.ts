@@ -98,7 +98,7 @@ export const featureRows = [
     ],
     image: "/media/feature-creative.webp",
     imageAlt:
-      "A dramatic luxury advertising shot of an amber serum bottle on a brass pedestal with a ribbon of serum arcing mid-splash.",
+      "A contact sheet of twelve real AI-generated ad frames for one confectionery brand — creator selfie videos, macro product shots and packaging — arranged on a deep forest-green board.",
   },
   {
     id: "studio",
