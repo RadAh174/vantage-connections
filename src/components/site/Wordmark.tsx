@@ -1,29 +1,34 @@
 type WordmarkProps = {
   className?: string;
-  /** color of the accent operator dot */
+  /** "paper" renders the light (on-dark) treatment */
   tone?: "ink" | "paper";
 };
 
 /**
- * Vantage Connections wordmark: "VANTAGE" and "CONNECTIONS" in the tracked
- * didone caps, split by a gold "operator dot" — the always-on signal of a
- * working operator, and the brand's green-gold accent in miniature.
+ * Vantage Connections wordmark — carried over from the original agency site:
+ * "Vantage" in Fraunces italic beside small tracked uppercase "CONNECTIONS"
+ * in the sans face. No dot (the dot lives only in the favicon).
  */
 export function Wordmark({ className = "", tone = "ink" }: WordmarkProps) {
   return (
     <span
-      className={`font-wordmark inline-flex items-center gap-[0.3em] text-[1.02rem] uppercase leading-none tracking-[0.26em] ${
+      className={`inline-flex items-baseline gap-2 leading-none ${
         tone === "paper" ? "text-paper" : "text-ink"
       } ${className}`}
     >
-      <span aria-hidden="true">Vantage</span>
       <span
         aria-hidden="true"
-        className="inline-block h-[0.24em] w-[0.24em] rounded-full bg-accent-soft"
-      />
+        className="font-display italic"
+        style={{ fontWeight: 500, fontSize: "1.1rem" }}
+      >
+        Vantage
+      </span>
       <span
         aria-hidden="true"
-        className="text-[0.8em] tracking-[0.2em] opacity-75"
+        className={`font-sans uppercase ${
+          tone === "paper" ? "text-paper/70" : "text-ink-muted"
+        }`}
+        style={{ fontWeight: 600, fontSize: "0.7rem", letterSpacing: "0.16em" }}
       >
         Connections
       </span>

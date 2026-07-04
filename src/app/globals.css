@@ -6,7 +6,7 @@
    runtime CSS vars (--c-*) so the whole site re-skins via [data-theme].
    Themes: operator (active, light) · dusk · noir · emerald · lime · sapphire · lavender
    Display: Fraunces · Body: Hanken Grotesk · Data: JetBrains Mono
-   Wordmark: Italiana (all-caps, wide tracking)
+   Wordmark: Fraunces italic + sans caps (from the original agency site)
    ========================================================================= */
 
 @theme inline {
@@ -49,7 +49,6 @@
 
   /* Typography */
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-wordmark: var(--font-italiana), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system,
     sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;

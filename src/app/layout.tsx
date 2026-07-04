@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import {
   Fraunces,
   Hanken_Grotesk,
-  Italiana,
   JetBrains_Mono,
 } from "next/font/google";
 import { WaitlistDialog } from "@/components/site/WaitlistDialog";
@@ -18,14 +17,6 @@ const fraunces = Fraunces({
 const hanken = Hanken_Grotesk({
   variable: "--font-hanken",
   subsets: ["latin"],
-  display: "swap",
-});
-
-// Wordmark face — high-contrast didone, used all-caps with wide tracking.
-const italiana = Italiana({
-  variable: "--font-italiana",
-  subsets: ["latin"],
-  weight: "400",
   display: "swap",
 });
 
@@ -109,7 +100,7 @@ export default function RootLayout({
       lang="en"
       data-theme="operator"
       data-scroll-behavior="smooth"
-      className={`${fraunces.variable} ${hanken.variable} ${italiana.variable} ${jetbrains.variable} antialiased`}
+      className={`${fraunces.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
     >
       <body>
         {children}
