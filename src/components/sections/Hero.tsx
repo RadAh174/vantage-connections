@@ -64,8 +64,8 @@ export function Hero() {
           <div className="relative rounded-[1.25rem] border border-paper/15 bg-paper-raised p-2 shadow-lift md:rounded-[1.5rem] md:p-3">
             <div className="relative overflow-hidden rounded-xl">
               <ScrollVideo
-                src="/media/hero-2.mp4"
-                poster="/media/hero-poster-2.webp"
+                src="/media/hero-3.mp4"
+                poster="/media/hero-poster-3.webp"
                 mode="scrub"
                 className="aspect-[16/9] w-full"
               />
