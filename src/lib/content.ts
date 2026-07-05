@@ -82,9 +82,9 @@ export const featureRows = [
       "Always-on SEO & generative-engine optimization",
       "Content refreshes that prevent decay",
     ],
-    image: "/media/feature-storefront-2.webp",
+    image: "/media/feature-storefront-3.webp",
     imageAlt:
-      "Before and after of the same product listing: stale and gray on the left, rebuilt bright with five gold stars and a Shop button on the right.",
+      "Before and after of the same candle listing: stale and gray on the left, rebuilt bright with the candle lit, five gold stars and a Shop button on the right.",
   },
   {
     id: "creative",
@@ -96,9 +96,9 @@ export const featureRows = [
       "Automated ad pipelines, human-approved",
       "Works for existing products and new launches",
     ],
-    image: "/media/feature-creative-2.webp",
+    image: "/media/feature-creative-3.webp",
     imageAlt:
-      "A contact sheet of twelve AI-generated ad frames for one leather tote — creator selfie videos, macro details, flat-lays and packaging — arranged on a deep forest-green board.",
+      "A three-by-three wall of AI-generated ad frames for one leather tote — creator selfies, macro details and packaging — bleeding past the frame edges.",
   },
   {
     id: "studio",
@@ -110,9 +110,9 @@ export const featureRows = [
       "On-brand edits, backgrounds and sets",
       "Refreshed catalogs every season",
     ],
-    image: "/media/feature-product-2.webp",
+    image: "/media/feature-product-3.webp",
     imageAlt:
-      "The same leather tote staged four ways — spring picnic, summer coast, autumn street and winter holiday — in one two-by-two grid.",
+      "The same sneaker staged four ways — spring picnic, summer coast, autumn cobblestones and winter bench — in one two-by-two grid.",
   },
 ];
 
@@ -394,7 +394,7 @@ export const enterprise = {
         "Least-privilege, scoped access",
         "A tracked record of what shipped",
       ],
-      image: "/media/ent-control-2.webp",
+      image: "/media/ent-control-3.webp",
       imageAlt:
         "A solid brass wax-seal stamp beside a freshly pressed deep-forest wax seal on heavy bone paper, lit in warm brass and forest-green light.",
     },
@@ -409,7 +409,7 @@ export const enterprise = {
         "Market-aware pricing across the catalog",
         "Always-on SEO across every page",
       ],
-      image: "/media/ent-scale-2.webp",
+      image: "/media/ent-scale-3.webp",
       imageAlt:
         "An ordered overhead grid of identical amber serum bottles on warm travertine — volume and consistency in one frame.",
     },

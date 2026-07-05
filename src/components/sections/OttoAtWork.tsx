@@ -171,15 +171,15 @@ export function OttoAtWork() {
 }
 
 const SCENE_IMG: Record<string, string> = {
-  storefront: "/media/feature-storefront-2.webp",
-  studio: "/media/scene-studio.webp",
+  storefront: "/media/feature-storefront-3.webp",
+  studio: "/media/scene-studio-2.webp",
 };
 
 const SCENE_ALT: Record<string, string> = {
   storefront:
-    "The same product listing before and after Vantage rebuilds it — dim and stale on the left, bright with five gold stars on the right",
+    "The same candle listing before and after Vantage rebuilds it — dim and stale on the left, lit and bright with five gold stars on the right",
   studio:
-    "A leather tote on a tabletop photo set beside two Vantage-generated output cards: a background-removed cutout and a finished golden product shot",
+    "An amber serum bottle on a tabletop photo set beside two Vantage-generated output cards: a background-removed cutout and a finished golden product shot",
 };
 
 function SceneVisual({ id, active }: { id: string; active: boolean }) {
@@ -187,7 +187,7 @@ function SceneVisual({ id, active }: { id: string; active: boolean }) {
   if (id === "trends") return <TrendsVisual />;
   return (
     <Image
-      src={SCENE_IMG[id] ?? "/media/feature-creative-2.webp"}
+      src={SCENE_IMG[id] ?? "/media/feature-creative-3.webp"}
       alt={SCENE_ALT[id] ?? "Vantage-generated storefront and creative work"}
       fill
       sizes="(min-width:1024px) 44vw, 90vw"
@@ -200,8 +200,8 @@ function SceneVisual({ id, active }: { id: string; active: boolean }) {
 function TrendsVisual() {
   return (
     <Image
-      src="/media/feature-trends-2.webp"
-      alt="A leather tote surging in demand — echo copies receding behind it while order notifications stream upward"
+      src="/media/feature-trends-3.webp"
+      alt="A sage tumbler surging in demand — echo copies receding behind it while order notifications spiral upward"
       fill
       sizes="(min-width:1024px) 44vw, 90vw"
       className="object-cover"
