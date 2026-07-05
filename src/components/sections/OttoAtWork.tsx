@@ -171,15 +171,15 @@ export function OttoAtWork() {
 }
 
 const SCENE_IMG: Record<string, string> = {
-  storefront: "/media/feature-storefront-3.webp",
-  studio: "/media/scene-studio-2.webp",
+  storefront: "/media/scene-storefront-2.webp",
+  studio: "/media/scene-studio-3.webp",
 };
 
 const SCENE_ALT: Record<string, string> = {
   storefront:
-    "The same candle listing before and after Vantage rebuilds it — dim and stale on the left, lit and bright with five gold stars on the right",
+    "The same candle listing before and after Vantage rebuilds it — dim and stale on top, lit and bright with five gold stars below",
   studio:
-    "An amber serum bottle on a tabletop photo set beside two Vantage-generated output cards: a background-removed cutout and a finished golden product shot",
+    "A desk covered in freshly printed campaign photographs of one amber serum bottle in a dozen styles, the real bottle standing among its own imagery",
 };
 
 function SceneVisual({ id, active }: { id: string; active: boolean }) {

@@ -13,6 +13,13 @@ type ScrollVideoProps = {
   mode?: "scrub" | "loop";
   /** how much of the scroll travel maps to the clip (0.2–1). lower = faster scrub */
   scrubRange?: number;
+  /**
+   * id of a taller ancestor that drives the scrub (pinned/scrollytelling mode):
+   * progress = how far that element has been scrolled through. Falls back to
+   * the element-through-viewport mapping when the track has no meaningful
+   * extra travel (e.g. mobile, where the section isn't pinned).
+   */
+  trackId?: string;
 };
 
 /**
@@ -27,6 +34,7 @@ export function ScrollVideo({
   className = "",
   mode = "scrub",
   scrubRange = 0.85,
+  trackId,
 }: ScrollVideoProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -90,9 +98,21 @@ export function ScrollVideo({
     );
     io.observe(wrap);
 
+    const track = trackId ? document.getElementById(trackId) : null;
+
     const computeProgress = () => {
-      const rect = wrap.getBoundingClientRect();
       const vh = window.innerHeight;
+      if (track) {
+        // Pinned mode: progress through the tall track section.
+        const r = track.getBoundingClientRect();
+        const travel = r.height - vh;
+        // Only meaningful when the track actually has extra travel (pinned
+        // on desktop). Otherwise fall through to the viewport mapping.
+        if (travel > vh * 0.5) {
+          return Math.min(1, Math.max(0, -r.top / travel));
+        }
+      }
+      const rect = wrap.getBoundingClientRect();
       // progress 0 when the element's top hits the bottom of the viewport,
       // 1 when its bottom passes a point near the top.
       const total = rect.height + vh;
@@ -134,7 +154,7 @@ export function ScrollVideo({
       video.removeEventListener("loadedmetadata", onMeta);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [mode, scrubRange]);
+  }, [mode, scrubRange, trackId]);
 
   return (
     <div ref={wrapRef} className={className}>
