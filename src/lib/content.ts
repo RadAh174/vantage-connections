@@ -82,9 +82,9 @@ export const featureRows = [
       "Always-on SEO & generative-engine optimization",
       "Content refreshes that prevent decay",
     ],
-    image: "/media/feature-storefront.webp",
+    image: "/media/feature-storefront-2.webp",
     imageAlt:
-      "A single elegant ceramic vase with dried botanicals on a sunlit travertine pedestal in warm bone and brass tones.",
+      "Before and after of the same product listing: stale and gray on the left, rebuilt bright with five gold stars and a Shop button on the right.",
   },
   {
     id: "creative",
@@ -96,9 +96,9 @@ export const featureRows = [
       "Automated ad pipelines, human-approved",
       "Works for existing products and new launches",
     ],
-    image: "/media/feature-creative.webp",
+    image: "/media/feature-creative-2.webp",
     imageAlt:
-      "A contact sheet of twelve real AI-generated ad frames for one confectionery brand — creator selfie videos, macro product shots and packaging — arranged on a deep forest-green board.",
+      "A contact sheet of twelve AI-generated ad frames for one leather tote — creator selfie videos, macro details, flat-lays and packaging — arranged on a deep forest-green board.",
   },
   {
     id: "studio",
@@ -110,9 +110,9 @@ export const featureRows = [
       "On-brand edits, backgrounds and sets",
       "Refreshed catalogs every season",
     ],
-    image: "/media/feature-product.webp",
+    image: "/media/feature-product-2.webp",
     imageAlt:
-      "An artisan candle in an amber glass vessel with a live flame, styled with raw materials on warm ivory linen.",
+      "The same leather tote staged four ways — spring picnic, summer coast, autumn street and winter holiday — in one two-by-two grid.",
   },
 ];
 
@@ -394,7 +394,7 @@ export const enterprise = {
         "Least-privilege, scoped access",
         "A tracked record of what shipped",
       ],
-      image: "/media/ent-control.webp",
+      image: "/media/ent-control-2.webp",
       imageAlt:
         "A solid brass wax-seal stamp beside a freshly pressed deep-forest wax seal on heavy bone paper, lit in warm brass and forest-green light.",
     },
@@ -409,7 +409,7 @@ export const enterprise = {
         "Market-aware pricing across the catalog",
         "Always-on SEO across every page",
       ],
-      image: "/media/ent-scale.webp",
+      image: "/media/ent-scale-2.webp",
       imageAlt:
         "An ordered overhead grid of identical amber serum bottles on warm travertine — volume and consistency in one frame.",
     },
@@ -424,7 +424,7 @@ export const enterprise = {
         "Custom integrations to your stack",
         "Regular ROI business reviews",
       ],
-      image: "/media/ent-team.webp",
+      image: "/media/ent-team-2.webp",
       imageAlt:
         "A polished brass concierge bell on folded ivory linen atop travertine, lit like a luxury still-life.",
     },

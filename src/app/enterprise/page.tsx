@@ -178,8 +178,8 @@ export default function EnterprisePage() {
                 <CornerTicks />
                 <div className="relative overflow-hidden rounded-xl">
                   <ScrollVideo
-                    src="/media/ent-hero.mp4"
-                    poster="/media/ent-hero-poster.webp"
+                    src="/media/ent-hero-2.mp4"
+                    poster="/media/ent-hero-poster-2.webp"
                     mode="scrub"
                     className="aspect-[16/9] w-full"
                   />

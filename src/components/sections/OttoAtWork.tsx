@@ -171,15 +171,15 @@ export function OttoAtWork() {
 }
 
 const SCENE_IMG: Record<string, string> = {
-  storefront: "/media/feature-storefront.webp",
-  studio: "/media/feature-creative.webp",
+  storefront: "/media/feature-storefront-2.webp",
+  studio: "/media/scene-studio.webp",
 };
 
 const SCENE_ALT: Record<string, string> = {
   storefront:
-    "A polished Shopify storefront built and maintained by Vantage, shown on desktop and mobile",
+    "The same product listing before and after Vantage rebuilds it — dim and stale on the left, bright with five gold stars on the right",
   studio:
-    "Vantage-generated product photography styled like a professional studio shoot",
+    "A leather tote on a tabletop photo set beside two Vantage-generated output cards: a background-removed cutout and a finished golden product shot",
 };
 
 function SceneVisual({ id, active }: { id: string; active: boolean }) {
@@ -187,7 +187,7 @@ function SceneVisual({ id, active }: { id: string; active: boolean }) {
   if (id === "trends") return <TrendsVisual />;
   return (
     <Image
-      src={SCENE_IMG[id] ?? "/media/feature-creative.webp"}
+      src={SCENE_IMG[id] ?? "/media/feature-creative-2.webp"}
       alt={SCENE_ALT[id] ?? "Vantage-generated storefront and creative work"}
       fill
       sizes="(min-width:1024px) 44vw, 90vw"
@@ -200,8 +200,8 @@ function SceneVisual({ id, active }: { id: string; active: boolean }) {
 function TrendsVisual() {
   return (
     <Image
-      src="/media/feature-trends.webp"
-      alt="Dubai chocolate, a viral trending product, broken open to reveal its pistachio and kataifi filling"
+      src="/media/feature-trends-2.webp"
+      alt="A leather tote surging in demand — echo copies receding behind it while order notifications stream upward"
       fill
       sizes="(min-width:1024px) 44vw, 90vw"
       className="object-cover"
@@ -221,8 +221,8 @@ function AdsVisual({ active }: { active: boolean }) {
   return (
     <video
       ref={ref}
-      src="/media/ugc.mp4"
-      poster="/media/ugc-poster.webp"
+      src="/media/ugc-2.mp4"
+      poster="/media/ugc-poster-2.webp"
       muted
       loop
       playsInline

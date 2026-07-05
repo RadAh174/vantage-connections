@@ -3,8 +3,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { featureRows } from "@/lib/content";
 
 const dims: Record<string, { w: number; h: number }> = {
-  storefront: { w: 1600, h: 1195 },
-  creative: { w: 1300, h: 1741 },
+  storefront: { w: 1600, h: 900 },
+  creative: { w: 1300, h: 1693 },
   studio: { w: 1600, h: 1195 },
 };
 
