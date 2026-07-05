@@ -57,7 +57,7 @@ export function Nav() {
             <Wordmark tone={light ? "ink" : "paper"} />
           </a>
 
-          <div className="hidden items-center gap-9 md:flex">
+          <div className="hidden items-center gap-9 lg:flex">
             {nav.links.map((l) => (
               <a
                 key={l.href}
@@ -73,7 +73,7 @@ export function Nav() {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <a
               href={nav.cta.href}
               className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.9rem] font-semibold transition-all duration-200 active:scale-[0.98]"
@@ -85,7 +85,7 @@ export function Nav() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full md:hidden ${
+            className={`-mr-1.5 inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden ${
               light ? "text-ink" : "text-paper"
             }`}
             aria-label={open ? "Close menu" : "Open menu"}
@@ -96,14 +96,14 @@ export function Nav() {
         </nav>
       </div>
 
-      {/* Mobile sheet */}
+      {/* Mobile/tablet sheet */}
       <div
-        className={`md:hidden ${
+        className={`lg:hidden ${
           open ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
         <div
-          className={`absolute inset-x-0 top-16 origin-top border-b border-line bg-paper px-6 pb-8 pt-2 transition-all duration-300 ease-out ${
+          className={`absolute inset-x-0 top-16 max-h-[calc(100dvh-4rem)] origin-top overflow-y-auto border-b border-line bg-paper px-6 pb-8 pt-2 transition-all duration-300 ease-out md:top-[4.5rem] md:max-h-[calc(100dvh-4.5rem)] ${
             open ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0"
           }`}
         >

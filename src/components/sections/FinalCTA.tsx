@@ -36,12 +36,17 @@ export function FinalCTA() {
 
           <Reveal delay={220}>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <GetStartedButton variant="primary" size="lg" withArrow>
+              <GetStartedButton
+                variant="primary"
+                size="lg"
+                withArrow
+                className="w-full max-w-sm sm:w-auto sm:max-w-none"
+              >
                 {finalCta.primary.label}
               </GetStartedButton>
               <a
                 href={finalCta.secondary.href}
-                className="rounded-full border border-line-strong px-7 py-4 text-[1rem] font-medium text-ink transition-all duration-200 hover:bg-paper-raised"
+                className="w-full max-w-sm rounded-full border border-line-strong px-7 py-4 text-center text-[1rem] font-medium text-ink transition-all duration-200 hover:bg-paper-raised sm:w-auto sm:max-w-none"
               >
                 {finalCta.secondary.label}
               </a>

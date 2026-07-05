@@ -2,26 +2,73 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
 import { atWork } from "@/lib/content";
 
 const SCENES = atWork.scenes;
 const N = SCENES.length;
 
+/**
+ * Two renders of the same content:
+ * - mobile/tablet (<lg): normal-flow stacked scenes — no pinning, no
+ *   cross-fades. Scroll-driven opacity layering reads as double-exposed
+ *   soup on a small screen, so each scene is simply its own block.
+ * - desktop (lg+): the sticky scrollytelling with scroll-scrubbed scenes.
+ */
 export function OttoAtWork() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  return (
+    <section aria-label="Vantage at work" className="grain band-soft relative text-ink">
+      <MobileScenes />
+      <DesktopScenes />
+    </section>
+  );
+}
+
+/* ── mobile: one column, every scene fully visible ── */
+function MobileScenes() {
+  return (
+    <div className="container-page relative z-10 py-20 lg:hidden">
+      <div className="mx-auto max-w-xl">
+        <span className="kicker text-accent-deep">{atWork.kicker}</span>
+        <div className="mt-10 space-y-16">
+        {SCENES.map((s) => (
+          <Reveal key={s.id} as="article">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] border border-line bg-paper-raised shadow-lift">
+              <SceneVisual id={s.id} active io />
+            </div>
+            <p className="mt-6 font-mono text-[0.74rem] uppercase tracking-[0.16em] text-ink-muted">
+              {s.pain}
+            </p>
+            <h2 className="font-display mt-3 text-balance text-[2rem] font-medium leading-[1.06] tracking-[-0.02em] text-ink">
+              {s.title}
+            </h2>
+            <p className="mt-3 text-pretty text-[1.02rem] leading-relaxed text-ink-soft">
+              {s.sub}
+            </p>
+          </Reveal>
+        ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── desktop: sticky scrollytelling (unchanged behavior) ── */
+function DesktopScenes() {
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
   const [reduce, setReduce] = useState(false);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const track = trackRef.current;
+    if (!track) return;
     const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
     if (mq?.matches) setReduce(true);
 
     let raf = 0;
     let running = false;
     const compute = () => {
-      const rect = section.getBoundingClientRect();
+      const rect = track.getBoundingClientRect();
       const scrollable = rect.height - window.innerHeight;
       if (scrollable <= 0) return 0;
       return Math.min(1, Math.max(0, -rect.top / scrollable));
@@ -43,7 +90,7 @@ export function OttoAtWork() {
       },
       { threshold: 0 },
     );
-    io.observe(section);
+    io.observe(track);
     return () => {
       io.disconnect();
       running = false;
@@ -66,9 +113,9 @@ export function OttoAtWork() {
   };
 
   const goToScene = (i: number) => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const rect = section.getBoundingClientRect();
+    const track = trackRef.current;
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
     const top = rect.top + window.scrollY;
     const scrollable = rect.height - window.innerHeight;
     window.scrollTo({
@@ -78,10 +125,9 @@ export function OttoAtWork() {
   };
 
   return (
-    <section
-      ref={sectionRef}
-      aria-label="Vantage at work"
-      className="grain relative band-soft text-ink"
+    <div
+      ref={trackRef}
+      className="relative hidden lg:block"
       style={{ height: `${reduce ? 100 : 100 + N * 85}vh` }}
     >
       {/* accent glow follows the active scene side */}
@@ -166,7 +212,7 @@ export function OttoAtWork() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -182,8 +228,16 @@ const SCENE_ALT: Record<string, string> = {
     "A desk covered in freshly printed campaign photographs of one amber serum bottle in a dozen styles, the real bottle standing among its own imagery",
 };
 
-function SceneVisual({ id, active }: { id: string; active: boolean }) {
-  if (id === "ads") return <AdsVisual active={active} />;
+function SceneVisual({
+  id,
+  active,
+  io = false,
+}: {
+  id: string;
+  active: boolean;
+  io?: boolean;
+}) {
+  if (id === "ads") return <AdsVisual active={active} io={io} />;
   if (id === "trends") return <TrendsVisual />;
   return (
     <Image
@@ -196,7 +250,6 @@ function SceneVisual({ id, active }: { id: string; active: boolean }) {
   );
 }
 
-// Trends scene: a real viral product (Dubai chocolate) shot like a hero.
 function TrendsVisual() {
   return (
     <Image
@@ -210,14 +263,36 @@ function TrendsVisual() {
   );
 }
 
-function AdsVisual({ active }: { active: boolean }) {
+function AdsVisual({ active, io = false }: { active: boolean; io?: boolean }) {
   const ref = useRef<HTMLVideoElement | null>(null);
+
+  // scrollytelling mode: driven by the active scene
   useEffect(() => {
+    if (io) return;
     const v = ref.current;
     if (!v) return;
     if (active) void v.play().catch(() => {});
     else v.pause();
-  }, [active]);
+  }, [active, io]);
+
+  // static-stack mode: ambient loop only while on screen (battery-friendly)
+  useEffect(() => {
+    if (!io) return;
+    const v = ref.current;
+    if (!v) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) void v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    obs.observe(v);
+    return () => obs.disconnect();
+  }, [io]);
+
   return (
     <video
       ref={ref}
@@ -232,4 +307,3 @@ function AdsVisual({ active }: { active: boolean }) {
     />
   );
 }
-

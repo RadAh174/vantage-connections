@@ -86,7 +86,10 @@ export function WaitlistDialog() {
   // One free beta plan, so no tier math — fold the clicked plan name into the
   // generic founding-access pitch.
   const perks = waitlist.perks;
-  const panelKicker = plan ? `${plan} · ${waitlist.kicker}` : waitlist.kicker;
+  const panelKicker =
+    plan && plan.toLowerCase() !== waitlist.kicker.toLowerCase()
+      ? `${plan} · ${waitlist.kicker}`
+      : waitlist.kicker;
   const offerTag = waitlist.offerLabel;
   const offerLine = waitlist.offerLine;
 
@@ -106,12 +109,14 @@ export function WaitlistDialog() {
       />
 
       <div
-        className="relative grid max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:grid-cols-[1.04fr_1fr]"
+        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:grid-cols-[1.04fr_1fr]"
         style={{ animation: "ottoPop 0.28s cubic-bezier(0.22,1,0.36,1)" }}
       >
-        {/* ── LEFT — what you're locking in (gradient panel) ── */}
+        {/* ── LEFT — what you're locking in (gradient panel). On mobile the
+            form comes first (order-2 here): tapping "join" should land the
+            thumb on the email field, not a scroll past the pitch. ── */}
         <div
-          className="band-immersive relative flex flex-col gap-7 overflow-hidden p-7 text-paper sm:p-8"
+          className="band-immersive relative order-2 flex flex-col gap-7 overflow-hidden p-7 text-paper sm:p-8 md:order-none"
           style={{
             backgroundImage:
               "linear-gradient(150deg, #0d2418 0%, #1a4d33 56%, #276b48 100%)",
@@ -154,7 +159,7 @@ export function WaitlistDialog() {
         </div>
 
         {/* ── RIGHT — the form ── */}
-        <div className="relative flex flex-col justify-center p-7 sm:p-9">
+        <div className="relative order-1 flex flex-col justify-center p-7 sm:p-9 md:order-none">
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
@@ -212,7 +217,7 @@ export function WaitlistDialog() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   aria-invalid={Boolean(error)}
-                  className="w-full rounded-full border border-line-strong bg-paper-sunken px-5 py-3.5 text-[0.95rem] text-ink placeholder:text-ink-muted focus-visible:border-accent focus-visible:outline-none"
+                  className="w-full rounded-full border border-line-strong bg-paper-sunken px-5 py-3.5 text-base text-ink placeholder:text-ink-muted focus-visible:border-accent focus-visible:outline-none"
                 />
                 {error && (
                   <p role="alert" className="mt-2 pl-3 text-[0.8rem] text-accent-deep">

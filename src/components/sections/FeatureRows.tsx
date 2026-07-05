@@ -19,7 +19,7 @@ export function FeatureRows() {
           </h2>
         </Reveal>
 
-        <div className="space-y-28 md:space-y-40">
+        <div className="space-y-20 md:space-y-40">
           {featureRows.map((row, i) => {
             const reversed = i % 2 === 1;
             const d = dims[row.id] ?? { w: 1600, h: 1195 };

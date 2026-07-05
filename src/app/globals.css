@@ -279,6 +279,9 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* clip (not hidden): kills sideways scroll from decorative overflow
+       without creating a scroll container, so position:sticky keeps working */
+    overflow-x: clip;
   }
 
   body {
@@ -288,7 +291,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   .font-display {

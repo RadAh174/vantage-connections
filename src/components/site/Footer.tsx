@@ -68,7 +68,7 @@ export function Footer() {
                   href={href}
                   aria-label={label}
                   rel="me noopener noreferrer"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-paper-raised text-ink-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent-deep"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line bg-paper-raised text-ink-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent-deep"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -105,7 +105,7 @@ export function Footer() {
         </div>
 
         {/* bottom bar */}
-        <div className="flex flex-col items-start justify-between gap-3 border-t border-line py-7 text-[0.85rem] text-ink-muted md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-3 border-t border-line pt-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] text-[0.85rem] text-ink-muted md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} Vantage Connections. All rights reserved.</p>
         </div>
       </div>

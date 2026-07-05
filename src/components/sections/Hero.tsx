@@ -6,12 +6,12 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="band-immersive grain relative pb-36 pt-28 text-paper md:pb-44 md:pt-36"
+      className="band-immersive grain relative pb-24 pt-24 text-paper md:pb-44 md:pt-36"
     >
       {/* soft light bloom lifting the headline off the gradient */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[680px] w-[1100px] -translate-x-1/2 rounded-full opacity-70"
+        className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[420px] w-[160vw] max-w-[1100px] -translate-x-1/2 rounded-full opacity-70 md:h-[680px]"
         style={{
           background:
             "radial-gradient(50% 50% at 50% 32%, rgba(230,190,90,0.16), rgba(230,190,90,0) 70%)",
@@ -24,16 +24,16 @@ export function Hero() {
             <span className="kicker text-accent-soft">{hero.kicker}</span>
           </div>
 
-          <h1 className="font-display text-balance text-[2.6rem] font-medium leading-[1.04] tracking-[-0.02em] text-paper sm:text-6xl md:text-7xl">
+          <h1 className="font-display text-balance text-[2.5rem] font-medium leading-[1.06] tracking-[-0.02em] text-paper sm:text-6xl sm:leading-[1.04] md:text-7xl">
             {hero.headlineLead}
             <br className="hidden sm:block" />{" "}
-            <span className="relative whitespace-nowrap italic text-accent-soft">
+            <span className="relative italic text-accent-soft sm:whitespace-nowrap">
               {hero.headlineEmph}
               <svg
                 aria-hidden="true"
                 viewBox="0 0 300 12"
                 preserveAspectRatio="none"
-                className="absolute -bottom-2 left-0 h-3 w-full text-accent-soft"
+                className="absolute -bottom-2 left-0 hidden h-3 w-full text-accent-soft sm:block"
               >
                 <path
                   d="M2 8 C 80 2, 220 2, 298 7"
@@ -51,7 +51,12 @@ export function Hero() {
           </p>
 
           <div className="mt-10 flex justify-center">
-            <Button href={hero.primary.href} variant="primary" withArrow>
+            <Button
+              href={hero.primary.href}
+              variant="primary"
+              withArrow
+              className="w-full max-w-sm py-4 sm:w-auto sm:max-w-none sm:py-3.5"
+            >
               {hero.primary.label}
             </Button>
           </div>
@@ -61,7 +66,7 @@ export function Hero() {
             ~2.2 viewports tall; the framed card sticks centered inside it
             while the scroll drives the full assembly, then releases. The
             headline above scrolls away naturally. Mobile keeps normal flow. */}
-        <div id="hero-video-track" className="relative mt-16 md:mt-8 md:h-[220svh]">
+        <div id="hero-video-track" className="relative mt-12 md:mt-8 md:h-[220svh]">
           <div className="md:sticky md:top-[14svh]">
             {/* width capped so the pinned card always fits under its sticky
                 offset: height <= ~72svh (16/9 => width <= 128svh) */}

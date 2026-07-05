@@ -28,13 +28,15 @@ export function Pricing() {
 
         {/* Single, everything-included plan. */}
         <Reveal delay={160} className="mx-auto mt-12 max-w-xl">
-          <div className="relative flex flex-col rounded-2xl border-2 border-accent/50 bg-paper-raised p-8 text-ink shadow-lift ring-1 ring-accent/10 sm:p-10">
+          <div className="relative flex flex-col rounded-2xl border-2 border-accent/50 bg-paper-raised p-6 text-ink shadow-lift ring-1 ring-accent/10 sm:p-10">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h3 className="font-display text-2xl font-medium">{plan.name}</h3>
                 <p className="mt-2 text-[0.95rem] text-ink-soft">{plan.tagline}</p>
               </div>
-              <span className="shrink-0 rounded-full border border-accent/40 bg-accent/12 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-accent-deep">
+              {/* duplicate of the section badge just above — desktop only,
+                  where the card is far enough from it to need the reminder */}
+              <span className="hidden shrink-0 rounded-full border border-accent/40 bg-accent/12 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-accent-deep sm:inline-flex">
                 {pricing.offerBadge}
               </span>
             </div>
