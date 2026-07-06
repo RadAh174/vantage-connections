@@ -176,7 +176,7 @@ export function WaitlistDialog() {
             </div>
           ) : (
             <>
-              <h2 className="font-display text-2xl font-medium leading-tight text-ink sm:text-[1.7rem]">
+              <h2 className="text-center font-display text-2xl font-medium leading-tight text-ink sm:text-[1.7rem]">
                 {waitlist.formTitle}
               </h2>
 
