@@ -107,14 +107,14 @@ export function WaitlistDialog() {
       />
 
       <div
-        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:grid-cols-[1.04fr_1fr]"
+        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:min-h-[36rem] md:grid-cols-[1.04fr_1fr]"
         style={{ animation: "ottoPop 0.28s cubic-bezier(0.22,1,0.36,1)" }}
       >
         {/* ── LEFT — what you're locking in (gradient panel). On mobile the
             form comes first (order-2 here): tapping "join" should land the
             thumb on the email field, not a scroll past the pitch. ── */}
         <div
-          className="band-immersive relative order-2 flex flex-col gap-7 overflow-hidden p-7 text-paper sm:p-8 md:order-none"
+          className="band-immersive relative order-2 flex flex-col justify-center gap-8 overflow-hidden p-7 text-paper sm:p-9 md:order-none"
           style={{
             backgroundImage:
               "linear-gradient(150deg, #0d2418 0%, #1a4d33 56%, #276b48 100%)",
@@ -129,7 +129,7 @@ export function WaitlistDialog() {
             </h2>
           </div>
 
-          <ul className="relative z-10 space-y-2.5">
+          <ul className="relative z-10 space-y-3.5">
             {perks.map((p) => (
               <li
                 key={p}
