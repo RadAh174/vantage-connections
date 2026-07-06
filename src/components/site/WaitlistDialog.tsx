@@ -96,7 +96,7 @@ export function WaitlistDialog() {
       role="dialog"
       aria-modal="true"
       aria-label="Reserve your spot on the Vantage Connections waitlist"
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[200] flex items-end justify-center sm:items-center sm:p-4"
     >
       {/* scrim — neutral dark, not teal-tinted */}
       <button
@@ -107,14 +107,13 @@ export function WaitlistDialog() {
       />
 
       <div
-        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:min-h-[36rem] md:grid-cols-[1.04fr_1fr]"
+        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-t-2xl border border-line bg-paper-raised shadow-lift sm:rounded-2xl md:min-h-[36rem] md:grid-cols-[1.04fr_1fr]"
         style={{ animation: "ottoPop 0.28s cubic-bezier(0.22,1,0.36,1)" }}
       >
-        {/* ── LEFT — what you're locking in (gradient panel). On mobile the
-            form comes first (order-2 here): tapping "join" should land the
-            thumb on the email field, not a scroll past the pitch. ── */}
+        {/* ── LEFT — what you're locking in (gradient panel). Desktop only:
+            on a phone the sheet stays a single, thumb-sized ask. ── */}
         <div
-          className="band-immersive relative order-2 flex flex-col justify-center gap-8 overflow-hidden p-7 text-paper sm:p-9 md:order-none"
+          className="band-immersive relative hidden flex-col justify-center gap-8 overflow-hidden p-7 text-paper sm:p-9 md:flex"
           style={{
             backgroundImage:
               "linear-gradient(150deg, #0d2418 0%, #1a4d33 56%, #276b48 100%)",
@@ -145,8 +144,8 @@ export function WaitlistDialog() {
 
         </div>
 
-        {/* ── RIGHT — the form ── */}
-        <div className="relative order-1 flex flex-col justify-center p-7 sm:p-9 md:order-none">
+        {/* ── RIGHT — the form (the whole sheet on mobile) ── */}
+        <div className="relative flex flex-col justify-center p-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-9 sm:p-9">
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
@@ -180,7 +179,29 @@ export function WaitlistDialog() {
                 {waitlist.formTitle}
               </h2>
 
-              <form onSubmit={submit} noValidate className="mt-6">
+              {/* mobile: the gradient panel is hidden, so the pitch is one
+                  kicker line + three essentials */}
+              <p className="mt-2.5 text-center font-mono text-[0.64rem] uppercase tracking-[0.16em] text-accent-deep md:hidden">
+                {panelKicker} · free during beta
+              </p>
+              <ul className="mx-auto mt-6 w-fit space-y-2.5 md:hidden">
+                {[perks[0], perks[2], perks[6]].map((p) => (
+                  <li
+                    key={p}
+                    className="flex items-start gap-2.5 text-[0.92rem] leading-snug text-ink-soft"
+                  >
+                    <span className="mt-0.5 inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-full bg-accent/12">
+                      <Check
+                        className="h-2.5 w-2.5 text-accent-deep"
+                        strokeWidth={3}
+                      />
+                    </span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+
+              <form onSubmit={submit} noValidate className="mt-7 md:mt-6">
                 <label htmlFor="wl-email" className="sr-only">
                   Work email
                 </label>
