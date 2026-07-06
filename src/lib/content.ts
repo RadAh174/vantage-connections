@@ -11,7 +11,8 @@ export const nav = {
     { label: "How it works", href: "#how" },
     { label: "Pricing", href: "#pricing" },
   ],
-  cta: { label: "Join the waitlist", href: "#pricing" },
+  // shortLabel: compact variant for the mobile header pill
+  cta: { label: "Join the waitlist", shortLabel: "Join waitlist", href: "#pricing" },
 };
 
 export const hero = {

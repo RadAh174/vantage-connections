@@ -82,17 +82,27 @@ export function Nav() {
             </a>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            className={`-mr-1.5 inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden ${
-              light ? "text-ink" : "text-paper"
-            }`}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          {/* mobile: compact CTA pill + hamburger */}
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <a
+              href={nav.cta.href}
+              onClick={() => setOpen(false)}
+              className="btn-primary hidden items-center whitespace-nowrap rounded-full px-4 py-2 text-[0.85rem] font-semibold transition-all duration-200 active:scale-[0.98] min-[360px]:inline-flex"
+            >
+              {nav.cta.shortLabel}
+            </a>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className={`-mr-1.5 inline-flex h-11 w-11 items-center justify-center rounded-full ${
+                light ? "text-ink" : "text-paper"
+              }`}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+            >
+              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </nav>
       </div>
 
