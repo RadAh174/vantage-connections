@@ -3,15 +3,11 @@ import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { OttoAtWork } from "@/components/sections/OttoAtWork";
-import { Problem } from "@/components/sections/Problem";
-import { Pitch } from "@/components/sections/Pitch";
-import { FeatureRows } from "@/components/sections/FeatureRows";
+import { Positioning } from "@/components/sections/Positioning";
 import { CapabilityCards } from "@/components/sections/CapabilityCards";
-import { OperatorBand } from "@/components/sections/OperatorBand";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
-import { FinalCTA } from "@/components/sections/FinalCTA";
 import { capabilityCards, faqs, featureRows, pricing } from "@/lib/content";
 import { SITE_URL, siteConfig } from "@/lib/site";
 
@@ -113,19 +109,17 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Nav />
+      {/* Conversion core (hero -> proof -> ask), then depth for the
+          not-yet-convinced. The footer band is the final ask. */}
       <main>
         <Hero />
         <TrustStrip />
         <OttoAtWork />
-        <Problem />
-        <Pitch />
-        <FeatureRows />
-        <CapabilityCards />
-        <OperatorBand />
-        <HowItWorks />
         <Pricing />
+        <Positioning />
+        <CapabilityCards />
+        <HowItWorks />
         <FAQ />
-        <FinalCTA />
       </main>
       <Footer />
     </>

@@ -17,7 +17,11 @@ const N = SCENES.length;
  */
 export function OttoAtWork() {
   return (
-    <section aria-label="Vantage at work" className="grain band-soft relative text-ink">
+    <section
+      id="capabilities"
+      aria-label="Vantage at work"
+      className="grain band-soft relative scroll-mt-24 text-ink"
+    >
       <MobileScenes />
       <DesktopScenes />
     </section>
@@ -45,6 +49,16 @@ function MobileScenes() {
             <p className="mt-3 text-pretty text-[1.02rem] leading-relaxed text-ink-soft">
               {s.sub}
             </p>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {s.bullets.map((b) => (
+                <li
+                  key={b}
+                  className="rounded-full border border-line bg-paper-raised px-3.5 py-1.5 text-[0.82rem] text-ink"
+                >
+                  {b}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         ))}
         </div>
@@ -147,7 +161,7 @@ function DesktopScenes() {
           <div className="mt-6 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             {/* TEXT — pain first, then the service, big */}
             <div className="order-2 lg:order-1">
-              <div className="relative min-h-[260px] sm:min-h-[300px]">
+              <div className="relative min-h-[380px] xl:min-h-[420px]">
                 {SCENES.map((s, i) => (
                   <div
                     key={s.id}
@@ -166,9 +180,19 @@ function DesktopScenes() {
                     <h2 className="font-display mt-4 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl md:text-[3.75rem]">
                       {s.title}
                     </h2>
-                    <p className="mt-6 max-w-md text-pretty text-[1.15rem] leading-relaxed text-ink-soft">
+                    <p className="mt-5 max-w-md text-pretty text-[1.15rem] leading-relaxed text-ink-soft">
                       {s.sub}
                     </p>
+                    <ul className="mt-5 flex max-w-md flex-wrap gap-2">
+                      {s.bullets.map((b) => (
+                        <li
+                          key={b}
+                          className="rounded-full border border-line bg-paper-raised px-3.5 py-1.5 text-[0.82rem] text-ink"
+                        >
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>

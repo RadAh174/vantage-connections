@@ -125,11 +125,6 @@ export const capabilityCards = [
     desc: "Pricing and promo moves that track demand and competitors, so margins stay with the market, not months behind it.",
   },
   {
-    icon: "Sparkles",
-    title: "New-product radar",
-    desc: "Vantage Connections watches your category and surfaces the next products worth adding, with the demand signal to back it.",
-  },
-  {
     icon: "LayoutGrid",
     title: "Catalog optimization",
     desc: "Automated merchandising that puts the right products in front of the right shoppers.",
@@ -245,6 +240,8 @@ export const faqs = [
 
 // "Vantage at work" — pinned scroll section; each beat leads with the pain,
 // then the service Vantage delivers. Big, free-form, no fake UI chrome.
+// This is now THE capability section: each scene carries the bullet chips
+// that used to live in the (removed) feature rows.
 export const atWork = {
   kicker: "Vantage Connections at work",
   heading: "The whole back office. Handled.",
@@ -255,6 +252,11 @@ export const atWork = {
       pain: "Your site is quietly going stale.",
       title: "Vantage builds and maintains your store.",
       sub: "A fast, on-brand storefront, kept sharp with continuous upkeep so it never rots.",
+      bullets: [
+        "Conversion-minded storefront build",
+        "Always-on SEO & generative-engine optimization",
+        "Content refreshes that prevent decay",
+      ],
     },
     {
       id: "ads",
@@ -262,6 +264,11 @@ export const atWork = {
       pain: "You have no time to make ads.",
       title: "Vantage writes, shoots and runs them.",
       sub: "Brand-aware creative, UGC and email, produced and queued for your approval.",
+      bullets: [
+        "Creative, UGC & email built on your brand",
+        "Automated ad pipelines, human-approved",
+        "Works for existing products and new launches",
+      ],
     },
     {
       id: "trends",
@@ -269,6 +276,11 @@ export const atWork = {
       pain: "By the time you spot it, you’re buying the peak.",
       title: "Vantage catches the wave before the crowd.",
       sub: "It reads demand across your category and flags what’s rising while there’s still room to win. Launch early instead of buying the peak.",
+      bullets: [
+        "Demand reads across your category",
+        "Rising products flagged early",
+        "Launch windows before the peak",
+      ],
     },
     {
       id: "studio",
@@ -276,6 +288,11 @@ export const atWork = {
       pain: "Reshoots cost a fortune.",
       title: "Vantage makes your product imagery.",
       sub: "Studio-grade images and video, generated and edited on demand, matched to your brand.",
+      bullets: [
+        "Studio-grade product images & video",
+        "On-brand edits, backgrounds and sets",
+        "Refreshed catalogs every season",
+      ],
     },
   ],
 };

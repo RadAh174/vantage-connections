@@ -21,7 +21,7 @@ export function CapabilityCards() {
           <p className="kicker text-accent-deep">Always running</p>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {capabilityCards.map((card, i) => {
             const Icon = icons[card.icon] ?? Sparkles;
             return (
