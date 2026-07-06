@@ -96,7 +96,7 @@ export function WaitlistDialog() {
       role="dialog"
       aria-modal="true"
       aria-label="Reserve your spot on the Vantage Connections waitlist"
-      className="fixed inset-0 z-[200] flex items-end justify-center sm:items-center sm:p-4"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
     >
       {/* scrim — neutral dark, not teal-tinted */}
       <button
@@ -107,7 +107,7 @@ export function WaitlistDialog() {
       />
 
       <div
-        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-t-2xl border border-line bg-paper-raised shadow-lift sm:rounded-2xl md:min-h-[36rem] md:grid-cols-[1.04fr_1fr]"
+        className="relative grid max-h-[92dvh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-line bg-paper-raised shadow-lift md:min-h-[36rem] md:grid-cols-[1.04fr_1fr]"
         style={{ animation: "ottoPop 0.28s cubic-bezier(0.22,1,0.36,1)" }}
       >
         {/* ── LEFT — what you're locking in (gradient panel). Desktop only:
@@ -145,7 +145,7 @@ export function WaitlistDialog() {
         </div>
 
         {/* ── RIGHT — the form (the whole sheet on mobile) ── */}
-        <div className="relative flex flex-col justify-center p-7 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-9 sm:p-9">
+        <div className="relative flex flex-col justify-center p-7 sm:p-9">
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
