@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Wordmark } from "./Wordmark";
+import { openWaitlist } from "./WaitlistDialog";
 import { nav } from "@/lib/content";
 
 export function Nav() {
@@ -74,23 +75,27 @@ export function Nav() {
           </div>
 
           <div className="hidden lg:block">
-            <a
-              href={nav.cta.href}
+            <button
+              type="button"
+              onClick={() => openWaitlist()}
               className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.9rem] font-semibold transition-all duration-200 active:scale-[0.98]"
             >
               {nav.cta.label}
-            </a>
+            </button>
           </div>
 
           {/* mobile: compact CTA pill + hamburger */}
           <div className="flex items-center gap-1.5 lg:hidden">
-            <a
-              href={nav.cta.href}
-              onClick={() => setOpen(false)}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openWaitlist();
+              }}
               className="btn-primary hidden items-center whitespace-nowrap rounded-full px-4 py-2 text-[0.85rem] font-semibold transition-all duration-200 active:scale-[0.98] min-[360px]:inline-flex"
             >
               {nav.cta.shortLabel}
-            </a>
+            </button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -129,13 +134,16 @@ export function Nav() {
               </a>
             ))}
           </div>
-          <a
-            href={nav.cta.href}
-            onClick={() => setOpen(false)}
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              openWaitlist();
+            }}
             className="btn-primary mt-6 inline-flex w-full items-center justify-center rounded-full px-6 py-4 font-semibold"
           >
             {nav.cta.label}
-          </a>
+          </button>
         </div>
       </div>
     </header>
