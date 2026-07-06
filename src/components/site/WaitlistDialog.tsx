@@ -90,8 +90,6 @@ export function WaitlistDialog() {
     plan && plan.toLowerCase() !== waitlist.kicker.toLowerCase()
       ? `${plan} · ${waitlist.kicker}`
       : waitlist.kicker;
-  const offerTag = waitlist.offerLabel;
-  const offerLine = waitlist.offerLine;
 
   return (
     <div
@@ -129,9 +127,6 @@ export function WaitlistDialog() {
             <h2 className="font-display mt-3 text-[1.65rem] font-medium leading-[1.12] text-paper">
               {waitlist.title}
             </h2>
-            <p className="mt-3 text-[0.94rem] leading-relaxed text-paper/75">
-              {waitlist.subtitle}
-            </p>
           </div>
 
           <ul className="relative z-10 space-y-2.5">
@@ -148,14 +143,6 @@ export function WaitlistDialog() {
             ))}
           </ul>
 
-          <div className="relative z-10 mt-auto rounded-xl border border-paper/15 bg-paper/[0.06] px-4 py-3.5">
-            <span className="inline-block rounded-full bg-accent-soft px-2 py-0.5 font-mono text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-shade">
-              {offerTag}
-            </span>
-            <p className="mt-2 text-[0.88rem] leading-snug text-paper/85">
-              {offerLine}
-            </p>
-          </div>
         </div>
 
         {/* ── RIGHT — the form ── */}
@@ -192,16 +179,6 @@ export function WaitlistDialog() {
               <h2 className="font-display text-2xl font-medium leading-tight text-ink sm:text-[1.7rem]">
                 {waitlist.formTitle}
               </h2>
-              <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-soft">
-                {plan ? (
-                  <>
-                    Nice choice on <span className="text-ink">{plan}</span>.{" "}
-                    {waitlist.formSubtitle}
-                  </>
-                ) : (
-                  waitlist.formSubtitle
-                )}
-              </p>
 
               <form onSubmit={submit} noValidate className="mt-6">
                 <label htmlFor="wl-email" className="sr-only">
