@@ -1,5 +1,4 @@
 import { Wordmark } from "./Wordmark";
-import { GetStartedButton } from "@/components/ui/GetStartedButton";
 import { footer } from "@/lib/content";
 
 // lucide dropped brand marks, so the social glyphs are inlined (24×24, filled).
@@ -40,21 +39,8 @@ export function Footer() {
         }}
       />
 
-      <div className="container-page relative z-10 pt-16 md:pt-20">
-        {/* mini call to action */}
-        <div className="flex flex-col gap-6 border-b border-line pb-12 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-xl">
-            <p className="font-display text-[1.9rem] font-medium leading-[1.1] tracking-[-0.01em] text-ink sm:text-[2.4rem]">
-              Hire the operator your
-              <br className="hidden sm:block" /> store has been missing.
-            </p>
-          </div>
-          <GetStartedButton variant="primary" size="lg" withArrow>
-            Join the waitlist
-          </GetStartedButton>
-        </div>
-
-        {/* links + brand */}
+      <div className="container-page relative z-10 pt-4 md:pt-6">
+        {/* links + brand — the final ask lives in the FinalCTA section above */}
         <div className="grid gap-12 py-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
             <Wordmark tone="ink" />

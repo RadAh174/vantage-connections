@@ -8,6 +8,7 @@ import { CapabilityCards } from "@/components/sections/CapabilityCards";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
+import { FinalCTA } from "@/components/sections/FinalCTA";
 import { capabilityCards, faqs, featureRows, pricing } from "@/lib/content";
 import { SITE_URL, siteConfig } from "@/lib/site";
 
@@ -120,6 +121,7 @@ export default function Home() {
         <CapabilityCards />
         <HowItWorks />
         <FAQ />
+        <FinalCTA />
       </main>
       <Footer />
     </>
