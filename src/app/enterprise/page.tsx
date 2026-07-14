@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preload } from "react-dom";
 import Image from "next/image";
 import { Check, ShieldCheck } from "lucide-react";
 import { EnterpriseNav } from "@/components/site/EnterpriseNav";
@@ -105,6 +106,7 @@ const featureDims: Record<string, { w: number; h: number }> = {
 };
 
 export default function EnterprisePage() {
+  preload("/media/ent-hero-poster-2.webp", { as: "image" });
   return (
     <>
       <script
@@ -178,7 +180,8 @@ export default function EnterprisePage() {
                 <CornerTicks />
                 <div className="relative overflow-hidden rounded-xl">
                   <ScrollVideo
-                    src="/media/ent-hero-2.mp4"
+                    src="/media/ent-hero-3.mp4"
+                    lowSrc="/media/ent-hero-3-lo.mp4"
                     poster="/media/ent-hero-poster-2.webp"
                     mode="scrub"
                     className="aspect-[16/9] w-full"

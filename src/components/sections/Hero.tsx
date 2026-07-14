@@ -1,8 +1,12 @@
+import { preload } from "react-dom";
 import { Button } from "@/components/ui/Button";
 import { ScrollVideo } from "@/components/ui/ScrollVideo";
 import { hero } from "@/lib/content";
 
 export function Hero() {
+  // the poster is the hero card's first paint — get it moving with the
+  // document instead of waiting for the video element to request it
+  preload("/media/hero-poster-3.webp", { as: "image" });
   return (
     <section
       id="top"
@@ -76,7 +80,8 @@ export function Hero() {
               <div className="relative rounded-[1.25rem] border border-paper/15 bg-paper-raised p-2 shadow-lift md:rounded-[1.5rem] md:p-3">
                 <div className="relative overflow-hidden rounded-xl">
                   <ScrollVideo
-                    src="/media/hero-3.mp4"
+                    src="/media/hero-4.mp4"
+                    lowSrc="/media/hero-4-lo.mp4"
                     poster="/media/hero-poster-3.webp"
                     mode="scrub"
                     trackId="hero-video-track"

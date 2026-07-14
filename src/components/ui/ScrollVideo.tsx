@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ScrollVideoProps = {
   src: string;
+  /** lighter encode served to small screens (≤767px) */
+  lowSrc?: string;
   poster?: string;
   className?: string;
   /**
@@ -22,14 +24,22 @@ type ScrollVideoProps = {
   trackId?: string;
 };
 
+type NetworkInformation = {
+  saveData?: boolean;
+  effectiveType?: string;
+};
+
 /**
  * Premium scroll-driven video.
  * - scrub mode maps scroll position to currentTime (Apple-style).
  * - loop mode plays a muted ambient loop while visible.
+ * - the source is only attached once the element nears the viewport, small
+ *   screens get lowSrc, and Save-Data / 2G connections keep the poster only.
  * Falls back to a static poster frame when reduced motion is requested.
  */
 export function ScrollVideo({
   src,
+  lowSrc,
   poster,
   className = "",
   mode = "scrub",
@@ -38,11 +48,37 @@ export function ScrollVideo({
 }: ScrollVideoProps) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [attachedSrc, setAttachedSrc] = useState<string | null>(null);
+
+  // Attach the source lazily: nothing downloads until the element is within
+  // ~1.5 viewports, and constrained connections never download it at all.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    const conn = (navigator as { connection?: NetworkInformation }).connection;
+    if (conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType ?? "")) return;
+
+    const chosen =
+      lowSrc && window.matchMedia("(max-width: 767px)").matches ? lowSrc : src;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setAttachedSrc(chosen);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "150% 0px" },
+    );
+    io.observe(wrap);
+    return () => io.disconnect();
+  }, [src, lowSrc]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
     const video = videoRef.current;
-    if (!wrap || !video) return;
+    if (!wrap || !video || !attachedSrc) return;
 
     const reduce =
       typeof window !== "undefined" &&
@@ -121,6 +157,15 @@ export function ScrollVideo({
       return Math.min(1, Math.max(0, raw));
     };
 
+    // Never seek past what has actually downloaded: on a slow connection a
+    // seek into an unbuffered range paints black until data arrives, whereas
+    // holding at the buffered edge keeps a real frame on screen.
+    const bufferedCeiling = () => {
+      const buf = video.buffered;
+      if (!buf.length) return 0;
+      return buf.end(buf.length - 1) - 0.1;
+    };
+
     const tick = () => {
       if (!duration) {
         duration = video.duration || 0;
@@ -133,9 +178,10 @@ export function ScrollVideo({
         // smooth toward target to avoid hard seeks
         current += (targetTime - current) * 0.18;
         if (Math.abs(targetTime - current) < 0.004) current = targetTime;
-        if (Math.abs(video.currentTime - current) > 0.01) {
+        const seekTo = Math.min(current, Math.max(0, bufferedCeiling()));
+        if (Math.abs(video.currentTime - seekTo) > 0.01) {
           try {
-            video.currentTime = current;
+            video.currentTime = seekTo;
           } catch {
             /* seek not ready */
           }
@@ -154,17 +200,17 @@ export function ScrollVideo({
       video.removeEventListener("loadedmetadata", onMeta);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [mode, scrubRange, trackId]);
+  }, [mode, scrubRange, trackId, attachedSrc]);
 
   return (
     <div ref={wrapRef} className={className}>
       <video
         ref={videoRef}
-        src={src}
+        src={attachedSrc ?? undefined}
         poster={poster}
         muted
         playsInline
-        preload="auto"
+        preload={attachedSrc ? "auto" : "none"}
         autoPlay={mode === "loop"}
         loop={mode === "loop"}
         className="h-full w-full object-cover"

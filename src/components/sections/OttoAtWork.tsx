@@ -320,7 +320,7 @@ function AdsVisual({ active, io = false }: { active: boolean; io?: boolean }) {
   return (
     <video
       ref={ref}
-      src="/media/ugc-2.mp4"
+      src="/media/ugc-3.mp4"
       poster="/media/ugc-poster-2.webp"
       muted
       loop
