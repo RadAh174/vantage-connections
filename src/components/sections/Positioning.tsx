@@ -28,15 +28,18 @@ export function Positioning() {
       />
 
       <div className="container-page relative z-10">
-        {/* the quiet-rot problem, told once */}
-        <SectionHeading
-          kicker={problem.kicker}
-          title={problem.title}
-          body={problem.body}
-        />
+        {/* the quiet-rot problem, told once — desktop only: on mobile every
+            scene already leads with its pain line, so this reads as a rerun */}
+        <div className="hidden md:block">
+          <SectionHeading
+            kicker={problem.kicker}
+            title={problem.title}
+            body={problem.body}
+          />
+        </div>
 
-        {/* the hire that fixes it */}
-        <div className="mt-12 grid items-center gap-12 md:mt-24 lg:grid-cols-2 lg:gap-20">
+        {/* the hire that fixes it — desktop only: restates the hero sub */}
+        <div className="hidden items-center gap-12 md:mt-24 md:grid lg:grid-cols-2 lg:gap-20">
           <div className="max-w-xl">
             <Reveal>
               <span className="kicker text-accent-deep">{pitch.kicker}</span>
@@ -84,7 +87,7 @@ export function Positioning() {
         </div>
 
         {/* one brain vs. the tool stack */}
-        <Reveal className="mx-auto mt-12 max-w-4xl text-center md:mt-24">
+        <Reveal className="mx-auto max-w-4xl text-center md:mt-24">
           <h3 className="font-display text-2xl font-medium leading-tight text-ink sm:text-3xl">
             {operator.title}
           </h3>
