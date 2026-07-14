@@ -316,7 +316,9 @@ export default function EnterprisePage() {
                       <div
                         aria-hidden="true"
                         className={`pointer-events-none absolute -z-0 h-3/4 w-3/4 rounded-full opacity-50 blur-3xl ${
-                          reversed ? "-left-10 bottom-0" : "-right-10 top-0"
+                          reversed
+                            ? "bottom-0 left-0 md:-left-10"
+                            : "right-0 top-0 md:-right-10"
                         }`}
                         style={{
                           background:

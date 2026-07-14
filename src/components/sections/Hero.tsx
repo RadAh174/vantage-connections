@@ -15,7 +15,7 @@ export function Hero() {
       {/* soft light bloom lifting the headline off the gradient */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[420px] w-[160vw] max-w-[1100px] -translate-x-1/2 rounded-full opacity-70 md:h-[680px]"
+        className="pointer-events-none absolute left-1/2 top-0 -z-0 h-[420px] w-full max-w-[1100px] -translate-x-1/2 rounded-full opacity-70 md:h-[680px]"
         style={{
           background:
             "radial-gradient(50% 50% at 50% 32%, rgba(230,190,90,0.16), rgba(230,190,90,0) 70%)",
