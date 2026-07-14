@@ -104,13 +104,17 @@ export function ScrollVideo({
     }
 
     if (effMode === "loop") {
+      // Degraded scrub (mobile) plays the clip once and holds the final
+      // frame; only an explicit mode="loop" keeps cycling.
+      const once = mode === "scrub";
       video.muted = true;
-      video.loop = true;
+      video.loop = !once;
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
-            if (e.isIntersecting) void video.play().catch(() => {});
-            else video.pause();
+            if (e.isIntersecting) {
+              if (!video.ended) void video.play().catch(() => {});
+            } else video.pause();
           }
         },
         { threshold: 0.15 },
