@@ -414,6 +414,26 @@
         transparent 54%
       );
   }
+  /* Mobile-only immersive variant — on phones the stacked light bands read
+     monotonous, so a band-soft section can opt into the dark hero treatment
+     below md while staying light on desktop. Needs the extra class to outrank
+     the theme-scoped band-soft rule above. */
+  @media (max-width: 767px) {
+    [data-theme="operator"] .band-soft.mobile-immersive {
+      background-color: var(--c-shade);
+      background-image: radial-gradient(
+          42% 60% at 14% 6%,
+          rgba(230, 190, 90, 0.22),
+          transparent 62%
+        ),
+        radial-gradient(
+          40% 55% at 88% 26%,
+          rgba(230, 190, 90, 0.16),
+          transparent 60%
+        ),
+        linear-gradient(150deg, #0d2418 0%, #1a4d33 56%, #276b48 100%);
+    }
+  }
 
   /* Primary button — solid accent by default; in DUSK it carries a deep cut of
      the brand gradient (every stop dark enough to keep cream text legible),

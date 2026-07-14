@@ -15,7 +15,7 @@ export function Positioning() {
   return (
     <section
       id="operator"
-      className="grain band-soft relative scroll-mt-24 overflow-hidden py-16 text-ink md:py-32"
+      className="grain band-soft mobile-immersive relative scroll-mt-24 overflow-hidden py-16 text-ink md:py-32"
     >
       {/* accent glow */}
       <div
@@ -88,7 +88,7 @@ export function Positioning() {
 
         {/* one brain vs. the tool stack */}
         <Reveal className="mx-auto max-w-4xl text-center md:mt-24">
-          <h3 className="font-display text-2xl font-medium leading-tight text-ink sm:text-3xl">
+          <h3 className="font-display text-2xl font-medium leading-tight text-ink max-md:text-paper sm:text-3xl">
             {operator.title}
           </h3>
         </Reveal>

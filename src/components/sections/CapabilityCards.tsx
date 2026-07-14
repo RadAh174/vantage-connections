@@ -21,14 +21,15 @@ export function CapabilityCards() {
           <p className="kicker text-accent-deep">Always running</p>
         </Reveal>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* mobile: horizontal swipe row (snap); sm+: the usual grid */}
+        <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
           {capabilityCards.map((card, i) => {
             const Icon = icons[card.icon] ?? Sparkles;
             return (
               <Reveal
                 key={card.title}
                 delay={i * 80}
-                className="group flex flex-col rounded-2xl border border-line bg-paper-raised p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-soft"
+                className="group flex w-[76%] shrink-0 snap-center flex-col rounded-2xl border border-line bg-paper-raised p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-soft sm:w-auto sm:shrink"
               >
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-paper-raised text-accent-deep transition-colors duration-300 group-hover:bg-accent/10">
                   <Icon className="h-5 w-5" strokeWidth={1.75} />

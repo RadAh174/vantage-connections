@@ -46,15 +46,16 @@ function MobileScenes() {
             <h2 className="font-display mt-3 text-balance text-[2rem] font-medium leading-[1.06] tracking-[-0.02em] text-ink">
               {s.title}
             </h2>
-            <p className="mt-3 text-pretty text-[1.02rem] leading-relaxed text-ink-soft">
-              {s.sub}
-            </p>
-            <ul className="mt-5 flex flex-wrap gap-2">
+            <ul className="mt-4 space-y-2.5">
               {s.bullets.map((b) => (
                 <li
                   key={b}
-                  className="rounded-full border border-line bg-paper-raised px-3.5 py-1.5 text-[0.82rem] text-ink"
+                  className="flex items-start gap-3 text-[0.95rem] leading-snug text-ink-soft"
                 >
+                  <span
+                    aria-hidden="true"
+                    className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent-deep"
+                  />
                   {b}
                 </li>
               ))}
