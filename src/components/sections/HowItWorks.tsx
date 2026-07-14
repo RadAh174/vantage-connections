@@ -4,7 +4,7 @@ import { how } from "@/lib/content";
 
 export function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-24 py-24 md:py-32">
+    <section id="how" className="scroll-mt-24 py-16 md:py-32">
       <div className="container-page">
         <SectionHeading kicker={how.kicker} title={how.title} />
 

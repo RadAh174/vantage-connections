@@ -6,7 +6,7 @@ export function FinalCTA() {
   return (
     <section
       id="cta"
-      className="band-soft grain relative scroll-mt-24 overflow-hidden py-28 text-ink md:py-36"
+      className="band-soft grain relative scroll-mt-24 overflow-hidden py-16 text-ink md:py-36"
     >
       {/* accent glow */}
       <div

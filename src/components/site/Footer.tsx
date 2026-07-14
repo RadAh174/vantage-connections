@@ -32,8 +32,8 @@ export function Footer() {
 
       <div className="container-page relative z-10 pt-4 md:pt-6">
         {/* links + brand — the final ask lives in the FinalCTA section above */}
-        <div className="grid gap-12 py-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
-          <div className="max-w-sm">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-10 md:grid-cols-[1.6fr_1fr_1fr_1fr] md:gap-12 md:py-14">
+          <div className="col-span-2 max-w-sm md:col-span-1">
             <Wordmark tone="ink" />
             <p className="mt-4 text-pretty text-[0.98rem] leading-relaxed text-ink-soft">
               {footer.tagline}
@@ -64,7 +64,7 @@ export function Footer() {
           {footer.columns.map((col) => (
             <div key={col.title}>
               <h3 className="kicker text-accent-deep">{col.title}</h3>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-3.5 space-y-2.5 md:mt-4 md:space-y-3">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <a

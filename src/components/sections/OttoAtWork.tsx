@@ -31,16 +31,16 @@ export function OttoAtWork() {
 /* ── mobile: one column, every scene fully visible ── */
 function MobileScenes() {
   return (
-    <div className="container-page relative z-10 py-20 lg:hidden">
+    <div className="container-page relative z-10 py-14 lg:hidden">
       <div className="mx-auto max-w-xl">
         <span className="kicker text-accent-deep">{atWork.kicker}</span>
-        <div className="mt-10 space-y-16">
+        <div className="mt-8 space-y-12">
         {SCENES.map((s) => (
           <Reveal key={s.id} as="article">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] border border-line bg-paper-raised shadow-lift">
+            <div className="relative aspect-square w-full overflow-hidden rounded-[1.5rem] border border-line bg-paper-raised shadow-lift">
               <SceneVisual id={s.id} active io />
             </div>
-            <p className="mt-6 font-mono text-[0.74rem] uppercase tracking-[0.16em] text-ink-muted">
+            <p className="mt-5 font-mono text-[0.74rem] uppercase tracking-[0.16em] text-ink-muted">
               {s.pain}
             </p>
             <h2 className="font-display mt-3 text-balance text-[2rem] font-medium leading-[1.06] tracking-[-0.02em] text-ink">

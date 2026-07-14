@@ -15,7 +15,7 @@ export function Positioning() {
   return (
     <section
       id="operator"
-      className="grain band-soft relative scroll-mt-24 overflow-hidden py-24 text-ink md:py-32"
+      className="grain band-soft relative scroll-mt-24 overflow-hidden py-16 text-ink md:py-32"
     >
       {/* accent glow */}
       <div
@@ -36,7 +36,7 @@ export function Positioning() {
         />
 
         {/* the hire that fixes it */}
-        <div className="mt-16 grid items-center gap-12 md:mt-24 lg:grid-cols-2 lg:gap-20">
+        <div className="mt-12 grid items-center gap-12 md:mt-24 lg:grid-cols-2 lg:gap-20">
           <div className="max-w-xl">
             <Reveal>
               <span className="kicker text-accent-deep">{pitch.kicker}</span>
@@ -84,7 +84,7 @@ export function Positioning() {
         </div>
 
         {/* one brain vs. the tool stack */}
-        <Reveal className="mx-auto mt-16 max-w-4xl text-center md:mt-24">
+        <Reveal className="mx-auto mt-12 max-w-4xl text-center md:mt-24">
           <h3 className="font-display text-2xl font-medium leading-tight text-ink sm:text-3xl">
             {operator.title}
           </h3>

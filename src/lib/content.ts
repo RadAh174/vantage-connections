@@ -12,7 +12,7 @@ export const nav = {
     { label: "Pricing", href: "#pricing" },
   ],
   // shortLabel: compact variant for the mobile header pill
-  cta: { label: "Join the waitlist", shortLabel: "Join waitlist", href: "#pricing" },
+  cta: { label: "Join the waitlist", shortLabel: "Join now", href: "#pricing" },
 };
 
 export const hero = {

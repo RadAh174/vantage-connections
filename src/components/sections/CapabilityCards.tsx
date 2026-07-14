@@ -12,7 +12,7 @@ const icons: Record<string, LucideIcon> = {
 
 export function CapabilityCards() {
   return (
-    <section className="border-t border-line bg-paper-sunken/40 py-20 md:py-24">
+    <section className="border-t border-line bg-paper-sunken/40 py-14 md:py-24">
       <div className="container-page">
         <Reveal className="mb-12 flex flex-col items-baseline justify-between gap-3 sm:flex-row">
           <h2 className="font-display max-w-md text-2xl font-medium leading-tight text-ink sm:text-3xl">

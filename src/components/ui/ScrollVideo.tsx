@@ -84,6 +84,13 @@ export function ScrollVideo({
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+    // Scrubbing seeks the stream on every scroll frame — cheap on desktop,
+    // visibly choppy on phones. Small screens get a smooth ambient loop.
+    const effMode =
+      mode === "scrub" && window.matchMedia("(max-width: 767px)").matches
+        ? "loop"
+        : mode;
+
     if (reduce) {
       // Show a single representative frame, no motion.
       video.removeAttribute("autoplay");
@@ -96,7 +103,7 @@ export function ScrollVideo({
       return;
     }
 
-    if (mode === "loop") {
+    if (effMode === "loop") {
       video.muted = true;
       video.loop = true;
       const io = new IntersectionObserver(

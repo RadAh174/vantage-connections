@@ -9,7 +9,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-16 md:py-32">
       <div className="container-page">
         <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
