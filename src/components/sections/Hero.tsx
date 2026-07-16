@@ -1,6 +1,6 @@
 import { preload } from "react-dom";
 import { Button } from "@/components/ui/Button";
-import { ScrollVideo } from "@/components/ui/ScrollVideo";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { hero } from "@/lib/content";
 
 export function Hero() {
@@ -66,38 +66,28 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Scroll-capture track for the video only: on md+ this block is
-            ~2.2 viewports tall; the framed card sticks centered inside it
-            while the scroll drives the full assembly, then releases. The
-            headline above scrolls away naturally. Mobile keeps normal flow. */}
-        <div id="hero-video-track" className="relative mt-12 md:mt-8 md:h-[220svh]">
-          <div className="md:sticky md:top-[14svh]">
-            {/* width capped so the pinned card always fits under its sticky
-                offset: height <= ~72svh (16/9 => width <= 128svh) */}
-            <div className="relative mx-auto max-w-6xl md:max-w-[min(72rem,128svh)]">
-              {/* outer radius = inner radius (0.75rem) + frame padding, so the
-                  two corners run concentric */}
-              <div className="relative rounded-[1.25rem] border border-paper/15 bg-paper-raised p-2 shadow-lift md:rounded-[1.5rem] md:p-3">
-                <div className="relative overflow-hidden rounded-xl">
-                  <ScrollVideo
-                    src="/media/hero-4.mp4"
-                    lowSrc="/media/hero-4-lo.mp4"
-                    poster="/media/hero-poster-3.webp"
-                    mode="scrub"
-                    trackId="hero-video-track"
-                    scrubRange={0.82}
-                    className="aspect-[16/9] w-full"
-                  />
-                  {/* subtle vignette for depth */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-xl"
-                    style={{
-                      boxShadow:
-                        "inset 0 0 120px 8px rgba(var(--c-shade-rgb),0.12)",
-                    }}
-                  />
-                </div>
+        {/* Framed assembly clip — plays through once when it enters view. */}
+        <div className="relative mt-12 md:mt-16">
+          <div className="relative mx-auto max-w-6xl">
+            {/* outer radius = inner radius (0.75rem) + frame padding, so the
+                two corners run concentric */}
+            <div className="relative rounded-[1.25rem] border border-paper/15 bg-paper-raised p-2 shadow-lift md:rounded-[1.5rem] md:p-3">
+              <div className="relative overflow-hidden rounded-xl">
+                <AmbientVideo
+                  src="/media/hero-4.mp4"
+                  lowSrc="/media/hero-4-lo.mp4"
+                  poster="/media/hero-poster-3.webp"
+                  className="aspect-[16/9] w-full"
+                />
+                {/* subtle vignette for depth */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-xl"
+                  style={{
+                    boxShadow:
+                      "inset 0 0 120px 8px rgba(var(--c-shade-rgb),0.12)",
+                  }}
+                />
               </div>
             </div>
           </div>

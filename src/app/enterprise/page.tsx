@@ -8,7 +8,7 @@ import { DemoDialog } from "@/components/site/DemoDialog";
 import { DemoButton } from "@/components/ui/DemoButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ScrollVideo } from "@/components/ui/ScrollVideo";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { EnterprisePortfolio } from "@/components/sections/enterprise/EnterprisePortfolio";
 import { EnterpriseFaq } from "@/components/sections/enterprise/EnterpriseFaq";
@@ -179,11 +179,10 @@ export default function EnterprisePage() {
               <div className="relative rounded-2xl border border-paper/15 bg-paper-raised p-2 shadow-lift md:p-3">
                 <CornerTicks />
                 <div className="relative overflow-hidden rounded-xl">
-                  <ScrollVideo
+                  <AmbientVideo
                     src="/media/ent-hero-3.mp4"
                     lowSrc="/media/ent-hero-3-lo.mp4"
                     poster="/media/ent-hero-poster-2.webp"
-                    mode="scrub"
                     className="aspect-[16/9] w-full"
                   />
                   <div
