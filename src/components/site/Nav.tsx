@@ -17,7 +17,7 @@ export function Nav() {
     let threshold = 0;
     const measure = () => {
       const hero = document.getElementById("top");
-      threshold = hero ? hero.offsetHeight - 90 : window.innerHeight * 0.8;
+      threshold = hero ? hero.offsetHeight * 0.2 : window.innerHeight * 0.2;
     };
     const onScroll = () => setSolid(window.scrollY > threshold);
     measure();
