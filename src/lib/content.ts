@@ -2,66 +2,101 @@
  * Vantage — landing page content.
  * Single source of truth for copy. All text is real marketing copy
  * written for this product; nothing here is placeholder data.
+ *
+ * The homepage is THE DOSSIER — Vantage Connections' employment
+ * application for the job of running your store. Sections follow the
+ * anatomy of a hiring packet.
  */
 
 export const nav = {
   links: [
-    { label: "What Vantage does", href: "#capabilities" },
-    { label: "The one-brain edge", href: "#operator" },
-    { label: "How it works", href: "#how" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Qualifications", href: "#qualifications" },
+    { label: "The role", href: "#role" },
+    { label: "Compensation", href: "#compensation" },
+    { label: "Interview", href: "#interview" },
   ],
   // shortLabel: compact variant for the mobile header pill
-  cta: { label: "Join the waitlist", shortLabel: "Join Now", href: "#pricing" },
+  cta: { label: "Draft an offer", shortLabel: "Draft offer", href: "#compensation" },
 };
 
-export const hero = {
-  kicker: "Your store’s digital operator",
-  headlineLead: "You make the product.",
-  headlineEmph: "Vantage runs the rest.",
-  sub: "A digital employee for your Shopify store. It builds the storefront, runs the ads, prices for the market, and makes the imagery. The work that turns good stores great.",
-  primary: { label: "Join the waitlist", href: "#pricing" },
-  secondary: { label: "See what it handles", href: "#capabilities" },
-};
-
-export const trust = {
-  line: "For founders who’d rather make things than manage dashboards.",
-  points: [
+export const masthead = {
+  formNo: "FORM VC-001 · EMPLOYMENT APPLICATION",
+  formSub: "OPEN TO ALL SHOPIFY STORES · NO RECRUITER REQUIRED",
+  headline: "HIRE THE OPERATOR.",
+  intro:
+    "One applicant for the four jobs your store never has time for. It builds the storefront, runs the ads, prices to the market, and makes the imagery — then waits for your signature before any of it goes live.",
+  fields: [
+    { label: "APPLICANT", value: "Vantage Connections" },
+    { label: "POSITION SOUGHT", value: "Operator of your Shopify store" },
+    { label: "AVAILABILITY", value: "Immediate · 24/7" },
+    { label: "SALARY EXPECTATION", value: "$0 during probation" },
+  ],
+  checks: [
     "Connects directly to your Shopify store",
-    "Human approval on everything that goes live",
-    "Learns your brand once, applies it everywhere",
+    "Nothing ships or spends without your signature",
+    "Learns your brand once, works on it forever",
+  ],
+  stamp: "AVAILABLE IMMEDIATELY",
+  primary: { label: "Review the qualifications", href: "#qualifications" },
+  secondary: { label: "Skip to the offer", href: "#compensation" },
+};
+
+export const objective = {
+  label: "CANDIDATE’S OBJECTIVE",
+  text: "To take over the work that turns a good store into a great one — the site, the ads, the prices, the pictures — and to bring you the decision, never the chore.",
+  markerNote: "strong candidate — see exhibits ↓",
+};
+
+export const competencies = {
+  label: "SECTION 01 · QUALIFICATIONS",
+  title: "Four crafts. One candidate.",
+  note: "Evidence attached as Exhibits A–D. Representative of the work, produced on demand.",
+  items: [
+    {
+      n: "01",
+      skill: "Storefront management",
+      desc: "Builds a fast, on-brand storefront and keeps it that way. Search and AI-engine optimization on a loop; content refreshed before it can go stale.",
+      exhibit: "EXHIBIT A",
+      exhibitNote: "The same listing, before and after.",
+      image: "/media/pillar-storefront.webp",
+      alt: "The same candle product photo before and after a rebuild: dim and dusty on the left, glowing and crisp under warm light on the right.",
+    },
+    {
+      n: "02",
+      skill: "Campaign production",
+      desc: "Writes, art-directs and runs your ads, emails and UGC. Everything drafted on your brand, everything queued for your approval before a dollar moves.",
+      exhibit: "EXHIBIT B",
+      exhibitNote: "One product, a season of ad creative.",
+      image: "/media/pillar-marketing.webp",
+      alt: "An overhead flat-lay of printed ad photographs of one amber serum bottle in a dozen styles, the real bottle standing among them.",
+    },
+    {
+      n: "03",
+      skill: "Market watch & pricing",
+      desc: "Reads demand across your category, flags what is rising while there is still room to win, and keeps prices and promos moving with the market instead of months behind it.",
+      exhibit: "EXHIBIT C",
+      exhibitNote: "A wave, caught early.",
+      image: "/media/pillar-trends.webp",
+      alt: "A ceramic tumbler on a plinth with a rising line of light behind it like a growth chart, echo copies receding into the background.",
+    },
+    {
+      n: "04",
+      skill: "Product imagery & film",
+      desc: "Studio-grade product photos and video, generated and edited on demand. New angle, clean background, seasonal set — no photographer on retainer.",
+      exhibit: "EXHIBIT D",
+      exhibitNote: "The reel.",
+      video: "/media/studio-loop.mp4",
+      poster: "/media/studio-loop-poster.webp",
+      alt: "A slow cinematic loop of an amber serum bottle under a sweeping beam of warm light.",
+    },
   ],
 };
 
-export const problem = {
-  kicker: "The slow leak",
-  title: "Your store doesn’t fail loudly. It rots quietly.",
-  body: "No one neglects a store on purpose. It happens in small omissions. SEO drifts, copy goes stale, ads run on old logic, prices lag, photos age. Each is minor. Together they decide whether you compound or flatline.",
-  symptoms: [
-    {
-      title: "Site rot",
-      desc: "Metadata, content and structure decay until search quietly stops sending traffic.",
-    },
-    {
-      title: "Ad drift",
-      desc: "Campaigns keep spending on creative that stopped working weeks ago.",
-    },
-    {
-      title: "Frozen pricing",
-      desc: "Margins erode and promos misfire while nobody watches the market.",
-    },
-    {
-      title: "Stale shelves",
-      desc: "The same six photos, season after season, while rivals refresh.",
-    },
-  ],
-};
-
-export const pitch = {
-  kicker: "Not software. A hire.",
-  title: "The first digital employee for your store.",
-  body: "Not another tab in your toolbar. It’s the operator you put in charge of the work that never reaches the top of your list. The web developer, SEO freelancer, media buyer and photographer you’d hire with more budget, in one teammate that knows your brand and never logs off.",
-  replaces: [
+export const roles = {
+  label: "SECTION 02 · THE ROLE",
+  title: "Six positions. Consolidated into one.",
+  body: "Every point tool starts from zero — the same assets re-uploaded, the same product re-explained, work that doesn’t match. This candidate is one brain across all six functions, so the work comes out consistent by default.",
+  replaced: [
     "Web developer",
     "SEO freelancer",
     "Media buyer",
@@ -69,247 +104,103 @@ export const pitch = {
     "Product photographer",
     "Pricing analyst",
   ],
-};
-
-// Alternating big feature rows — each pairs with a generated image.
-export const featureRows = [
-  {
-    id: "storefront",
-    kicker: "Foundation",
-    title: "A storefront that maintains itself.",
-    body: "Vantage Connections builds a fast, on-brand storefront, then keeps it alive. SEO and GEO, fresh content and technical hygiene on a loop. It gains ground every week instead of slipping down the page.",
-    bullets: [
-      "Conversion-minded storefront build",
-      "Always-on SEO & generative-engine optimization",
-      "Content refreshes that prevent decay",
+  currentStack: {
+    title: "THE STACK YOU HAVE NOW",
+    items: [
+      "A site builder that doesn’t know your ads",
+      "An ad tool that doesn’t know your catalog",
+      "A photo app that doesn’t know your brand",
+      "Five logins, five bills, zero memory",
     ],
-    image: "/media/feature-storefront-3.webp",
-    imageAlt:
-      "Before and after of the same candle listing: stale and gray on the left, rebuilt bright with the candle lit, five gold stars and a Shop button on the right.",
   },
-  {
-    id: "creative",
-    kicker: "Acquisition",
-    title: "Ads from a brain that knows your brand.",
-    body: "The same Vantage that builds your site writes and art-directs your ads. Creative, UGC and email, then runs the campaigns. No agency template. No AI slop. Nothing spends until you approve it.",
-    bullets: [
-      "Creative, UGC & email built on your brand",
-      "Automated ad pipelines, human-approved",
-      "Works for existing products and new launches",
+  oneOperator: {
+    title: "THE CANDIDATE",
+    items: [
+      "One brain across site, ads, pricing and creative",
+      "Learns your brand once, applies it everywhere",
+      "Every output consistent by default",
+      "One teammate, always in context",
     ],
-    image: "/media/feature-creative-3.webp",
-    imageAlt:
-      "A three-by-three wall of AI-generated ad frames for one leather tote — creator selfies, macro details and packaging — bleeding past the frame edges.",
-  },
-  {
-    id: "studio",
-    kicker: "Merchandising",
-    title: "Product imagery, made on demand.",
-    body: "New angle, clean background, seasonal set, a PDP video. Vantage Connections produces and edits product imagery that looks studio-shot and on-brand. Fresh shelves, no photographer on retainer.",
-    bullets: [
-      "Studio-grade product images & video",
-      "On-brand edits, backgrounds and sets",
-      "Refreshed catalogs every season",
-    ],
-    image: "/media/feature-product-3.webp",
-    imageAlt:
-      "The same sneaker staged four ways — spring picnic, summer coast, autumn cobblestones and winter bench — in one two-by-two grid.",
-  },
-];
-
-// Smaller capability cards (icon-led, no image).
-export const capabilityCards = [
-  {
-    icon: "TrendingUp",
-    title: "Market-aware pricing",
-    desc: "Pricing and promo moves that track demand and competitors, so margins stay with the market, not months behind it.",
-  },
-  {
-    icon: "LayoutGrid",
-    title: "Catalog optimization",
-    desc: "Automated merchandising that puts the right products in front of the right shoppers.",
-  },
-  {
-    icon: "Wallet",
-    title: "Financial hygiene",
-    desc: "Backend tooling that watches cash flow and flags what’s quietly eating your margin.",
-  },
-];
-
-export const operator = {
-  kicker: "The one-brain edge",
-  title: "One operator. Not ten disconnected tools.",
-  body: "Every point tool starts from zero. Same assets re-uploaded, same product re-explained, work that doesn’t match. Vantage Connections is one brain. The model that builds your site lists your products, writes your ads and makes your creative. Consistent, because it comes from one place that knows you.",
-  contrast: {
-    them: {
-      label: "The stack you have now",
-      items: [
-        "A site builder that doesn’t know your ads",
-        "An ad tool that doesn’t know your catalog",
-        "A photo app that doesn’t know your brand",
-        "Five logins, five bills, zero memory",
-      ],
-    },
-    otto: {
-      label: "Vantage Connections",
-      items: [
-        "One brain across site, ads, pricing & creative",
-        "Learns your brand once, applies it everywhere",
-        "Every output consistent by default",
-        "One teammate, always in context",
-      ],
-    },
   },
 };
 
-export const how = {
-  kicker: "How it works",
-  title: "Hired in an afternoon. Working by morning.",
-  steps: [
-    {
-      n: "01",
-      title: "Connect your Shopify",
-      desc: "Link your store in a few clicks. Vantage Connections reads your catalog, traffic and history to learn where you stand.",
-    },
-    {
-      n: "02",
-      title: "Vantage learns your brand",
-      desc: "It studies your voice, your look and your products, then drafts a plan: what to fix, build and launch first.",
-    },
-    {
-      n: "03",
-      title: "You approve, Vantage ships",
-      desc: "Nothing goes live without your sign-off. Approve the queue and Vantage executes, then moves to the next thing.",
-    },
+export const supervision = {
+  label: "SECTION 03 · TERMS OF SUPERVISION",
+  title: "Works unattended. Never unchecked.",
+  body: "The candidate plans, drafts and produces on its own — and brings you decisions, not chores. Anything that touches your live store or spends money waits for a human signature. That is not a setting; it is the employment contract.",
+  stamp: "APPROVAL REQUIRED",
+  points: [
+    "You approve anything that publishes or spends",
+    "Every change is drafted first, shipped second",
+    "Least-privilege access — revoke any time",
   ],
 };
 
-export const pricing = {
-  kicker: "Pricing",
-  title: "Free while we’re in beta.",
-  body: "Vantage Connections is in closed beta. Founding stores get the full operator at no cost while we build it with them — no card, no tiers, no catch.",
-  // Small badge above the plan.
-  offerBadge: "Free during beta",
-  // Replaces the old countdown — a plain "coming soon" note, no ticking clock.
-  comingSoon: "Public launch coming soon",
-  comingSoonNote:
-    "Pricing lands when we leave beta. Founding stores keep their access.",
+export const compensation = {
+  label: "SECTION 04 · COMPENSATION",
+  title: "Salary expectation: nothing, for now.",
+  body: "Vantage Connections is in closed beta. Founding stores get the full operator free while we build it with them — no card, no tiers, no catch. Pricing lands at public launch; founding stores keep their access.",
+  planName: "Founding access",
+  salary: "$0",
+  salaryNote: "during probation (the closed beta)",
+  benefitsTitle: "BENEFITS PACKAGE — INCLUDED",
+  benefits: [
+    "Storefront build, upkeep and always-on SEO",
+    "Brand-aware ads, UGC and email creative",
+    "Product image and video generation",
+    "Market-aware pricing and promos",
+    "Automated customer communications",
+    "Competitor analysis and recommendations",
+    "Full supervision — you approve what ships",
+  ],
+  cta: "Draft the offer letter",
+  stamp: "NO CARD REQUIRED",
+  fine: "Public launch coming soon · Founding stores keep their access",
   // Used only for JSON-LD priceValidUntil — never shown in the UI.
   offerDeadline: "2026-10-03",
-  // The single, everything-included plan.
-  plan: {
-    name: "Founding access",
-    tagline: "The whole operator, free while we build it with you.",
-    price: "Free",
-    priceNote: "No card required · everything included · human-approved",
-    cta: "Join the waitlist",
-    features: [
-      "Storefront build, upkeep & always-on SEO",
-      "Brand-aware ads, UGC & email creative",
-      "Product image & video generation",
-      "Market-aware pricing & promos",
-      "Automated customer communications",
-      "Competitor analysis & recommendations",
-      "You approve anything that publishes or spends",
-    ],
-  },
 };
 
-export const faqs = [
-  {
-    q: "Is Vantage Connections actually autonomous, or do I babysit it?",
-    a: "Vantage Connections works on its own and brings you decisions, not chores. It plans, drafts and produces continuously. But anything that touches your live store or spends money waits for approval. You stay in control without doing the labor.",
-  },
-  {
-    q: "Will the creative look like generic AI content?",
-    a: "No. That’s the point. Vantage Connections learns your brand once and applies it across your site, listings, ads and imagery. One brain that knows your product, so the output stays consistent instead of stitched together from disconnected tools.",
-  },
-  {
-    q: "Do I need to be technical?",
-    a: "Not at all. Vantage Connections is built for founders who make physical products, not software. If you can run a Shopify store, you can put Vantage to work.",
-  },
-  {
-    q: "Does it work with my existing store?",
-    a: "Yes. Connect your current Shopify store and Vantage Connections improves what you have: SEO, content, pricing and imagery. It can also build a new storefront from scratch if you want a clean start.",
-  },
-  {
-    q: "What about my ad spend?",
-    a: "Vantage Connections designs and runs the campaigns through a dedicated AI marketing engine. You set the budget and approve the creative and targeting before anything launches.",
-  },
-];
-
-// "Vantage at work" — pinned scroll section; each beat leads with the pain,
-// then the service Vantage delivers. Big, free-form, no fake UI chrome.
-// This is now THE capability section: each scene carries the bullet chips
-// that used to live in the (removed) feature rows.
-export const atWork = {
-  kicker: "Vantage Connections at work",
-  heading: "The whole back office. Handled.",
-  scenes: [
+export const interview = {
+  label: "SECTION 05 · THE INTERVIEW",
+  title: "First-round questions.",
+  note: "Everything a founder asks before making the hire.",
+  qs: [
     {
-      id: "storefront",
-      tab: "Storefront",
-      pain: "Your site is quietly going stale.",
-      title: "Vantage builds and maintains your store.",
-      sub: "A fast, on-brand storefront, kept sharp with continuous upkeep so it never rots.",
-      bullets: [
-        "Conversion-minded storefront build",
-        "Always-on SEO & generative-engine optimization",
-        "Content refreshes that prevent decay",
-      ],
+      q: "Does it actually work on its own, or am I managing it?",
+      a: "It works on its own and brings you decisions, not chores — it plans, drafts and produces continuously. But anything that touches your live store or spends money waits for your approval. You keep the authority without doing the labor.",
     },
     {
-      id: "ads",
-      tab: "Marketing",
-      pain: "You have no time to make ads.",
-      title: "Vantage writes, shoots and runs them.",
-      sub: "Brand-aware creative, UGC and email, produced and queued for your approval.",
-      bullets: [
-        "Creative, UGC & email built on your brand",
-        "Automated ad pipelines, human-approved",
-        "Works for existing products and new launches",
-      ],
+      q: "Will the creative look like generic AI content?",
+      a: "No — that is the point of one brain. It learns your brand once and applies it across your site, listings, ads and imagery, so the output stays consistent instead of stitched together from disconnected tools.",
     },
     {
-      id: "trends",
-      tab: "Trends",
-      pain: "By the time you spot it, you’re buying the peak.",
-      title: "Vantage catches the wave before the crowd.",
-      sub: "It reads demand across your category and flags what’s rising while there’s still room to win. Launch early instead of buying the peak.",
-      bullets: [
-        "Demand reads across your category",
-        "Rising products flagged early",
-        "Launch windows before the peak",
-      ],
+      q: "Do I need to be technical?",
+      a: "Not at all. It is built for founders who make physical products, not software. If you can run a Shopify store, you can put it to work.",
     },
     {
-      id: "studio",
-      tab: "Studio",
-      pain: "Reshoots cost a fortune.",
-      title: "Vantage makes your product imagery.",
-      sub: "Studio-grade images and video, generated and edited on demand, matched to your brand.",
-      bullets: [
-        "Studio-grade product images & video",
-        "On-brand edits, backgrounds and sets",
-        "Refreshed catalogs every season",
-      ],
+      q: "Does it work with my existing store?",
+      a: "Yes. Connect your current Shopify store and it improves what you have — SEO, content, pricing, imagery. It can also build you a new storefront from scratch if you want a clean start.",
+    },
+    {
+      q: "What happens to my ad spend?",
+      a: "Campaigns are designed and run through a dedicated AI marketing engine. You set the budget and approve the creative and targeting before anything launches.",
     },
   ],
 };
 
-export const finalCta = {
-  kicker: "Give your store an operator",
-  title: "Stop managing the logistics. Start outgrowing them.",
-  body: "Put Vantage Connections in charge of the work that takes a store from good to great. Get back to the part only you can do.",
-  primary: { label: "Get started" },
-  secondary: { label: "See plans", href: "#pricing" },
+export const offer = {
+  label: "FINAL SECTION · THE DECISION",
+  title: "Extend the offer.",
+  body: "The candidate can start this afternoon. Connect your store, review the plan it drafts, and approve the first queue of work by morning.",
+  cta: "Draft the offer letter",
+  note: "Free during the closed beta",
 };
 
 export const waitlist = {
-  kicker: "Founding access",
-  title: "Join the beta and get Vantage Connections free.",
+  formNo: "FORM VC-002 · OFFER OF EMPLOYMENT",
+  title: "The offer letter.",
   subtitle:
-    "Vantage Connections is onboarding its first group of stores. Reserve your spot to get the full operator free while we’re in beta.",
+    "Leave your email and we’ll reach out with founding access for your store — the full operator, free while we’re in beta.",
   perks: [
     "A storefront built and kept on-brand",
     "Always-on SEO and content upkeep",
@@ -319,14 +210,30 @@ export const waitlist = {
     "Competitor analysis and recommendations",
     "You approve anything that publishes or spends",
   ],
-  offerLabel: "Free beta",
-  offerLine: "The full operator, free while we’re in beta — no card required.",
+  cta: "Extend the offer",
+  fine: "No card required · free during beta",
   // Honest social proof: a floor ("50+"), never a fabricated exact count.
   socialProof: "Join 50+ founders reserving early access.",
-  formTitle: "Reserve your spot",
-  formSubtitle:
-    "We’re in closed beta. Leave your email and we’ll reach out with your founding access.",
-  cta: "Join the waitlist",
+  successStamp: "HIRED",
+  successTitle: "Offer extended.",
+  successBody:
+    "Your spot is reserved. We’ll reach out with founding access for your store soon.",
+};
+
+export const dossierFooter = {
+  references: "References available upon request.",
+  tagline:
+    "Vantage Connections — the digital operator for Shopify stores. One hire that builds, markets, prices and ships, so you can stay on the product.",
+  formNo: "FORM VC-001 · FILED 2026",
+};
+
+export const trust = {
+  line: "For founders who’d rather make things than manage dashboards.",
+  points: [
+    "Connects directly to your Shopify store",
+    "Human approval on everything that goes live",
+    "Learns your brand once, applies it everywhere",
+  ],
 };
 
 // ── /enterprise — the sales-led page for high-volume brands & portfolios. ──
@@ -522,10 +429,10 @@ export const footer = {
     {
       title: "Product",
       links: [
-        { label: "What Vantage does", href: "#capabilities" },
-        { label: "The one-brain edge", href: "#operator" },
-        { label: "How it works", href: "#how" },
-        { label: "Pricing", href: "#pricing" },
+        { label: "Qualifications", href: "#qualifications" },
+        { label: "The role", href: "#role" },
+        { label: "Compensation", href: "#compensation" },
+        { label: "Interview", href: "#interview" },
         { label: "Enterprise", href: "/enterprise" },
       ],
     },

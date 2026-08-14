@@ -1,8 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import {
+  Anton,
+  Archivo,
   Fraunces,
   Hanken_Grotesk,
+  IBM_Plex_Mono,
   JetBrains_Mono,
+  Permanent_Marker,
 } from "next/font/google";
 import { WaitlistDialog } from "@/components/site/WaitlistDialog";
 import { siteConfig, SITE_URL } from "@/lib/site";
@@ -23,6 +27,34 @@ const hanken = Hanken_Grotesk({
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/* ── Dossier fonts (homepage) ── */
+const anton = Anton({
+  variable: "--font-anton-g",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const archivo = Archivo({
+  variable: "--font-archivo-g",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-g",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const marker = Permanent_Marker({
+  variable: "--font-marker-g",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -100,7 +132,7 @@ export default function RootLayout({
       lang="en"
       data-theme="operator"
       data-scroll-behavior="smooth"
-      className={`${fraunces.variable} ${hanken.variable} ${jetbrains.variable} antialiased`}
+      className={`${fraunces.variable} ${hanken.variable} ${jetbrains.variable} ${anton.variable} ${archivo.variable} ${plexMono.variable} ${marker.variable} antialiased`}
     >
       <body>
         {children}

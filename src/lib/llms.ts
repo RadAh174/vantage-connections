@@ -9,36 +9,27 @@
  */
 import { SITE_URL } from "./site";
 import {
-  atWork,
-  capabilityCards,
+  compensation,
+  competencies,
   enterprise,
-  faqs,
-  featureRows,
-  how,
-  operator,
-  pitch,
-  pricing,
-  problem,
+  interview,
+  masthead,
+  objective,
+  offer,
+  roles,
+  supervision,
   trust,
 } from "./content";
 
 /** Concise, link-first index — the llms.txt standard. */
 export function buildLlmsTxt(): string {
-  const capabilities = featureRows
-    .map((f) => `- **${f.title.replace(/\.$/, "")}** — ${f.body}`)
+  const capabilities = competencies.items
+    .map((f) => `- **${f.skill}** — ${f.desc}`)
     .join("\n");
 
-  const cards = capabilityCards
-    .map((c) => `- **${c.title}** — ${c.desc}`)
-    .join("\n");
+  const plans = `- **${compensation.planName}** — ${compensation.salary} ${compensation.salaryNote}. ${compensation.fine}.`;
 
-  const steps = how.steps
-    .map((s) => `${Number(s.n)}. **${s.title}** — ${s.desc}`)
-    .join("\n");
-
-  const plans = `- **${pricing.plan.name}** — ${pricing.plan.tagline} ${pricing.plan.price} during the closed beta (${pricing.plan.priceNote}).`;
-
-  const faqList = faqs
+  const faqList = interview.qs
     .map((f) => `- **${f.q}** ${f.a}`)
     .join("\n");
 
@@ -46,7 +37,7 @@ export function buildLlmsTxt(): string {
 
 > Vantage Connections is an autonomous digital employee — an AI operator for Shopify stores. It builds and maintains the storefront, runs brand-aware ad campaigns, prices for the market, and generates product imagery and video. One brand-aware brain does the work, and a human approves anything that publishes or spends.
 
-Vantage Connections is a single AI teammate that replaces a stack of freelancers — web developer, SEO freelancer, media buyer, email marketer, product photographer and pricing analyst — for less than the cost of one. It is built for founders of physical-product Shopify stores who would rather make things than manage dashboards.
+Vantage Connections is a single AI teammate that replaces a stack of freelancers — web developer, SEO freelancer, media buyer, email marketer, product photographer and pricing analyst. It is built for founders of physical-product Shopify stores who would rather make things than manage dashboards.
 
 Key facts:
 - Product type: autonomous AI agent / "digital employee" for ecommerce operations.
@@ -58,14 +49,14 @@ Key facts:
 ## What Vantage does
 ${capabilities}
 
-## Additional capabilities
-${cards}
+## The one-brain edge
+${roles.body}
 
-## How it works
-${steps}
+## Supervision
+${supervision.body}
 
 ## Pricing
-${pricing.body} ${pricing.comingSoon}: ${pricing.comingSoonNote}
+${compensation.body}
 ${plans}
 
 ## Enterprise
@@ -82,98 +73,69 @@ ${faqList}
 
 /** Full corpus — the entire page copy as clean markdown for deep ingestion. */
 export function buildLlmsFullTxt(): string {
-  const symptoms = problem.symptoms
-    .map((s) => `- **${s.title}:** ${s.desc}`)
-    .join("\n");
-
-  const features = featureRows
-    .map(
-      (f) =>
-        `### ${f.title}\n_${f.kicker}_\n\n${f.body}\n\n${f.bullets
-          .map((b) => `- ${b}`)
-          .join("\n")}`,
-    )
+  const features = competencies.items
+    .map((f) => `### ${f.skill}\n${f.desc}`)
     .join("\n\n");
 
-  const cards = capabilityCards
-    .map((c) => `### ${c.title}\n${c.desc}`)
-    .join("\n\n");
+  const themNow = roles.currentStack.items.map((i) => `- ${i}`).join("\n");
+  const vantageWay = roles.oneOperator.items.map((i) => `- ${i}`).join("\n");
 
-  const themNow = operator.contrast.them.items.map((i) => `- ${i}`).join("\n");
-  const ottoWay = operator.contrast.otto.items.map((i) => `- ${i}`).join("\n");
+  const benefits = compensation.benefits.map((b) => `- ${b}`).join("\n");
 
-  const steps = how.steps
-    .map((s) => `### ${s.n} · ${s.title}\n${s.desc}`)
-    .join("\n\n");
-
-  const scenes = atWork.scenes
-    .map((s) => `### ${s.tab}\n**Pain:** ${s.pain}\n\n**Vantage:** ${s.title} ${s.sub}`)
-    .join("\n\n");
-
-  const plans = `### ${pricing.plan.name} — ${pricing.plan.tagline}\n**${pricing.plan.price}** during the closed beta. ${pricing.plan.priceNote}.\n\n${pricing.plan.features
-    .map((feat) => `- ${feat}`)
-    .join("\n")}`;
-
-  const faqList = faqs
+  const faqList = interview.qs
     .map((f) => `### ${f.q}\n${f.a}`)
     .join("\n\n");
 
   return `# Vantage Connections — the digital operator for your Shopify store
 
-> Vantage Connections is an autonomous digital employee for Shopify stores. You make the product. Vantage runs the rest.
+> Vantage Connections is an autonomous digital employee for Shopify stores. Hire the operator: it runs the storefront, the ads, the prices and the pictures, and waits for your signature before anything goes live.
 
 This document is the full content of the Vantage Connections website (${SITE_URL}) in machine-readable form for AI answer engines.
 
 ## Overview
 
-You make the product. Vantage runs the rest. Vantage Connections is a digital employee for your Shopify store: it builds the storefront, runs the ads, prices for the market, and makes the imagery — the work that turns good stores great. ${trust.line}
+${masthead.intro} ${trust.line}
 
 What makes Vantage different:
 ${trust.points.map((p) => `- ${p}`).join("\n")}
 
-## The problem Vantage solves
+## Candidate's objective
 
-**${problem.title}** ${problem.body}
+${objective.text}
 
-${symptoms}
+## Qualifications
 
-## Not software — a hire
-
-**${pitch.title}** ${pitch.body}
-
-Vantage replaces the roles you'd otherwise hire separately: ${pitch.replaces.join(", ")}.
-
-## What Vantage does
+**${competencies.title}** ${competencies.note}
 
 ${features}
 
-## Additional capabilities
+## The role — six positions, consolidated
 
-${cards}
-
-## The one-brain edge
-
-**${operator.title}** ${operator.body}
+**${roles.title}** ${roles.body}
 
 **The stack you have now**
 ${themNow}
 
-**Vantage**
-${ottoWay}
+**The candidate**
+${vantageWay}
 
-## Vantage at work
+Roles consolidated into this one position: ${roles.replaced.join(", ")}.
 
-${scenes}
+## Terms of supervision
 
-## How it works
+**${supervision.title}** ${supervision.body}
 
-${steps}
+${supervision.points.map((p) => `- ${p}`).join("\n")}
 
-## Pricing
+## Compensation
 
-${pricing.body} ${pricing.comingSoon}: ${pricing.comingSoonNote}
+${compensation.body}
 
-${plans}
+**${compensation.planName} — ${compensation.salary} ${compensation.salaryNote}**
+
+${benefits}
+
+${compensation.fine}
 
 ## Enterprise
 
@@ -195,14 +157,18 @@ ${enterprise.security.roadmap}
 **Enterprise FAQ**
 ${enterprise.faqs.map((f) => `- **${f.q}** ${f.a}`).join("\n")}
 
-## FAQ
+## The interview (FAQ)
 
 ${faqList}
+
+## The decision
+
+**${offer.title}** ${offer.body} ${offer.note}.
 
 ## Links
 
 - Homepage: ${SITE_URL}
-- Pricing: ${SITE_URL}/#pricing
+- Pricing: ${SITE_URL}/#compensation
 - Concise summary: ${SITE_URL}/llms.txt
 `;
 }

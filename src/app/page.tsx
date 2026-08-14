@@ -1,34 +1,30 @@
-import { Nav } from "@/components/site/Nav";
-import { Footer } from "@/components/site/Footer";
-import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
-import { OttoAtWork } from "@/components/sections/OttoAtWork";
-import { Positioning } from "@/components/sections/Positioning";
-import { CapabilityCards } from "@/components/sections/CapabilityCards";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { Pricing } from "@/components/sections/Pricing";
-import { FAQ } from "@/components/sections/FAQ";
-import { FinalCTA } from "@/components/sections/FinalCTA";
-import { capabilityCards, faqs, featureRows, pricing } from "@/lib/content";
+import { DossierNav } from "@/components/dossier/DossierNav";
+import { Masthead } from "@/components/dossier/Masthead";
+import { Objective } from "@/components/dossier/Objective";
+import { Competencies } from "@/components/dossier/Competencies";
+import { Roles } from "@/components/dossier/Roles";
+import { Supervision } from "@/components/dossier/Supervision";
+import { Compensation } from "@/components/dossier/Compensation";
+import { Interview } from "@/components/dossier/Interview";
+import { Offer } from "@/components/dossier/Offer";
+import { DossierFooter } from "@/components/dossier/DossierFooter";
+import { compensation, competencies, interview } from "@/lib/content";
 import { SITE_URL, siteConfig } from "@/lib/site";
 
 // Real capability list (no invented features) for SoftwareApplication.featureList.
-const featureList = [
-  ...featureRows.map((f) => f.title.replace(/\.$/, "")),
-  ...capabilityCards.map((c) => c.title),
-];
+const featureList = competencies.items.map((f) => f.skill);
 
 // Single free-during-beta offer for the SoftwareApplication schema.
 const offers = [
   {
     "@type": "Offer",
-    name: pricing.plan.name,
+    name: compensation.planName,
     price: "0",
     priceCurrency: "USD",
-    priceValidUntil: pricing.offerDeadline,
+    priceValidUntil: compensation.offerDeadline,
     availability: "https://schema.org/InStock",
     category: "subscription",
-    url: `${SITE_URL}/#pricing`,
+    url: `${SITE_URL}/#compensation`,
   },
 ];
 
@@ -93,7 +89,7 @@ const jsonLd = {
     {
       "@type": "FAQPage",
       "@id": `${SITE_URL}/#faq`,
-      mainEntity: faqs.map((f) => ({
+      mainEntity: interview.qs.map((f) => ({
         "@type": "Question",
         name: f.q,
         acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -102,6 +98,15 @@ const jsonLd = {
   ],
 };
 
+/** A perforated tear-line between the pages of the dossier. */
+function Perforation() {
+  return (
+    <div aria-hidden="true" className="px-5 sm:px-8 md:px-14">
+      <div className="perf-rule" />
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -109,21 +114,38 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Nav />
-      {/* Conversion core (hero -> proof -> ask), then depth for the
-          not-yet-convinced. The footer band is the final ask. */}
-      <main>
-        <Hero />
-        <TrustStrip />
-        <OttoAtWork />
-        <Pricing />
-        <Positioning />
-        <CapabilityCards />
-        <HowItWorks />
-        <FAQ />
-        <FinalCTA />
-      </main>
-      <Footer />
+      <div className="dossier-desk min-h-screen font-archivo text-dink">
+        <DossierNav />
+        <main className="mx-auto max-w-[76rem] px-3 pb-16 pt-5 sm:px-6 md:pt-8">
+          {/* the sheet */}
+          <div className="dossier-sheet relative">
+            {/* binder holes (desktop) */}
+            <div
+              aria-hidden="true"
+              className="punch-holes absolute bottom-4 left-2.5 top-4 hidden w-5 md:block"
+            />
+            {/* content — padded clear of the holes on desktop */}
+            <div className="md:pl-6">
+              <Masthead />
+              <Perforation />
+              <Objective />
+              <Perforation />
+              <Competencies />
+              <Perforation />
+              <Roles />
+              <Perforation />
+              <Supervision />
+              <Perforation />
+              <Compensation />
+              <Perforation />
+              <Interview />
+              <Perforation />
+              <Offer />
+              <DossierFooter />
+            </div>
+          </div>
+        </main>
+      </div>
     </>
   );
 }

@@ -70,6 +70,23 @@
     0 24px 60px -24px rgba(var(--c-shade-rgb), 0.3);
 
   --breakpoint-3xl: 120rem;
+
+  /* ── DOSSIER design tokens (homepage only; enterprise uses themes above) ── */
+  --color-dpaper: #f3f0e8; /* the sheet */
+  --color-dpaper-2: #ebe7da; /* recessed wells on the sheet */
+  --color-ddesk: #d9d4c4; /* the desk the sheet lies on */
+  --color-dink: #1c1b17; /* typewriter ink */
+  --color-dink-2: #565349;
+  --color-dink-3: #8b8778;
+  --color-dline: #c7c2b0;
+  --color-dline-2: #a9a48f;
+  --color-dred: #cf3428; /* bureaucratic red — stamps, pens, actions */
+  --color-dred-deep: #a8271d;
+
+  --font-anton: var(--font-anton-g), "Arial Narrow", sans-serif;
+  --font-archivo: var(--font-archivo-g), ui-sans-serif, system-ui, sans-serif;
+  --font-plex: var(--font-plex-g), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-marker: var(--font-marker-g), cursive;
 }
 
 /* ---------------------------------------------------------------- THEMES */
@@ -546,5 +563,210 @@
   .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* =========================================================================
+   THE DOSSIER — homepage design language (paper · ink · red pen)
+   A hiring packet on a desk. Everything below is scoped to dossier classes
+   and never touches the theme system above (enterprise stays as-is).
+   ========================================================================= */
+
+@layer utilities {
+  /* the desk + the sheet */
+  .dossier-desk {
+    background-color: #d9d4c4;
+    background-image: radial-gradient(
+        120% 90% at 50% 0%,
+        rgba(255, 255, 255, 0.35),
+        transparent 55%
+      ),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  .dossier-sheet {
+    background-color: #f3f0e8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 24px 60px -28px rgba(28, 27, 23, 0.45),
+      0 4px 14px -6px rgba(28, 27, 23, 0.25);
+  }
+
+  /* binder punch holes down the left margin (desktop only) */
+  .punch-holes {
+    background-image: radial-gradient(
+      circle 9px at 50% 50%,
+      #d9d4c4 8px,
+      rgba(28, 27, 23, 0.18) 8.5px,
+      rgba(28, 27, 23, 0.18) 9.5px,
+      transparent 10px
+    );
+    background-size: 100% 148px;
+    background-position: 0 74px;
+    background-repeat: repeat-y;
+  }
+
+  /* perforated tear-off section separator */
+  .perf-rule {
+    background-image: linear-gradient(
+      to right,
+      #a9a48f 42%,
+      transparent 42%
+    );
+    background-size: 14px 1px;
+    background-repeat: repeat-x;
+    height: 1px;
+  }
+
+  /* ── rubber stamps ── */
+  .stamp {
+    display: inline-block;
+    font-family: var(--font-plex);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #cf3428;
+    border: 3px solid currentColor;
+    border-radius: 6px;
+    padding: 0.5em 0.9em;
+    position: relative;
+    transform: rotate(var(--stamp-rot, -6deg));
+    opacity: 0.94;
+  }
+  /* dry-ink speckle */
+  .stamp::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    mix-blend-mode: screen;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .stamp::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1.5px solid currentColor;
+    border-radius: 3px;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  /* the slam — used with data-slammed toggled by IntersectionObserver */
+  @keyframes stamp-slam {
+    0% {
+      opacity: 0;
+      transform: rotate(var(--stamp-rot, -6deg)) scale(2.6);
+    }
+    55% {
+      opacity: 1;
+      transform: rotate(var(--stamp-rot, -6deg)) scale(0.94);
+    }
+    75% {
+      transform: rotate(var(--stamp-rot, -6deg)) scale(1.04);
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(var(--stamp-rot, -6deg)) scale(1);
+    }
+  }
+  .stamp-slam {
+    opacity: 0;
+  }
+  .stamp-slam[data-slammed="true"] {
+    animation: stamp-slam 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+
+  /* ── form fields (typed-looking rows) ── */
+  .field-label {
+    font-family: var(--font-plex);
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    color: #8b8778;
+    text-transform: uppercase;
+  }
+  .field-line {
+    border-bottom: 1px dashed #a9a48f;
+  }
+
+  /* ── checkbox ── */
+  .dossier-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.05rem;
+    height: 1.05rem;
+    border: 1.5px solid #565349;
+    border-radius: 2px;
+    color: #cf3428;
+    flex-shrink: 0;
+  }
+
+  /* ── exhibits (attached evidence) ── */
+  .exhibit-frame {
+    background: #fdfcf8;
+    border: 1px solid #c7c2b0;
+    box-shadow:
+      0 10px 24px -12px rgba(28, 27, 23, 0.35),
+      0 2px 6px -2px rgba(28, 27, 23, 0.18);
+  }
+  .exhibit-media {
+    filter: grayscale(1) contrast(1.07);
+  }
+  .tape {
+    position: absolute;
+    width: 92px;
+    height: 26px;
+    background: rgba(228, 220, 196, 0.85);
+    box-shadow: 0 1px 3px rgba(28, 27, 23, 0.18);
+    backdrop-filter: blur(1px);
+  }
+
+  /* ── proficiency meter: typed blocks ── */
+  .meter-block {
+    width: 1.6rem;
+    height: 0.55rem;
+    background: #1c1b17;
+  }
+  .meter-block-empty {
+    width: 1.6rem;
+    height: 0.55rem;
+    border: 1px solid #a9a48f;
+  }
+
+  /* marker margin notes */
+  .marker-note {
+    font-family: var(--font-marker);
+    color: #cf3428;
+    transform: rotate(var(--marker-rot, -2deg));
+  }
+
+  /* the red pen striking a superseded role */
+  @keyframes strike-draw {
+    from {
+      width: 0;
+    }
+    to {
+      width: 104%;
+    }
+  }
+  .strike-draw {
+    animation: strike-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) both;
+    transform: rotate(-1.2deg);
+  }
+
+  /* red ballpoint underline for circled/underlined words */
+  .pen-underline {
+    background-image: linear-gradient(
+      to right,
+      #cf3428 60%,
+      transparent 60%
+    );
+    background-size: 12px 2px;
+    background-repeat: repeat-x;
+    background-position: 0 96%;
+    padding-bottom: 0.12em;
   }
 }
